@@ -1,17 +1,22 @@
 import react from "@vitejs/plugin-react";
 import { URL, fileURLToPath } from "node:url";
 import { defineConfig, loadEnv } from "vite";
+import tsconfigPaths from 'vite-tsconfig-paths';
 import eslint from "vite-plugin-eslint";
+import process from "process";
 
 export default ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+  const env = loadEnv(mode, process.cwd(), '')
 
   return defineConfig({
-    define: {
-      __API__: JSON.stringify(process.env.VITE_API),
-      __IS_DEV__: JSON.stringify(process.env.VITE_IS_DEV),
+    build:{
+      outDir: "dist"
     },
-    plugins: [react(), eslint()],
+    define: {
+      __API__: JSON.stringify(env.VITE_API),
+      __IS_DEV__: JSON.stringify(env.VITE_IS_DEV),
+    },
+    plugins: [react(), tsconfigPaths()],
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
