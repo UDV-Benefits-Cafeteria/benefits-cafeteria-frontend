@@ -17,6 +17,13 @@ export default ({ mode }) => {
       __IS_DEV__: JSON.stringify(env.VITE_IS_DEV),
     },
     plugins: [react(), tsconfigPaths()],
+    server: {
+        host: true,
+        port: 5000,
+            watch: {
+            usePolling: true,
+        }
+    },
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
