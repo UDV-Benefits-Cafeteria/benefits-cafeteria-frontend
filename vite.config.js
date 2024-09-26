@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react";
 import { URL, fileURLToPath } from "node:url";
 import process from "process";
 import { defineConfig, loadEnv } from "vite";
-import eslint from "vite-plugin-eslint";
+import babel from "vite-plugin-babel";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default ({ mode }) => {
@@ -16,7 +16,7 @@ export default ({ mode }) => {
       __API__: JSON.stringify(env.VITE_API),
       __IS_DEV__: JSON.stringify(env.VITE_IS_DEV),
     },
-    plugins: [react(), tsconfigPaths(), eslint()],
+    plugins: [react(), tsconfigPaths(), babel()],
     server: {
       host: true,
       port: 5000,
