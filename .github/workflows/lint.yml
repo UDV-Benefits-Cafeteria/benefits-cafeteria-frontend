@@ -21,17 +21,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
       - name: 📥 Download deps
-        uses: u0reo/npm-install@fix/restore-failure
-        with:
-          useRollingCache: true
+        run: yarn --frozen-lockfile
 
       - name: 🔬 Lint
         run: yarn lint:strict
-        if: always()
+
       - name: 🔎 Type check
         run: yarn typecheck
