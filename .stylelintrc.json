@@ -521,7 +521,6 @@
     "declaration-block-semicolon-space-before": "never",
     "declaration-block-single-line-max-declarations": 0,
     "declaration-block-trailing-semicolon": "always",
-    "declaration-colon-newline-after": "always-multi-line",
     "declaration-colon-space-after": "always-single-line",
     "declaration-colon-space-before": "never",
     "declaration-empty-line-before": [
@@ -637,7 +636,6 @@
     "selector-type-no-unknown": true,
     "shorthand-property-no-redundant-values": true,
     "string-no-newline": true,
-    "string-quotes": "single",
     "time-min-milliseconds": 10,
     "unit-case": "lower",
     "unit-no-unknown": true,
