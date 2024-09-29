@@ -1,0 +1,36 @@
+name: Linting
+on:
+  push:
+    branches:
+      - '*'
+      - '*/*'
+      - '**'
+      - '!main'
+      - '!dev'
+
+concurrency:
+  group: ${{ github.job }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: ⬣ ESLint, ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 📥 Download deps
+        run: yarn --frozen-lockfile
+
+      - name: 🔬 Lint
+        run: yarn lint:strict
+
+      - name: 🔎 Type check
+        run: yarn typecheck
+        if: always()
