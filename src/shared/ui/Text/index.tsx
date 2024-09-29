@@ -15,8 +15,6 @@ export const Text: FC<TText> = props => {
   const { children, size = "m", fontStyle, className, boldness = "normal" } = props;
   const isAlternative = fontStyle !== "main";
 
-  console.log(styles[boldness]);
-
   return (
     <p
       {...props}
