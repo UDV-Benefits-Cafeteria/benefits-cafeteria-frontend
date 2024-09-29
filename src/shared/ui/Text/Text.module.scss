@@ -1,0 +1,63 @@
+.text {
+  margin: 0;
+
+  &.normal {
+    font-weight: 400;
+  }
+
+  &.medium {
+    font-weight: 500;
+  }
+
+  &.bold {
+    font-weight: 700;
+  }
+
+  &.alternative {
+    font-family: 'Hero', sans-serif;
+  }
+
+  &.s {
+    font-size: 14px;
+  }
+
+  &.m {
+    font-size: 16px;
+  }
+
+  &.l {
+    font-size: 18px;
+  }
+}
+
+@media screen and (width > 1024px) {
+  .text {
+    &.s {
+      font-size: 16px;
+    }
+
+    &.m {
+      font-size: 18px;
+    }
+
+    &.l {
+      font-size: 20px;
+    }
+  }
+}
+
+@media screen and (width > 1440px) {
+  .text {
+    &.s {
+      font-size: 18px;
+    }
+
+    &.m {
+      font-size: 20px;
+    }
+
+    &.l {
+      font-size: 22px;
+    }
+  }
+}
