@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "5000:5000"
+    restart: always
