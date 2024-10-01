@@ -1,3 +1,5 @@
+@import "@shared/styles/size-vars";
+
 .text {
   margin: 0;
 
@@ -30,7 +32,7 @@
   }
 }
 
-@media screen and (width > 1024px) {
+@media screen and (width > $pad-breakpoint) {
   .text {
     &.s {
       font-size: 16px;
@@ -46,7 +48,7 @@
   }
 }
 
-@media screen and (width > 1440px) {
+@media screen and (width > $desktop-breakpoint) {
   .text {
     &.s {
       font-size: 18px;
