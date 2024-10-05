@@ -1,0 +1,24 @@
+.base_icon {
+  display: inline-block;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.s {
+  width: 16px;
+  height: 16px;
+}
+
+.m {
+  width: 20px;
+  height: 20px;
+}
+
+.l {
+  width: 24px;
+  height: 24px;
+}

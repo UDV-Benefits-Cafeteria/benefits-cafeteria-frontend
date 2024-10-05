@@ -1,0 +1,6 @@
+@use "../../assets/IconsVars" as icons;
+
+.mail {
+  -webkit-mask: icons.$mail;
+  mask: icons.$mail;
+}
