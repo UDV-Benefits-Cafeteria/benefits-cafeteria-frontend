@@ -1,0 +1,50 @@
+@use "@shared/assets/IconsVars" as icons;
+
+@import "@shared/styles/color-vars";
+@import "@shared/styles/mixins";
+
+.mail {
+  background-image: icons.$mail;
+}
+
+.input {
+  @include smallText;
+
+  border: 1px solid var(--input_border);
+  border-radius: 7px;
+  padding: 10px;
+  background-color: var(--background_gray);
+
+  &.with_icon {
+    padding-left: 40px;
+    background-position: 5px center;
+    background-size: auto;
+    background-repeat: no-repeat;
+  }
+}
+
+.container {
+  position: relative;
+  display: flex;
+  margin-bottom: 12px;
+  gap: 8px;
+
+  &.column {
+    flex-direction: column;
+  }
+
+  &.row {
+    flex-flow: row wrap;
+  }
+}
+
+.label {
+  @include mediumText;
+}
+
+.error {
+  position: absolute;
+  bottom: -20px;
+  font-size: 14px;
+  color: var(--error_text);
+}
