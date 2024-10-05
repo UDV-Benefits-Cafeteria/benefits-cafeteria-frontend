@@ -1,7 +1,29 @@
 @import "fonts";
+@import "color-vars";
+
+:root {
+  --main_bg: #{$main_bg};
+  --main_text: #{$main_text};
+  --input_border: #{$input_border};
+  --input_border_focus: #{$input_border_focus};
+  --placeholder: #{$placeholder};
+  --background_gray: #{$background_gray};
+  --icons: #{$icons};
+  --error_text: #{$error_text};
+}
 
 body {
   margin: 0;
   padding: 0;
   font-family: 'Golos', sans-serif;
+  color: var(--main_text);
+  background-color: var(--main_bg);
+}
+
+body[theme="dark"] {
+  @include dark;
+}
+
+body[theme="light"] {
+  @include light;
 }
