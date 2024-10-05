@@ -1,17 +1,13 @@
-import { Suspense } from "react";
+import { type FC, Suspense } from "react";
 
-import { InputTemplate } from "@shared/ui/Input/InputTemplate";
-import { TextTemplate } from "@shared/ui/Text/TextTemplate";
-import TitleTemplate from "@shared/ui/Title/TitleTemplate";
+import { ThemeSwitcher } from "@shared/ui/ThemeSwitcher/ThemeSwitcher";
 
 import "@shared/styles/index.scss";
 
-const App = () => {
+const App: FC = () => {
   return (
     <Suspense fallback={""}>
-      <TextTemplate />
-      <TitleTemplate />
-      <InputTemplate />
+      <ThemeSwitcher />
     </Suspense>
   );
 };
