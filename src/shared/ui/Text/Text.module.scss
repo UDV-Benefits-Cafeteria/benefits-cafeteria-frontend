@@ -18,48 +18,10 @@
   &.alternative {
     font-family: 'Hero', sans-serif;
   }
-
-  &.s {
-    font-size: 14px;
-  }
-
-  &.m {
-    font-size: 16px;
-  }
-
-  &.l {
-    font-size: 18px;
-  }
 }
 
 @media screen and (width > $pad-breakpoint) {
-  .text {
-    &.s {
-      font-size: 16px;
-    }
-
-    &.m {
-      font-size: 18px;
-    }
-
-    &.l {
-      font-size: 20px;
-    }
-  }
 }
 
 @media screen and (width > $desktop-breakpoint) {
-  .text {
-    &.s {
-      font-size: 18px;
-    }
-
-    &.m {
-      font-size: 20px;
-    }
-
-    &.l {
-      font-size: 22px;
-    }
-  }
 }
