@@ -1,0 +1,13 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 25px;
+  padding: 16px 0;
+  width: 100%;
+  font-family: inherit;
+  font-weight: 500;
+  color: white;
+  background-color: var(--primary);
+}

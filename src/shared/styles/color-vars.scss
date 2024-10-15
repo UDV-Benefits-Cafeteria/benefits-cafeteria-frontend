@@ -4,17 +4,21 @@ $input_border: #0b2027;
 $input_border_focus: #00c08b;
 $placeholder: #637b82;
 $background_gray: #e8e8e8;
+$description_text: #939393;
 $icons: #0b2027;
 $error_text: #ff616d;
+$primary: #00C08B;
 
 $main_bg-dark: black;
 $main_text_dark: white;
 $input_border-dark: red;
 $input_border_focus-dark: red;
-$placeholder-dark:red;
+$placeholder-dark: red;
 $background_gray-dark: red;
 $icons-dark: red;
+$description_text-black: #939393;
 $error_text-dark: #ff616d;
+$primary-dark: #00C08B;
 
 @mixin light {
   --main_bg: #{$main_bg};
@@ -24,7 +28,9 @@ $error_text-dark: #ff616d;
   --placeholder: #{$placeholder};
   --background_gray: #{$background_gray};
   --icons: #{$icons};
+  --description_text: #{$description_text};
   --error_text: #{$error_text};
+  --primary: #{$primary};
 }
 
 @mixin dark {
@@ -35,5 +41,7 @@ $error_text-dark: #ff616d;
   --placeholder: #{$placeholder-dark};
   --background_gray: #{$background_gray-dark};
   --icons: #{$icons-dark};
+  --description_text: #{$description_text-black};
   --error_text: #{$error_text-dark};
+  --primary: #{$primary-dark};
 }
