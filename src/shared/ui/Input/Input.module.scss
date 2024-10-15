@@ -15,6 +15,15 @@
   padding: 10px;
   background-color: var(--background_gray);
 
+  &:focus-visible {
+    outline: none;
+    border: 1px solid  var(--primary);
+  }
+
+  &.error {
+    border-color: var(--error_text);
+  }
+
   &.with_icon {
     padding-left: 40px;
     background-position: 5px center;
@@ -42,7 +51,7 @@
   @include mediumText;
 }
 
-.error {
+.errorText {
   position: absolute;
   bottom: -20px;
   font-size: 14px;

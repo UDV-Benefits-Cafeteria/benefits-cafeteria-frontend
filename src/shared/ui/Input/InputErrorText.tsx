@@ -14,5 +14,5 @@ type TInputErrorTextProps = {
 export const InputErrorText: FC<TInputErrorTextProps> = props => {
   const { isError, className, children } = props;
 
-  return isError && <Text className={classNames(styles.error, className)}>{children}</Text>;
+  return isError && <Text className={classNames(styles.errorText, className)}>{children}</Text>;
 };
