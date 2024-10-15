@@ -2,6 +2,7 @@
 
 .text {
   margin: 0;
+  text-wrap: balance;
 
   &.normal {
     font-weight: 400;
@@ -17,6 +18,10 @@
 
   &.alternative {
     font-family: 'Hero', sans-serif;
+  }
+
+  &.description {
+    color: var(--description_text);
   }
 }
 

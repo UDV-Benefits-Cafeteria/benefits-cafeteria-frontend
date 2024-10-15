@@ -12,6 +12,7 @@ type TTitleProps = {
   type: TTitle;
   children: ReactNode;
   fontStyle?: "main" | "alternative";
+  boldness?: "normal" | "medium" | "bold";
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>;
 
 const TITLE_VARIANTS: { [k in TTitle]: TTitleTags } = {
@@ -21,7 +22,7 @@ const TITLE_VARIANTS: { [k in TTitle]: TTitleTags } = {
 };
 
 export const Title: FC<TTitleProps> = props => {
-  const { children, type = "block", fontStyle = "main", className } = props;
+  const { children, type = "block", fontStyle = "main", boldness = "bold", className } = props;
   const isAlternative = fontStyle !== "main";
 
   const Tag: TTitleTags = TITLE_VARIANTS[type];
@@ -29,7 +30,7 @@ export const Title: FC<TTitleProps> = props => {
   return (
     <Tag
       {...props}
-      className={classNames(styles.title, isAlternative ? styles.alternative : null, className)}
+      className={classNames(styles.title, styles[boldness], isAlternative ? styles.alternative : null, className)}
     >
       {children}
     </Tag>

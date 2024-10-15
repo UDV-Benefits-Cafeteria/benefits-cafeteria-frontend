@@ -6,6 +6,19 @@
   &.alternative {
     font-family: 'Hero', sans-serif;
   }
+
+  &.normal {
+    font-weight: 400;
+  }
+
+  &.medium {
+    font-weight: 500;
+  }
+
+  &.bold {
+    font-weight: 700;
+  }
+
 }
 
 h3 {

@@ -7,17 +7,24 @@ import styles from "./Text.module.scss";
 type TText = {
   boldness?: "normal" | "medium" | "bold";
   fontStyle?: "main" | "alternative";
+  type?: "description";
   children: ReactNode;
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>;
 
 export const Text: FC<TText> = props => {
-  const { children, fontStyle = "main", className, boldness = "normal" } = props;
+  const { children, fontStyle = "main", className, boldness = "normal", type } = props;
   const isAlternative = fontStyle !== "main";
 
   return (
     <p
       {...props}
-      className={classNames(styles.text, isAlternative ? styles.alternative : null, styles[boldness], className)}
+      className={classNames(
+        styles.text,
+        styles[boldness],
+        type ? styles[type] : null,
+        isAlternative ? styles.alternative : null,
+        className
+      )}
     >
       {children}
     </p>
