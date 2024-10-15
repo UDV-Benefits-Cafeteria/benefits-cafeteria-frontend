@@ -5,7 +5,7 @@ export const rtkApi = createApi({
   tagTypes: [],
   baseQuery: fetchBaseQuery({
     // @ts-ignore
-    baseUrl: __API__,
+    baseUrl: "http://localhost:8000/api/v1",
     mode: "cors",
     prepareHeaders: headers => {
       headers.set("Content-Type", "application/json;charset=utf-8");
