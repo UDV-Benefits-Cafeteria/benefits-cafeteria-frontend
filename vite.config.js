@@ -16,7 +16,15 @@ export default ({ mode }) => {
       __API__: JSON.stringify(env.VITE_API),
       __IS_DEV__: JSON.stringify(env.VITE_IS_DEV),
     },
-    plugins: [react(), tsconfigPaths(), babel()],
+    plugins: [
+      react({
+        babel: {
+          plugins: [["babel-plugin-react-compiler"]],
+        },
+      }),
+      tsconfigPaths(),
+      babel(),
+    ],
     server: {
       host: true,
       port: 5000,

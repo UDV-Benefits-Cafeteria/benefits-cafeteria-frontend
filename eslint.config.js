@@ -3,6 +3,7 @@ import tsParserEslint from "@typescript-eslint/parser";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import promise from "eslint-plugin-promise";
 import react from "eslint-plugin-react";
+import reactCompiler from "eslint-plugin-react-compiler";
 import sonarjs from "eslint-plugin-sonarjs";
 import globals from "globals";
 
@@ -20,6 +21,7 @@ export default [
       react,
       promise,
       sonarjs,
+      "react-compiler": reactCompiler,
       "jsx-a11y": jsxA11y,
       "@typescript-eslint": tsPluginEslint,
     },
@@ -52,6 +54,8 @@ export default [
       ...sonarjs.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...tsPluginEslint.configs.recommended.rules,
+
+      "react-compiler/react-compiler": 2,
 
       /** Override */
       "jsx-a11y/tabindex-no-positive": 0,
