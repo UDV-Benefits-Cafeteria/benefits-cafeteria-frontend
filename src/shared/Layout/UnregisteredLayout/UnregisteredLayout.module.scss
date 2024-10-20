@@ -1,7 +1,44 @@
+@import "@shared/styles/size-vars";
+
 .page {
   display: flex;
-  place-items: center center;
+  align-items: center;
   justify-content: center;
   width: 100dvw;
   height: 100dvh;
+
+  .pattern {
+    display: none;
+  }
+}
+
+@media screen and (min-width: $pad-breakpoint) {
+  .page {
+    .pattern {
+      position: fixed;
+      display: inline;
+      justify-self: start;
+      height: 100dvh;
+      transform: translateX(-700px);
+    }
+
+    &.with_pattern {
+      justify-content: right;
+      margin-right: 200px;
+      width: 95dvw;
+    }
+  }
+}
+
+@media screen and (min-width: $pad-breakpoint) {
+  .page {
+    .pattern {
+      position: fixed;
+      display: inline;
+      justify-self: start;
+      width: 100%;
+      height: auto;
+      transform: translateX(-500px);
+    }
+  }
 }
