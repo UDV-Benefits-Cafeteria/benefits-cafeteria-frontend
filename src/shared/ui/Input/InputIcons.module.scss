@@ -1,0 +1,9 @@
+@use "@shared/assets/IconsVars" as icons;
+
+.mail {
+  background-image: icons.$mail;
+}
+
+.password {
+  background-image: icons.$password;
+}
