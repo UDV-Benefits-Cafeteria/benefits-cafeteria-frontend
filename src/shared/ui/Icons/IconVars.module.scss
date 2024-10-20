@@ -4,3 +4,13 @@
   -webkit-mask: icons.$mail;
   mask: icons.$mail;
 }
+
+.visible {
+  -webkit-mask: icons.$visible;
+  mask: icons.$visible;
+}
+
+.non-visible {
+  -webkit-mask: icons.$non_visible;
+  mask: icons.$non_visible;
+}

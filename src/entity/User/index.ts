@@ -1,2 +1,3 @@
 // export {User} from './ui/User'
-export { UserAsync as User } from "./ui/User.async";
+export * from "./model/slice/User.slice";
+export * from "./api/User.api";

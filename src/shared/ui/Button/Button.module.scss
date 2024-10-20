@@ -1,4 +1,8 @@
+@use "@shared/styles/mixins" as mixins;
+
 .button {
+  @include mixins.mediumText;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,7 +11,18 @@
   padding: 16px 0;
   width: 100%;
   font-family: inherit;
-  font-weight: 500;
   color: white;
   background-color: var(--primary);
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:disabled {
+    background-color: var(--disabled_button);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

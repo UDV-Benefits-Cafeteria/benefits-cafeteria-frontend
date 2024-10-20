@@ -5,7 +5,7 @@ import { TUserSliceSchema } from "../types/User.types";
 const initialState: TUserSliceSchema = {
   isAuth: false,
   isMounted: false,
-  role: "user",
+  role: "employee",
 };
 
 export const UserSlice = createSlice({

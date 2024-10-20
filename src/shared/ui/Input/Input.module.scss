@@ -3,21 +3,18 @@
 @import "@shared/styles/color-vars";
 @import "@shared/styles/mixins";
 
-.mail {
-  background-image: icons.$mail;
-}
-
 .input {
   @include smallText;
 
   border: 1px solid var(--input_border);
   border-radius: 7px;
   padding: 10px;
+  width: calc(100%);
   background-color: var(--background_gray);
 
   &:focus-visible {
     outline: none;
-    border: 1px solid  var(--primary);
+    border: 1px solid var(--primary);
   }
 
   &.error {
@@ -26,10 +23,22 @@
 
   &.with_icon {
     padding-left: 40px;
+    width: calc(100% - 52px);
     background-position: 5px center;
     background-size: auto;
     background-repeat: no-repeat;
   }
+}
+
+.can_hide {
+  position: relative;
+}
+
+.hide_button {
+  position: absolute;
+  right: 20px;
+  top: 7px;
+  background-color: var(--icons);
 }
 
 .container {
@@ -56,4 +65,16 @@
   bottom: -20px;
   font-size: 14px;
   color: var(--error_text);
+}
+
+@media screen and (min-width: $pad-breakpoint) {
+  .hide_button {
+    top: 8px;
+  }
+}
+
+@media screen and (min-width: $desktop-breakpoint) {
+  .hide_button {
+    top: 10px;
+  }
 }

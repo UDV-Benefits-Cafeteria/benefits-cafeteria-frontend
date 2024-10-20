@@ -8,6 +8,7 @@ $description_text: #939393;
 $icons: #0b2027;
 $error_text: #ff616d;
 $primary: #00C08B;
+$disabled_button: #8C8C8C;
 
 $main_bg-dark: black;
 $main_text_dark: white;
@@ -19,6 +20,8 @@ $icons-dark: red;
 $description_text-black: #939393;
 $error_text-dark: #ff616d;
 $primary-dark: #00C08B;
+$disabled_button-dark: #8C8C8C;
+
 
 @mixin light {
   --main_bg: #{$main_bg};
@@ -31,6 +34,7 @@ $primary-dark: #00C08B;
   --description_text: #{$description_text};
   --error_text: #{$error_text};
   --primary: #{$primary};
+  --disabled_button: #{$disabled_button};
 }
 
 @mixin dark {
@@ -44,4 +48,5 @@ $primary-dark: #00C08B;
   --description_text: #{$description_text-black};
   --error_text: #{$error_text-dark};
   --primary: #{$primary-dark};
+  --disabled_button: #{$disabled_button-dark};
 }

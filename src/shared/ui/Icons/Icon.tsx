@@ -9,10 +9,18 @@ export type TIconProps = {
   className?: string;
   icon: keyof typeof icons;
   size?: "s" | "m" | "l";
+  onClick?: () => void;
 };
 
 export const Icon: FC<TIconProps> = props => {
-  const { icon, className, size } = props;
+  const { icon, className, size, onClick } = props;
 
-  return <div className={classNames(icons[icon], styles.base_icon, size ? styles[size] : null, className)} />;
+  const CustomTag = onClick ? "a" : "div";
+
+  return (
+    <CustomTag
+      onClick={onClick}
+      className={classNames(icons[icon], styles.base_icon, size ? styles[size] : null, className)}
+    />
+  );
 };
