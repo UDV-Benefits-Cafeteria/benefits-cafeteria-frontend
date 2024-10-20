@@ -1,5 +1,5 @@
 import { lazy } from "react";
 
-export const RegisterPage = lazy(
-  async () => await import("./index").then(module => ({ default: module.RegisterPage }))
+export const RegisterPageAsync = lazy(
+  async () => await import("./RegisterPage").then(module => ({ default: module.RegisterPage }))
 );
