@@ -5,6 +5,8 @@ import { Button } from "@shared/ui/Button";
 import { Title } from "@shared/ui/Title";
 import { useNavigate } from "react-router-dom";
 
+import { LOGIN } from "@app/providers/AppRouter/AppRouter.config";
+
 import styles from "./PreLanding.module.scss";
 
 export const PreLanding: FC = () => {
@@ -24,7 +26,7 @@ export const PreLanding: FC = () => {
 
         <Button
           className={styles.button}
-          onClick={() => navigate("/login")}
+          onClick={() => navigate(LOGIN)}
         >
           Войти в аккаунт
         </Button>

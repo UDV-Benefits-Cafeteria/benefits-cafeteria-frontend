@@ -17,6 +17,8 @@ import { validateEmail } from "@shared/utils/validate/validateEmail";
 import { validatePassword } from "@shared/utils/validate/validatePassword";
 import { useNavigate } from "react-router-dom";
 
+import { REGISTER } from "@app/providers/AppRouter/AppRouter.config";
+
 const passwordErrorsTexts: Partial<TErrorsTexts> = {
   401: "Не верный пароль",
   404: "Пользователь не верефицирован",
@@ -118,7 +120,7 @@ export const AuthorizationForm: FC = () => {
         <Text boldness={"medium"}>Еще нет аккаунта?</Text>
 
         <Text boldness={"medium"}>
-          <Link route={"/register"}>Зарегистрироваться</Link>
+          <Link route={REGISTER}>Зарегистрироваться</Link>
         </Text>
       </FormFooter>
     </FormContainer>

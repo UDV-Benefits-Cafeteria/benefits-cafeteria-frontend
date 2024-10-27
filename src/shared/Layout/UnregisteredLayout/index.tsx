@@ -24,7 +24,7 @@ export const UnregisteredLayout: FC<TUnregisteredLayoutProps> = props => {
         />
       ) : null}
 
-      <main>{children}</main>
+      {children}
     </main>
   );
 };

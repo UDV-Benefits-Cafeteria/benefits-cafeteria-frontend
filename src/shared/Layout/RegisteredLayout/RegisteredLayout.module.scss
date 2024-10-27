@@ -1,0 +1,102 @@
+@use "@shared/assets/IconsVars" as icons;
+
+@import "@shared/styles/size-vars";
+
+.page {
+  display: flex;
+  height: 100dvh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--sidebar_border);
+  padding: 34px 19px;
+}
+
+.content {
+  padding-top: 54px;
+  padding-left: 32px;
+}
+
+.top_container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .company_name {
+    color: var(--primary);
+  }
+}
+
+.logo {
+  width: 226px;
+  height: 45px;
+  background-image: icons.$logo;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  gap: 30px;
+
+  .element {
+    display: flex;
+    padding: 10px 0 10px 10px;
+    width: 100%;
+    text-decoration: none;
+    gap: 15px;
+
+    &__text {
+      text-decoration: none;
+      color: var(--grey_100);
+
+      &.active {
+        color: var(--active_black);
+      }
+    }
+
+    &__icon {
+      background-color: var(--grey_100);
+
+      &.active {
+        background-color: var(--active_black);
+      }
+    }
+
+    &.active {
+      border-radius: 15px;
+      background-color: var(--grey_200);
+    }
+  }
+}
+
+.user {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+
+  &__image {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: $pad-breakpoint) {
+
+}
+
+@media screen and (min-width: $pad-breakpoint) {
+
+}

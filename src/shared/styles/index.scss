@@ -4,6 +4,7 @@
 :root {
   --main_bg: #{$main_bg};
   --main_text: #{$main_text};
+  --active_black: #{$active_black};
   --input_border: #{$input_border};
   --input_border_focus: #{$input_border_focus};
   --placeholder: #{$placeholder};
@@ -12,7 +13,9 @@
   --error_text: #{$error_text};
   --primary: #{$primary};
   --description_text: #{$description_text};
-  --disabled_button: #{$disabled_button};
+  --grey_100: #{$grey_100};
+  --grey_200: #{$grey_200};
+  --sidebar_border: #{$sidebar_border};
 }
 
 body {

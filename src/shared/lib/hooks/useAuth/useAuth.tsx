@@ -6,18 +6,13 @@ import { useAppDispatch } from "@shared/lib/hooks/useAppDispatch/useAppDispatch"
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 
 export const useAuth = () => {
-  const [trigger, { isLoading, isError }] = useLazyGetUserQuery();
+  const [trigger, { data }] = useLazyGetUserQuery();
   const dispatch = useAppDispatch();
   const userDidMounted = useAppSelector(state => state.user.isMounted);
 
   useEffect(() => {
     if (!userDidMounted) trigger(null);
 
-    if (isLoading) return;
-    let res = false;
-
-    if (!isError) res = true;
-
-    dispatch(UserSliceActions.setAuth(res));
-  }, [isLoading, isError]);
+    if (data) dispatch(UserSliceActions.setUser(data));
+  }, [data]);
 };

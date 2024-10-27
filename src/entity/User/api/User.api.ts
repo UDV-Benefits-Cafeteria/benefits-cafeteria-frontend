@@ -1,5 +1,7 @@
 import { rtkApi } from "@shared/api/rtkApi";
 
+import type { TUserData } from "@entity/User/model/types/User.types";
+
 type TVerifyEmailResponse = { id: number };
 type TVerifyEmailData = { email: string };
 
@@ -11,7 +13,7 @@ type TLoginData = { email: string; password: string };
 
 export const UserApi = rtkApi.injectEndpoints({
   endpoints: build => ({
-    getUser: build.query({
+    getUser: build.query<TUserData, null>({
       query: () => ({
         url: "/users/me",
       }),

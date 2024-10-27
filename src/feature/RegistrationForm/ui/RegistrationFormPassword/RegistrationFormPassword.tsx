@@ -16,6 +16,7 @@ import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { type TErrorsTexts, getRequestError } from "@shared/utils/getRequestError";
 import { validatePassword } from "@shared/utils/validate/validatePassword";
+import { useNavigate } from "react-router-dom";
 
 type TRegistrationFormProps = {};
 
@@ -54,7 +55,7 @@ export const RegistrationFormPassword: FC<TRegistrationFormProps> = () => {
 
     if (resp.error) setPasswordError(getRequestError(errorsTexts, resp.error)!);
 
-    if (resp.data?.id) {
+    if (resp.data) {
       dispatch(UserSliceActions.setAuth(true));
       navigate("/main");
     }

@@ -1,5 +1,6 @@
 $main_bg: white;
-$main_text: black;
+$main_text: #2b2a29;
+$active_black: #2b2a29;
 $input_border: #0b2027;
 $input_border_focus: #00c08b;
 $placeholder: #637b82;
@@ -7,8 +8,11 @@ $background_gray: #e8e8e8;
 $description_text: #939393;
 $icons: #0b2027;
 $error_text: #ff616d;
-$primary: #00C08B;
-$disabled_button: #8C8C8C;
+$primary: #00c08b;
+$sidebar_border: #cacaca;
+
+$grey_100: #8c8c8c;
+$grey_200: #d9d9d9;
 
 $main_bg-dark: black;
 $main_text_dark: white;
@@ -19,13 +23,14 @@ $background_gray-dark: red;
 $icons-dark: red;
 $description_text-black: #939393;
 $error_text-dark: #ff616d;
-$primary-dark: #00C08B;
-$disabled_button-dark: #8C8C8C;
-
+$primary-dark: #00c08b;
+$grey_100: #8c8c8c;
+$sidebar_border-dark: #cacaca;
 
 @mixin light {
   --main_bg: #{$main_bg};
   --main_text: #{$main_text};
+  --active_black: #{$active_black};
   --input_border: #{$input_border};
   --input_border_focus: #{$input_border_focus};
   --placeholder: #{$placeholder};
@@ -34,7 +39,9 @@ $disabled_button-dark: #8C8C8C;
   --description_text: #{$description_text};
   --error_text: #{$error_text};
   --primary: #{$primary};
-  --disabled_button: #{$disabled_button};
+  --grey_100: #{$grey_100};
+  --grey_200: #{$grey_200};
+  --sidebar_border: #{$sidebar_border};
 }
 
 @mixin dark {
@@ -48,5 +55,5 @@ $disabled_button-dark: #8C8C8C;
   --description_text: #{$description_text-black};
   --error_text: #{$error_text-dark};
   --primary: #{$primary-dark};
-  --disabled_button: #{$disabled_button-dark};
+  --sidebar_border: #{$sidebar_border-dark};
 }
