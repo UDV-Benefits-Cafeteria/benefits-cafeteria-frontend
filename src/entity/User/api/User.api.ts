@@ -42,7 +42,20 @@ export const UserApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    createUser: build.mutation<TUserData, TUserData>({
+      query: (body: TUserData) => ({
+        method: "POST",
+        url: "/users",
+        body: body,
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetUserQuery, useVerifyEmailMutation, useSetPasswordMutation, useLoginMutation } = UserApi;
+export const {
+  useLazyGetUserQuery,
+  useVerifyEmailMutation,
+  useSetPasswordMutation,
+  useLoginMutation,
+  useCreateUserMutation,
+} = UserApi;

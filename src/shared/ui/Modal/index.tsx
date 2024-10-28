@@ -26,16 +26,16 @@ export const Modal: FC<TModalProps> = props => {
         <div
           onClick={handleOutsideClick}
           className={styles.backdrop}
-        ></div>
+        >
+          <dialog
+            ref={dialogRef}
+            open={isOpen}
+            className={styles.modal}
+          >
+            {children}
+          </dialog>
+        </div>
       )}
-
-      <dialog
-        ref={dialogRef}
-        open={isOpen}
-        className={styles.modal}
-      >
-        {children}
-      </dialog>
     </>
   );
 };

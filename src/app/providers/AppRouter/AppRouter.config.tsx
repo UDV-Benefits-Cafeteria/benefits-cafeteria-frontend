@@ -1,8 +1,9 @@
 import { AuthorizationPage } from "@pages/AuthorizationPage";
+import { CreateEmployee } from "@pages/CreateEmployee";
+import { Employees } from "@pages/Employees";
 import { NotFoundPage } from "@pages/NotFoundPage/NotFoundPage";
 import { PreLanding } from "@pages/PreLanding";
 import { RegisterPage } from "@pages/RegisterPage";
-import { RegisteredLayout } from "@shared/Layout/RegisteredLayout";
 import { Navigate } from "react-router-dom";
 
 import type { TRoute } from "./AppRouter.types";
@@ -15,6 +16,7 @@ export const MAIN = "/main";
 export const BENEFITS = MAIN + "/benefits";
 export const EMPLOYEES = MAIN + "/employees";
 export const CREATE_EMPLOYEES = EMPLOYEES + "/create";
+export const CURRENT_EMPLOYEE = EMPLOYEES + "/:id";
 
 export const ROUTS: TRoute[] = [
   {
@@ -48,14 +50,26 @@ export const ROUTS: TRoute[] = [
     needAuth: false,
   },
   {
-    path: "/main",
-    element: <RegisteredLayout>dsada</RegisteredLayout>,
+    path: MAIN,
+    element: <Navigate to={EMPLOYEES} />,
     role: ["admin", "employee", "hr"],
     needAuth: true,
   },
   {
+    path: EMPLOYEES,
+    element: <Employees />,
+    role: ["admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: CURRENT_EMPLOYEE,
+    element: <div>текущий пользователь</div>,
+    role: ["admin", "hr"],
+    needAuth: true,
+  },
+  {
     path: CREATE_EMPLOYEES,
-    element: <PreLanding />,
+    element: <CreateEmployee />,
     role: ["admin", "hr"],
     needAuth: true,
   },

@@ -3,7 +3,7 @@ import { getCookieValue } from "@shared/utils/getCookieValue";
 
 export const rtkApi = createApi({
   reducerPath: "api",
-  tagTypes: ["User"],
+  tagTypes: ["User", "Positions", "LegalEntities"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/v1",
     credentials: "include",

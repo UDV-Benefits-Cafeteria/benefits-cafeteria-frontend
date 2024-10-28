@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { type FC } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 
 import styles from "./Selector.module.scss";
 
-type TSelectValue = {
+export type TSelectValue = {
   data: string;
   text: string;
 };
@@ -15,19 +15,36 @@ type TSelectorProps = {
   currentValue: string;
   setCurrentValue: (value: string) => void;
   values: TSelectValue[];
+  disabled?: boolean;
+  addButton?: { text: string; event: () => void };
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLSelectElement>, HTMLSelectElement>;
 
 export const Selector: FC<TSelectorProps> = props => {
-  const { values, needEmptyValue, currentValue, setCurrentValue, className } = props;
+  const { values, needEmptyValue, currentValue, setCurrentValue, className, addButton, disabled } = props;
 
-  console.log(currentValue);
+  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newValue = event.currentTarget.value;
+
+    if (addButton && newValue === "add") {
+      setCurrentValue(prev => prev);
+      addButton.event();
+
+      return;
+    }
+
+    setCurrentValue(newValue);
+  };
 
   return (
     <select
       className={classNames(styles.selector, className)}
-      onChange={e => setCurrentValue(e.currentTarget.value)}
+      value={currentValue}
+      disabled={disabled}
+      onChange={handleSelect}
     >
-      {needEmptyValue ? <div>-</div> : null}
+      {needEmptyValue ? (
+        <option className={classNames(styles.option, "-" === currentValue ? styles.active : null)}>-</option>
+      ) : null}
 
       {values.map(el => (
         <option
@@ -38,6 +55,15 @@ export const Selector: FC<TSelectorProps> = props => {
           {el.text}
         </option>
       ))}
+
+      {addButton ? (
+        <option
+          className={styles.option}
+          value={"add"}
+        >
+          {addButton.text}
+        </option>
+      ) : null}
     </select>
   );
 };

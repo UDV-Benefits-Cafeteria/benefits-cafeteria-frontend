@@ -1,3 +1,6 @@
+import type { TLegalEntity } from "@entity/LegalEntities/model/types/LegalEntities.types";
+import type { TPosition } from "@entity/Position/model/types/Position.types";
+
 export type TUserRole = "hr" | "employee" | "admin";
 
 export type TUserSliceSchema = {
@@ -22,14 +25,4 @@ export type TUserData = {
   legal_entity: TLegalEntity | null;
   experience: number;
   level: number;
-};
-
-export type TPosition = {
-  id: number;
-  name: string;
-};
-
-export type TLegalEntity = {
-  id: number;
-  name: string;
 };
