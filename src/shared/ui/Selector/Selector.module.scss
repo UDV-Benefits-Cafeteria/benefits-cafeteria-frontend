@@ -1,0 +1,16 @@
+.selector {
+  border: 1px solid var(--grey_300);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 20px;
+}
+
+.option:hover {
+  background-color: var(--grey_200);
+}
+
+.option {
+  &.active {
+    color: var(--primary);
+  }
+}

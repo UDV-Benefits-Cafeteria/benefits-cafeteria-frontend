@@ -10,10 +10,8 @@ $icons: #0b2027;
 $error_text: #ff616d;
 $primary: #00c08b;
 $sidebar_border: #cacaca;
-
 $grey_100: #8c8c8c;
 $grey_200: #d9d9d9;
-
 $main_bg-dark: black;
 $main_text_dark: white;
 $input_border-dark: red;
@@ -25,6 +23,7 @@ $description_text-black: #939393;
 $error_text-dark: #ff616d;
 $primary-dark: #00c08b;
 $grey_100: #8c8c8c;
+$grey_300: #c5c6cc;
 $sidebar_border-dark: #cacaca;
 
 @mixin light {
@@ -41,6 +40,7 @@ $sidebar_border-dark: #cacaca;
   --primary: #{$primary};
   --grey_100: #{$grey_100};
   --grey_200: #{$grey_200};
+  --grey_300: #{$grey_300};
   --sidebar_border: #{$sidebar_border};
 }
 
