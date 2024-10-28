@@ -1,0 +1,15 @@
+.backdrop {
+  position: fixed;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: black;
+  opacity: 0.4;
+  inset: 0;
+}
+
+.modal {
+  border: none;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 600px;
+}
