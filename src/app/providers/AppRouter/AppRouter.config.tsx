@@ -14,6 +14,7 @@ export const PRE_LANDING = "/landing";
 export const MAIN = "/main";
 export const BENEFITS = MAIN + "/benefits";
 export const EMPLOYEES = MAIN + "/employees";
+export const CREATE_EMPLOYEES = EMPLOYEES + "/create";
 
 export const ROUTS: TRoute[] = [
   {
@@ -50,6 +51,12 @@ export const ROUTS: TRoute[] = [
     path: "/main",
     element: <RegisteredLayout>dsada</RegisteredLayout>,
     role: ["admin", "employee", "hr"],
+    needAuth: true,
+  },
+  {
+    path: CREATE_EMPLOYEES,
+    element: <PreLanding />,
+    role: ["admin", "hr"],
     needAuth: true,
   },
   {

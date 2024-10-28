@@ -1,12 +1,12 @@
-import { type FC, type ReactNode, useEffect, useRef } from "react";
+import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
 
 import styles from "./Modal.module.scss";
 
 type TModalProps = {
   isOpen: boolean;
-  onClose: (isOpen: boolean) => void;
-  children: ReactNode;
-} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+  onClose: () => void;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLInputElement>, HTMLInputElement> &
+  PropsWithChildren;
 
 export const Modal: FC<TModalProps> = props => {
   const { children, isOpen, onClose } = props;

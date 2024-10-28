@@ -1,4 +1,4 @@
-import { FC, type ReactNode } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 
@@ -6,8 +6,7 @@ import styles from "./Form.module.scss";
 
 type TFormContainerProps = {
   className?: string;
-  children: ReactNode;
-};
+} & PropsWithChildren;
 
 export const FormContainer: FC<TFormContainerProps> = props => {
   const { className, children } = props;

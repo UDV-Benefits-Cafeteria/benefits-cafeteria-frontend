@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 
@@ -10,10 +10,10 @@ type TTitleTags = "h1" | "h2" | "h3";
 
 type TTitleProps = {
   type: TTitle;
-  children: ReactNode;
   fontStyle?: "main" | "alternative";
   boldness?: "normal" | "medium" | "bold";
-} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> &
+  PropsWithChildren;
 
 const TITLE_VARIANTS: { [k in TTitle]: TTitleTags } = {
   page: "h1",

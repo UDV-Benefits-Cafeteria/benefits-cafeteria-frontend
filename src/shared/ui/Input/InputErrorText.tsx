@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Text } from "@shared/ui/Text";
@@ -8,8 +8,7 @@ import styles from "./Input.module.scss";
 type TInputErrorTextProps = {
   isError: boolean;
   className?: string;
-  children: React.ReactNode;
-};
+} & PropsWithChildren;
 
 export const InputErrorText: FC<TInputErrorTextProps> = props => {
   const { isError, className, children } = props;

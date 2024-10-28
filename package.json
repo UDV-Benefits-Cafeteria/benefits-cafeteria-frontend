@@ -5,7 +5,8 @@
   "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
-    "babel-plugin-react-compiler": "^0.0.0-experimental-fa06e2c-20241016",
+    "babel-plugin-react-compiler": "^19.0.0-beta-8a03594-20241020",
+    "babel-preset-react": "^6.24.1",
     "react": "^19.0.0-beta-26f2496093-20240514",
     "react-dom": "^19.0.0-beta-26f2496093-20240514",
     "react-redux": "^9.1.2",
@@ -41,7 +42,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-promise": "^7.1.0",
     "eslint-plugin-react": "^7.34.3",
-    "eslint-plugin-react-compiler": "^0.0.0-experimental-fa06e2c-20241016",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-8a03594-20241020",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "eslint-plugin-sonarjs": "^2.0.2",

@@ -1,4 +1,4 @@
-import { FC, type ReactNode } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 
@@ -6,9 +6,9 @@ import styles from "./Button.module.scss";
 
 type TButtonProps = {
   className?: string;
-  children?: ReactNode;
   disabled?: boolean;
-} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> &
+  PropsWithChildren;
 
 export const Button: FC<TButtonProps> = props => {
   const { className, children, disabled } = props;

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Text } from "@shared/ui/Text";
@@ -7,8 +7,7 @@ import styles from "./Input.module.scss";
 
 type TInputLabelProps = {
   className?: string;
-  children: React.ReactNode;
-};
+} & PropsWithChildren;
 
 export const InputLabel: FC<TInputLabelProps> = props => {
   const { className, children } = props;

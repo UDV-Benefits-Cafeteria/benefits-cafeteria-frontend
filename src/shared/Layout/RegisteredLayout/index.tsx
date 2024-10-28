@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import image from "@shared/assets/images/temp_avatar.png";
 import { classNames } from "@shared/lib/classNames/classNames";
@@ -12,8 +12,7 @@ import styles from "./RegisteredLayout.module.scss";
 
 type TRegisteredLayout = {
   className?: string;
-  children: ReactNode;
-};
+} & PropsWithChildren;
 
 type TNavBarIcons = "employees" | "benefits" | "applications" | "questions";
 

@@ -1,9 +1,9 @@
-import { FC } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { useAuth } from "@shared/lib/hooks/useAuth/useAuth";
 
-export const AuthProvider: FC<{ children: JSX.Element }> = ({ children }) => {
+export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const isUserMounted = useAppSelector(state => state.user.isMounted);
 
   useAuth();

@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 
@@ -8,8 +8,8 @@ type TText = {
   boldness?: "normal" | "medium" | "bold";
   fontStyle?: "main" | "alternative";
   type?: "description";
-  children: ReactNode;
-} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement> &
+  PropsWithChildren;
 
 export const Text: FC<TText> = props => {
   const { children, fontStyle = "main", className, boldness = "normal", type } = props;

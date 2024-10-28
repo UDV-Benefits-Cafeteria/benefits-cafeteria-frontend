@@ -1,4 +1,4 @@
-import { FC, type ReactNode } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import image from "@shared/assets/images/pattern.png";
 import { classNames } from "@shared/lib/classNames/classNames";
@@ -9,11 +9,10 @@ import styles from "./UnregisteredLayout.module.scss";
 type TUnregisteredLayoutProps = {
   className?: string;
   withPattern?: boolean;
-  children: ReactNode;
-};
+} & PropsWithChildren;
 
 export const UnregisteredLayout: FC<TUnregisteredLayoutProps> = props => {
-  const { className, children, withPattern } = props;
+  const { className, withPattern, children } = props;
 
   return (
     <main className={classNames(styles.page, withPattern ? styles.with_pattern : null, className)}>
