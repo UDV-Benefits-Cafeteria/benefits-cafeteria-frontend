@@ -1,0 +1,56 @@
+@use "@shared/assets/IconsVars" as icons;
+
+@import "@shared/styles/mixins";
+
+.title {
+  margin-top: 40px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+  width: 100%;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+}
+
+.info_container {
+  display: flex;
+  gap: 24px;
+}
+
+.data_container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coin {
+  width: 64px;
+  height: 75px;
+  background-image: icons.$coin;
+}
+
+.coin_container {
+  display: flex;
+  flex-direction: column;
+  border: 3px dashed var(--main_text);
+  padding: 16px;
+
+  .coin_info {
+    font-size: 64px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: 32px;
+  margin-top: auto;
+}

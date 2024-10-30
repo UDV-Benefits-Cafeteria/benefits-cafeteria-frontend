@@ -10,7 +10,7 @@ import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
 import { useNavigate } from "react-router-dom";
 
-import { CREATE_EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { CREATE_EMPLOYEES, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/ViewEmployees.module.scss";
 
@@ -67,6 +67,7 @@ export const ViewEmployees: FC = () => {
       </ViewHeader>
 
       <DataTable
+        redirectTo={id => `${EMPLOYEES}/${id}/edit`}
         headers={tableHeader}
         data={data}
       />

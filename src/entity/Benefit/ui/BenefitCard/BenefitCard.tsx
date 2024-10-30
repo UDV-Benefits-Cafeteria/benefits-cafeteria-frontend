@@ -5,6 +5,9 @@ import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector"
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
+import { useNavigate } from "react-router-dom";
+
+import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
 import { TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 
@@ -15,25 +18,31 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
   addRequest,
 }) => {
   const user = useAppSelector(state => state.user.data!);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
-      <Image
-        className={styles.image}
-        srs={benefit.primary_image_url || emptyImage}
-      />
+      <div
+        className={styles.container}
+        onClick={() => navigate(BENEFITS + "/" + benefit.id)}
+      >
+        <Image
+          className={styles.image}
+          srs={benefit.primary_image_url || emptyImage}
+        />
 
-      <div className={styles.price}>
-        <Text>{benefit.coins_cost}</Text>
+        <div className={styles.price}>
+          <Text>{benefit.coins_cost}</Text>
 
-        <div className={styles.coin} />
+          <div className={styles.coin} />
+        </div>
+
+        <Text>C {benefit.min_level_cost} уровня</Text>
+
+        <Text>Осталось {benefit.amount}</Text>
+
+        <Text> {benefit.name}</Text>
       </div>
-
-      <Text>C {benefit.min_level_cost} уровня</Text>
-
-      <Text>Осталось {benefit.amount}</Text>
-
-      <Text> {benefit.name}</Text>
 
       <Button
         disabled={user.coins < benefit.coins_cost || user.level < benefit.coins_cost || !benefit.amount}

@@ -35,6 +35,9 @@ export const CreateBenefitFormSlice = createSlice({
 
       (state[field] as typeof value) = value;
     },
+    setFormData: (state, action: PayloadAction<TBenefit>) => {
+      return { ...action.payload };
+    },
   },
 });
 

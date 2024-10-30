@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { type FC, useEffect, useState } from "react";
 
-import { useCreateBenefitMutation } from "@entity/Benefit/api/Benefit.api";
+import { useCreateBenefitMutation, useEditBenefitMutation, useGetBenefitQuery } from "@entity/Benefit/api/Benefit.api";
 import { useCreateCategoryMutation, useGetCategoryQuery } from "@entity/Category/api/Category.api";
 import { CategorySliceActions } from "@entity/Category/model/slice/Category.slice";
 import { AddImage } from "@feature/AddImage";
@@ -16,7 +16,8 @@ import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Modal } from "@shared/ui/Modal";
 import { Title } from "@shared/ui/Title";
 import { CreateBenefitFormActions } from "@widgets/CreateBenefitForm/model/slice/CreateBenefitForm.slice";
-import { useNavigate } from "react-router-dom";
+import { shallowEqual } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
@@ -100,27 +101,43 @@ const useGetInputs = (addButtonEvent: () => void) => {
   return INPUTS;
 };
 
-export const CreateBenefitForm: FC = () => {
+export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
+  const { isEdit } = props;
+  const pathname = useLocation().pathname;
+
+  const benefit = useGetBenefitQuery(Number(pathname.split("/")[3])).data;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
-
-  const benefitForm = useAppSelector(state => state.createBenefitForm);
+  const benefitForm = useAppSelector(state => state.createBenefitForm, shallowEqual);
   const inputs = useGetInputs(() => setIsAddCategoryOpen(true));
-
   const [createBenefit] = useCreateBenefitMutation();
-
+  const [editBenefit] = useEditBenefitMutation();
   const { data: categoryData } = useGetCategoryQuery(null);
+  const [trigger, setTrigger] = useState(false);
+
+  useEffect(() => {
+    if (benefit) {
+      setTrigger(!trigger);
+      dispatch(CreateBenefitFormActions.setFormData(benefit));
+    }
+  }, [benefit]);
 
   useEffect(() => {
     if (categoryData) dispatch(CategorySliceActions.setCategory(categoryData));
   }, [categoryData]);
 
   const handleAddBenefit = async () => {
-    const res = await createBenefit(benefitForm);
+    let res;
+
+    if (isEdit) {
+      res = await editBenefit({ id: benefit?.id || 0, ...benefitForm });
+    } else {
+      res = await createBenefit(benefitForm);
+    }
 
     if (res.data) {
-      navigate(BENEFITS + "/" + res.data.id);
+      navigate(BENEFITS + "/" + benefit?.id);
       dispatch(CreateBenefitFormActions.setInitialState());
     }
   };
@@ -130,7 +147,7 @@ export const CreateBenefitForm: FC = () => {
       <div className={styles.title}>
         <Title type={"page"}>Бенефиты</Title>
 
-        <Title type={"block"}>Добавление бенефита</Title>
+        <Title type={"block"}>{isEdit ? "Редактирование" : "Добавление"} бенефита</Title>
       </div>
 
       <div className={styles.form_container}>
@@ -144,7 +161,7 @@ export const CreateBenefitForm: FC = () => {
       </div>
 
       <div className={styles.form_buttons}>
-        <Button onClick={handleAddBenefit}>Добавить</Button>
+        <Button onClick={handleAddBenefit}>{isEdit ? "Редактировать" : "Добавить"}</Button>
 
         <Button buttonType={"secondary"}>Отменить</Button>
       </div>

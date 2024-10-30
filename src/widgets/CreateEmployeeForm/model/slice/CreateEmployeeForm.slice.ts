@@ -38,6 +38,9 @@ export const CreateEmployeeFormSlice = createSlice({
 
       (state[field] as typeof value) = value;
     },
+    setFormData: (state, action: PayloadAction<TUserData>) => {
+      return action.payload;
+    },
   },
 });
 

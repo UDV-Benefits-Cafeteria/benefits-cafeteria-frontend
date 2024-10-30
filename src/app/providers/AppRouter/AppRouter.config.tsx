@@ -1,9 +1,12 @@
 import { ApplicationsAsync } from "@pages/Applications/Applications.async";
 import { AuthorizationPage } from "@pages/AuthorizationPage";
+import { BenefitEdit } from "@pages/BenefitEdit";
+import { BenefitPage } from "@pages/BenefitPage";
 import { Benefits } from "@pages/Benefits";
 import { BenefitsBar } from "@pages/BenefitsBar";
 import { CreateBenefit } from "@pages/CreateBenefit";
 import { CreateEmployee } from "@pages/CreateEmployee";
+import { EmployeeEdit } from "@pages/EmployeeEdit";
 import { Employees } from "@pages/Employees";
 import { NotFoundPage } from "@pages/NotFoundPage/NotFoundPage";
 import { PreLanding } from "@pages/PreLanding";
@@ -20,11 +23,14 @@ export const PRE_LANDING = "/landing";
 export const MAIN = "/main";
 export const APPLICATION = MAIN + "/application";
 export const BENEFITS = MAIN + "/benefits";
+export const CURRENT_BENEFITS = BENEFITS + "/:id";
+export const BENEFITS_EDIT = CURRENT_BENEFITS + "/edit";
 export const BENEFITS_BAR = BENEFITS + "/bar";
 export const CREATE_BENEFITS = BENEFITS + "/create";
 export const EMPLOYEES = MAIN + "/employees";
 export const CREATE_EMPLOYEES = EMPLOYEES + "/create";
 export const CURRENT_EMPLOYEE = EMPLOYEES + "/:id";
+export const EMPLOYEES_EDIT = CURRENT_EMPLOYEE + "/edit";
 export const PURCHASE_HISTORY = MAIN + "/history";
 
 export const ROUTS: TRoute[] = [
@@ -68,6 +74,24 @@ export const ROUTS: TRoute[] = [
     path: BENEFITS_BAR,
     element: <BenefitsBar />,
     role: ["employee", "admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: CURRENT_BENEFITS,
+    element: <BenefitPage />,
+    role: ["employee", "admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: BENEFITS_EDIT,
+    element: <BenefitEdit />,
+    role: ["admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: EMPLOYEES_EDIT,
+    element: <EmployeeEdit />,
+    role: ["admin", "hr"],
     needAuth: true,
   },
   {

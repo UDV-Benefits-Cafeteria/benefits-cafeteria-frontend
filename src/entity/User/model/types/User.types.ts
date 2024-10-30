@@ -21,6 +21,8 @@ export type TUserData = {
   is_verified: boolean;
   is_adapted: boolean;
   id: number;
+  position_id?: number;
+  legal_entity_id?: number;
   position: TPosition | null;
   legal_entity: TLegalEntity | null;
   experience: number;

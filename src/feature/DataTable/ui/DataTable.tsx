@@ -1,15 +1,13 @@
 import type { FC, ReactNode } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
-import { Link, useNavigate } from "react-router-dom";
-
-import { EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { useNavigate } from "react-router-dom";
 
 import styles from "../styles/DataTable.module.scss";
 
 export type DataTableProps = {
   headers: { data: string; text: string }[];
-  needRedirect?: boolean;
+  redirectTo?: (id: number) => string;
   data: {
     id: number;
     [key: string]: ReactNode;
@@ -17,7 +15,7 @@ export type DataTableProps = {
 };
 
 export const DataTable: FC<DataTableProps> = props => {
-  const { headers, data, needRedirect = true } = props;
+  const { headers, data, redirectTo = true } = props;
   const navigate = useNavigate();
 
   return (
@@ -32,7 +30,7 @@ export const DataTable: FC<DataTableProps> = props => {
       <tbody>
         {data.map((row, index) => (
           <tr
-            onClick={() => needRedirect && navigate(`${EMPLOYEES}/${row.id}`)}
+            onClick={() => typeof redirectTo === "function" && navigate(redirectTo(row.id))}
             className={styles.row}
             key={++index}
           >

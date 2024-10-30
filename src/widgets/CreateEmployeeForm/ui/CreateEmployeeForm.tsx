@@ -5,7 +5,7 @@ import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntitie
 import { LegalEntitiesActions } from "@entity/LegalEntities/model/slice/LegalEntities.slice";
 import { useCreatePositionMutation, useGetPositionQuery } from "@entity/Position/api/Position.api";
 import { PositionSliceActions } from "@entity/Position/model/slice/User.slice";
-import { useCreateUserMutation } from "@entity/User";
+import { useCreateUserMutation, useEditUserMutation, useGetCurrentUserQuery } from "@entity/User";
 import { AddImage } from "@feature/AddImage";
 import { InputFrom } from "@feature/InputFrom";
 import { TInputFromElement } from "@feature/InputFrom/ui/InputFrom";
@@ -17,8 +17,7 @@ import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Modal } from "@shared/ui/Modal";
 import { Title } from "@shared/ui/Title";
-import { CreateBenefitFormActions } from "@widgets/CreateBenefitForm/model/slice/CreateBenefitForm.slice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
@@ -84,7 +83,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
       label: "Должность",
       selectOptions: positions.map(el => ({ data: el.id.toString(), text: el.name })),
       addButton: { text: "Добавить должность", event: addButtonEvent },
-      fieldName: "position",
+      fieldName: "position_id",
       isRequired: true,
     },
     {
@@ -96,7 +95,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
       type: "select",
       label: "Юридическое лицо",
       selectOptions: legalEntities.map(el => ({ data: el.id.toString(), text: el.name })),
-      fieldName: "legal_entity",
+      fieldName: "legal_entity_id",
       isRequired: true,
     },
     {
@@ -116,7 +115,13 @@ const useGetInputs = (addButtonEvent: () => void) => {
   return INPUTS;
 };
 
-export const CreateEmployeeForm: FC = () => {
+export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
+  const { isEdit } = props;
+
+  const pathname = useLocation().pathname;
+
+  const user = useGetCurrentUserQuery(Number(pathname.split("/")[3])).data;
+
   const dispatch = useAppDispatch();
   const [isAddPositionOpen, setIsAddPositionOpen] = useState(false);
   const navigate = useNavigate();
@@ -126,6 +131,13 @@ export const CreateEmployeeForm: FC = () => {
   const { data: positionsData } = useGetPositionQuery(null);
   const { data: legalEntityData } = useGetLegalEntitiesQuery(null);
   const [createUser] = useCreateUserMutation();
+  const [editUser] = useEditUserMutation();
+
+  useEffect(() => {
+    console.log(user);
+
+    if (user) dispatch(CreateEmployeeFormActions.setFormData(user));
+  }, [user]);
 
   useEffect(() => {
     if (positionsData) dispatch(PositionSliceActions.setPositions(positionsData));
@@ -136,10 +148,16 @@ export const CreateEmployeeForm: FC = () => {
   }, [legalEntityData]);
 
   const handleAddUser = async () => {
-    const res = await createUser(userForm);
+    let res;
+
+    if (isEdit) {
+      res = await editUser({ ...userForm, id: user?.id || 0 });
+    } else {
+      res = await createUser(userForm);
+    }
 
     if (res.data) {
-      navigate(EMPLOYEES + "/" + res.data.id);
+      navigate(EMPLOYEES);
       dispatch(CreateEmployeeFormActions.setInitialState());
     }
   };
@@ -149,7 +167,7 @@ export const CreateEmployeeForm: FC = () => {
       <div className={styles.title}>
         <Title type={"page"}>Сотрудники</Title>
 
-        <Title type={"block"}>Добавление cотрудника</Title>
+        <Title type={"block"}>{isEdit ? "Редактирование" : "Добавление"} cотрудника</Title>
       </div>
 
       <div className={styles.form_container}>
@@ -163,7 +181,7 @@ export const CreateEmployeeForm: FC = () => {
       </div>
 
       <div className={styles.form_buttons}>
-        <Button onClick={handleAddUser}>Добавить</Button>
+        <Button onClick={handleAddUser}>{isEdit ? "Редактировать" : "Добавить"}</Button>
 
         <Button buttonType={"secondary"}>Отменить</Button>
       </div>

@@ -71,6 +71,20 @@ export const UserApi = rtkApi.injectEndpoints({
         body: body,
       }),
     }),
+    editUser: build.mutation<TUserData, { id: number } & TUserData>({
+      query: (body: { id: number } & TUserData) => ({
+        method: "PATCH",
+        url: "/users/" + body.id,
+        body: body,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    getCurrentUser: build.query<TUserData, number>({
+      query: (id: number) => ({
+        url: "/users/" + id,
+      }),
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -83,4 +97,6 @@ export const {
   useAddImageMutation,
   useGetAllUserQuery,
   useLogoutMutation,
+  useEditUserMutation,
+  useGetCurrentUserQuery,
 } = UserApi;

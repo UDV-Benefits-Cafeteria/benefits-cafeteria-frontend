@@ -1,0 +1,55 @@
+@use "@shared/assets/IconsVars" as icons;
+
+@import "@shared/styles/mixins";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+  gap: 32px;
+}
+
+.info_container {
+  display: flex;
+  gap: 32px;
+
+  .image {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+.edit {
+  margin-top: 48px;
+  width: 400px;
+}
+
+.characteristic {
+  @include largeText;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 32px;
+}
+
+.count {
+  color: var(--primary);
+}
+
+.data_container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+  gap: 16px;
+
+  .price {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.coin {
+  width: 24px;
+  height: 29px;
+  background-image: icons.$coin;
+}

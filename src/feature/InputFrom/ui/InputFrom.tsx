@@ -80,6 +80,7 @@ function Field<T extends TBenefit | TUserData>({
     <InputField
       type={type}
       isForm={true}
+      value={currentValue}
       placeholder={field.placeholder}
       className={field.className}
       onChange={e => handleChangeForm(e.currentTarget.value as T[typeof fieldName])}
