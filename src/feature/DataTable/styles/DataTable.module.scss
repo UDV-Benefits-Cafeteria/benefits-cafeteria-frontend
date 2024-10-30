@@ -1,0 +1,20 @@
+.table {
+  border: 1px solid var(--sidebar_border);
+  border-radius: 16px;
+  border-spacing: 16px;
+
+  .title {
+    text-align: left;
+    color: var(--grey_100);
+  }
+
+  .row {
+    border-bottom: 1px solid var(--sidebar_border);
+    padding: 10px 0;
+
+    &:hover {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+  }
+}

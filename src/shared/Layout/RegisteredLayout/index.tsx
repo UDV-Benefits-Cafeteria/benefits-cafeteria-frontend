@@ -1,12 +1,15 @@
 import type { FC, PropsWithChildren } from "react";
 
+import { useLogoutMutation } from "@entity/User";
 import image from "@shared/assets/images/temp_avatar.png";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import { BENEFITS, EMPLOYEES, LOGIN } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./RegisteredLayout.module.scss";
 
@@ -26,28 +29,25 @@ const NAVBAR_CONTENT: TNavbarContent[] = [
   {
     title: "Бенефиты",
     icon: "benefits",
-    link: "/main",
+    link: BENEFITS,
   },
   {
     title: "Сотрудники",
     icon: "employees",
-    link: "/",
+    link: EMPLOYEES,
   },
   {
     title: "Заявки",
     icon: "applications",
-    link: "/",
-  },
-  {
-    title: "Вопросы",
-    icon: "questions",
-    link: "/",
+    link: "/qwe",
   },
 ];
 
 const SideBar: FC = () => {
   const location = useLocation();
+  const [logout] = useLogoutMutation();
   const user = useAppSelector(state => state.user.data!);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.sidebar}>
@@ -60,7 +60,7 @@ const SideBar: FC = () => {
 
         <nav className={styles.navbar}>
           {NAVBAR_CONTENT.map(el => {
-            const isActive = location.pathname === el.link ? styles.active : null;
+            const isActive = location.pathname.includes(el.link) ? styles.active : null;
 
             return (
               <Link
@@ -95,6 +95,15 @@ const SideBar: FC = () => {
           <Text type={"description"}>{user.position?.name}</Text>
         </div>
       </div>
+
+      <button
+        onClick={async () => {
+          navigate(LOGIN);
+          await logout(null);
+        }}
+      >
+        Выйти
+      </button>
     </div>
   );
 };

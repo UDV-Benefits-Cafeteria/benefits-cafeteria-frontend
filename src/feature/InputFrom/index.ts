@@ -1,1 +1,1 @@
-export { InputFromAsync as InputFrom } from "./ui/InputFrom.async";
+export { InputFrom } from "./ui/InputFrom";

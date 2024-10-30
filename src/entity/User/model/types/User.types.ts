@@ -24,5 +24,6 @@ export type TUserData = {
   position: TPosition | null;
   legal_entity: TLegalEntity | null;
   experience: number;
+  image_url?: string;
   level: number;
 };

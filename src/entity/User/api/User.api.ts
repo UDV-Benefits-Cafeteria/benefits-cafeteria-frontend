@@ -11,11 +11,19 @@ type TSetPasswordData = { id?: number; password: string; re_password: string };
 type TLoginResponse = { is_success: boolean };
 type TLoginData = { email: string; password: string };
 
+type TAddImageData = { image: File; id: number };
+
 export const UserApi = rtkApi.injectEndpoints({
   endpoints: build => ({
     getUser: build.query<TUserData, null>({
       query: () => ({
         url: "/users/me",
+      }),
+      providesTags: ["User"],
+    }),
+    getAllUser: build.query<TUserData[], null>({
+      query: () => ({
+        url: "/users/",
       }),
       providesTags: ["User"],
     }),
@@ -25,6 +33,13 @@ export const UserApi = rtkApi.injectEndpoints({
         url: "/auth/verify",
         body: body,
       }),
+    }),
+    logout: build.mutation<null, null>({
+      query: () => ({
+        method: "POST",
+        url: "/auth/logout",
+      }),
+      invalidatesTags: ["User"],
     }),
     setPassword: build.mutation<TSetPasswordResponse, TSetPasswordData>({
       query: (body: TSetPasswordData) => ({
@@ -42,6 +57,13 @@ export const UserApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    addImage: build.mutation<TUserData, TAddImageData>({
+      query: (body: TAddImageData) => ({
+        method: "PATCH",
+        url: `/users/${body.id}/image/`,
+        body: { image: body.image },
+      }),
+    }),
     createUser: build.mutation<TUserData, TUserData>({
       query: (body: TUserData) => ({
         method: "POST",
@@ -58,4 +80,7 @@ export const {
   useSetPasswordMutation,
   useLoginMutation,
   useCreateUserMutation,
+  useAddImageMutation,
+  useGetAllUserQuery,
+  useLogoutMutation,
 } = UserApi;

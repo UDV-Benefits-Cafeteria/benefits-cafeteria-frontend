@@ -1,12 +1,22 @@
-import type { FC, PropsWithChildren } from "react";
+import { type FC, type PropsWithChildren, useEffect } from "react";
 
+import { UserSliceActions, useLazyGetUserQuery } from "@entity/User";
+import { useAppDispatch } from "@shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
-import { useAuth } from "@shared/lib/hooks/useAuth/useAuth";
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const isUserMounted = useAppSelector(state => state.user.isMounted);
 
-  useAuth();
+  const [trigger, { data }] = useLazyGetUserQuery();
+  const dispatch = useAppDispatch();
+  const userDidMounted = useAppSelector(state => state.user.isMounted);
+
+  useEffect(() => {
+    if (!userDidMounted) trigger(null);
+
+    if (data) dispatch(UserSliceActions.setUser(data));
+    else dispatch(UserSliceActions.setAuth(false));
+  }, [data]);
 
   return isUserMounted ? (
     children

@@ -1,0 +1,24 @@
+@use "@shared/assets/IconsVars" as icons;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 270px;
+  gap: 7px;
+
+  .image {
+    border-radius: 16px;
+  }
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coin {
+  width: 24px;
+  height: 29px;
+  background-image: icons.$coin;
+}

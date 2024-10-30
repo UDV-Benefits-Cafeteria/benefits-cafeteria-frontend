@@ -17,18 +17,23 @@ import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Modal } from "@shared/ui/Modal";
 import { Title } from "@shared/ui/Title";
+import { CreateBenefitFormActions } from "@widgets/CreateBenefitForm/model/slice/CreateBenefitForm.slice";
 import { useNavigate } from "react-router-dom";
 
 import { EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
+import { TUserData } from "@entity/User/model/types/User.types";
+
 import styles from "../styles/CreateEmployeeForm.module.scss";
+
+import { CreateEmployeeFormActions } from "../model/slice/CreateEmployeeForm.slice";
 
 const useGetInputs = (addButtonEvent: () => void) => {
   const positions = useAppSelector(state => state.positions.positions);
   const legalEntities = useAppSelector(state => state.legalEntities.legalEntities);
   const userRole = useAppSelector(state => state.user.data!.role);
 
-  const INPUTS: TInputFromElement[] = [
+  const INPUTS: TInputFromElement<TUserData>[] = [
     {
       type: "select",
       label: "Роль",
@@ -135,6 +140,7 @@ export const CreateEmployeeForm: FC = () => {
 
     if (res.data) {
       navigate(EMPLOYEES + "/" + res.data.id);
+      dispatch(CreateEmployeeFormActions.setInitialState());
     }
   };
 
@@ -147,7 +153,11 @@ export const CreateEmployeeForm: FC = () => {
       </div>
 
       <div className={styles.form_container}>
-        <InputFrom inputs={inputs} />
+        <InputFrom<TUserData>
+          form={userForm}
+          inputs={inputs}
+          action={CreateEmployeeFormActions.setUserData}
+        />
 
         <AddImage />
       </div>
@@ -200,7 +210,7 @@ const ModalCreatePosition: FC<{ isOpen: boolean; onClose: () => void }> = props 
 
         <Button
           onClick={onClose}
-          type={"secondary"}
+          buttonType={"secondary"}
         >
           Отмена
         </Button>

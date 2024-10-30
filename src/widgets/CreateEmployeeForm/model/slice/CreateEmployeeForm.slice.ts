@@ -30,6 +30,9 @@ export const CreateEmployeeFormSlice = createSlice({
   name: "CreateEmployeeForm",
   initialState,
   reducers: {
+    setInitialState: (state, action: PayloadAction) => {
+      return initialState;
+    },
     setUserData: (state, action: PayloadAction<TSetUserData<keyof TUserData>>) => {
       const { field, value } = action.payload;
 

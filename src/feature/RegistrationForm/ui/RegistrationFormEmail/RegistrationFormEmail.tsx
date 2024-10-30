@@ -15,6 +15,8 @@ import { Title } from "@shared/ui/Title";
 import { type TErrorsTexts, getRequestError } from "@shared/utils/getRequestError";
 import { validateEmail } from "@shared/utils/validate/validateEmail";
 
+import { LOGIN } from "@app/providers/AppRouter/AppRouter.config";
+
 import type { TSteps } from "../../model/types/RegistrationForm.types";
 
 import styles from "../../styles/RegistrationForm.module.scss";
@@ -102,7 +104,7 @@ export const RegistrationFormEmail: FC<TRegistrationFormProps> = props => {
         <Text boldness={"medium"}>Уже есть аккаунт?</Text>
 
         <Text boldness={"medium"}>
-          <Link route={"/login"}>Войти</Link>
+          <Link route={LOGIN}>Войти</Link>
         </Text>
       </FormFooter>
     </FormContainer>

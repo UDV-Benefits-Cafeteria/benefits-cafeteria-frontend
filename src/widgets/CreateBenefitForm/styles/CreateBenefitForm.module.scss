@@ -1,0 +1,36 @@
+.title {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 70px;
+  gap: 24px;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 24px;
+  gap: 24px;
+}
+
+.form_buttons {
+  display: flex;
+  margin-top: 48px;
+  width: 50%;
+  gap: 24px;
+}
+
+.checkbox {
+  grid-row-start: 6;
+}
+
+.form_container {
+  display: flex;
+  gap: 32px;
+}
+
+.textArea {
+  grid-column: 1 / span 2;
+}
+
+.optional {
+  grid-column-start: 2;
+}

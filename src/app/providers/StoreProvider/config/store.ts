@@ -1,9 +1,11 @@
+import { CategorySliceReducer } from "@entity/Category/model/slice/Category.slice";
 import { LegalEntitiesReducer } from "@entity/LegalEntities/model/slice/LegalEntities.slice";
 import { PositionSliceReducer } from "@entity/Position/model/slice/User.slice";
 import { UserSliceReducer } from "@entity/User";
 import { RegistrationFormSliceReducer } from "@feature/RegistrationForm";
 import { configureStore } from "@reduxjs/toolkit";
 import { rtkApi } from "@shared/api/rtkApi";
+import { CreateBenefitFormReducer } from "@widgets/CreateBenefitForm/model/slice/CreateBenefitForm.slice";
 import { CreateEmployeeFormReducer } from "@widgets/CreateEmployeeForm/model/slice/CreateEmployeeForm.slice";
 
 export const store = configureStore({
@@ -14,6 +16,8 @@ export const store = configureStore({
     createEmployeeForm: CreateEmployeeFormReducer,
     positions: PositionSliceReducer,
     legalEntities: LegalEntitiesReducer,
+    createBenefitForm: CreateBenefitFormReducer,
+    category: CategorySliceReducer,
   },
   devTools: true,
   middleware: getDefaultMiddleware =>

@@ -18,6 +18,8 @@ import { type TErrorsTexts, getRequestError } from "@shared/utils/getRequestErro
 import { validatePassword } from "@shared/utils/validate/validatePassword";
 import { useNavigate } from "react-router-dom";
 
+import { LOGIN } from "@app/providers/AppRouter/AppRouter.config";
+
 type TRegistrationFormProps = {};
 
 const errorsTexts: Partial<TErrorsTexts> = {
@@ -110,7 +112,7 @@ export const RegistrationFormPassword: FC<TRegistrationFormProps> = () => {
         <Text boldness={"medium"}>Уже есть аккаунт?</Text>
 
         <Text boldness={"medium"}>
-          <Link route={"/login"}>Войти</Link>
+          <Link route={LOGIN}>Войти</Link>
         </Text>
       </FormFooter>
     </FormContainer>

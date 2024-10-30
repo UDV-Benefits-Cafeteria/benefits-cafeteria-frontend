@@ -15,7 +15,7 @@ export const AppRouter: FC = () => {
 
     if (el.needAuth && !isUserAuth) return acc;
 
-    if (!isUserAuth && !el?.role?.includes(user.data!.role)) return acc;
+    if (isUserAuth && !el?.role?.includes(user.data!.role)) return acc;
 
     acc.push(el);
 

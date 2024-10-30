@@ -57,6 +57,14 @@
   &:hover {
     opacity: 0.6;
   }
+
+  &.disabled {
+    background-color: rgb(0 0 0 / 10%);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 .can_hide {

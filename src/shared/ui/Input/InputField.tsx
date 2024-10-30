@@ -12,12 +12,13 @@ type TInputProps = {
   icon?: keyof typeof icons;
   isError?: boolean;
   type?: "date" | "text" | "number" | "file";
+  disabled?: boolean;
   isForm?: boolean;
   accept?: string;
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
 export const InputField: FC<TInputProps> = props => {
-  const { className, placeholder, icon, isError, canHide, type = "text", isForm, accept } = props;
+  const { className, placeholder, icon, isError, canHide, type = "text", isForm, accept, disabled } = props;
   const [visible, setVisible] = useState(false);
 
   return (
@@ -52,12 +53,13 @@ export const InputField: FC<TInputProps> = props => {
         <>
           <label
             htmlFor={"input-file"}
-            className={classNames(styles.file, className)}
+            className={classNames(styles.file, disabled ? styles.disabled : null, className)}
           >
             {placeholder}
           </label>
           <input
             {...props}
+            disabled={disabled}
             accept={accept}
             id={"input-file"}
             type={"file"}

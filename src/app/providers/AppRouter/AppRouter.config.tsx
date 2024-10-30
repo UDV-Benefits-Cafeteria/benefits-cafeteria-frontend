@@ -1,4 +1,7 @@
 import { AuthorizationPage } from "@pages/AuthorizationPage";
+import { Benefits } from "@pages/Benefits";
+import { BenefitsBar } from "@pages/BenefitsBar";
+import { CreateBenefit } from "@pages/CreateBenefit";
 import { CreateEmployee } from "@pages/CreateEmployee";
 import { Employees } from "@pages/Employees";
 import { NotFoundPage } from "@pages/NotFoundPage/NotFoundPage";
@@ -14,6 +17,8 @@ export const REGISTER = AUTH + "/register";
 export const PRE_LANDING = "/landing";
 export const MAIN = "/main";
 export const BENEFITS = MAIN + "/benefits";
+export const BENEFITS_BAR = BENEFITS + "/bar";
+export const CREATE_BENEFITS = BENEFITS + "/create";
 export const EMPLOYEES = MAIN + "/employees";
 export const CREATE_EMPLOYEES = EMPLOYEES + "/create";
 export const CURRENT_EMPLOYEE = EMPLOYEES + "/:id";
@@ -53,6 +58,24 @@ export const ROUTS: TRoute[] = [
     path: MAIN,
     element: <Navigate to={EMPLOYEES} />,
     role: ["admin", "employee", "hr"],
+    needAuth: true,
+  },
+  {
+    path: BENEFITS_BAR,
+    element: <BenefitsBar />,
+    role: ["employee", "admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: BENEFITS,
+    element: <Benefits />,
+    role: ["admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: CREATE_BENEFITS,
+    element: <CreateBenefit />,
+    role: ["admin", "hr"],
     needAuth: true,
   },
   {

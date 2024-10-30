@@ -1,6 +1,8 @@
-import { ChangeEvent, type FC, useEffect, useState } from "react";
+import { ChangeEvent, type FC, useState } from "react";
 
+import { useAddImageMutation } from "@entity/User";
 import emptyImage from "@shared/assets/images/Avatar.png";
+import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Image } from "@shared/ui/Image/Image";
 import { InputField } from "@shared/ui/Input/InputField";
 
@@ -9,11 +11,11 @@ import styles from "../styles/AddImage.module.scss";
 type TAddImage = {};
 
 export const AddImage: FC<TAddImage> = () => {
-  const [image, setImage] = useState("");
+  const [addImage] = useAddImageMutation();
+  const { id: userId, image_url: imageUrl } = useAppSelector(state => state.user.data!);
+  const [image, setImage] = useState(imageUrl);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
-
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -22,7 +24,9 @@ export const AddImage: FC<TAddImage> = () => {
         setImage(reader.result as string);
       };
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file.slice());
+
+      const a = await addImage({ id: userId, image: file });
     }
   };
 
@@ -30,10 +34,11 @@ export const AddImage: FC<TAddImage> = () => {
     <div className={styles.container}>
       <Image
         className={styles.image}
-        srs={image ? image : emptyImage}
+        srs={emptyImage}
       />
 
       <InputField
+        disabled={true}
         onChange={handleImageChange}
         placeholder={"Добавить фото"}
         type={"file"}

@@ -1,58 +1,65 @@
-import { FC } from "react";
-
+import { UnknownAction } from "@reduxjs/toolkit";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppDispatch } from "@shared/lib/hooks/useAppDispatch/useAppDispatch";
-import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Checkbox } from "@shared/ui/Checkbox";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
 import { InputErrorText } from "@shared/ui/Input/InputErrorText";
 import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Selector, TSelectValue } from "@shared/ui/Selector";
-import { CreateEmployeeFormActions } from "@widgets/CreateEmployeeForm/model/slice/CreateEmployeeForm.slice";
 
+import type { TBenefit } from "@entity/Benefit/model/types/Benefit.types";
 import type { TUserData } from "@entity/User/model/types/User.types";
 
 import styles from "../styles/InputFrom.module.scss";
 
-export type TInputFromElement = {
+export type TInputFromElement<T> = {
   label: string;
   errorText?: string;
-  fieldName: keyof TUserData;
+  fieldName: keyof T;
   className?: string;
   isRequired?: boolean;
   placeholder?: string;
   disabled?: boolean;
+  isShow?: boolean;
   selectOptions?: TSelectValue[];
   addButton?: { text: string; event: () => void };
   type?: "date" | "select" | "text" | "number" | "checkbox";
 };
 
-type TInputFrom = {
-  inputs: TInputFromElement[];
+type TInputFrom<T> = {
+  action: (value: { field: keyof T; value: T[keyof T] }) => UnknownAction;
+  inputs: TInputFromElement<T>[];
   className?: string;
+  form: T;
 };
 
-const Field: FC<TInputFromElement> = field => {
-  const { type = "text", fieldName } = field;
-  const form = useAppSelector(state => state.createEmployeeForm);
-  const currentValue = form[fieldName];
+function Field<T extends TBenefit | TUserData>({
+  form,
+  field,
+  action,
+}: {
+  form: T;
+  field: TInputFromElement<T>;
+  action: (value: { field: keyof T; value: T[keyof T] }) => UnknownAction;
+}) {
   const dispatch = useAppDispatch();
+  const { type = "text", fieldName } = field;
+  const currentValue = form[fieldName];
 
-  const handleChangeForm = (value: TUserData[typeof fieldName]) => {
-    dispatch(CreateEmployeeFormActions.setUserData({ field: fieldName, value }));
+  const handleChangeForm = (value: T[typeof fieldName]) => {
+    dispatch(action({ field: fieldName, value }));
   };
 
   if (type === "select") {
     return (
       <Selector
         className={field.className}
-        setCurrentValue={handleChangeForm}
-        currentValue={currentValue}
+        setCurrentValue={handleChangeForm as unknown as (value: string) => void}
+        currentValue={currentValue as string}
         disabled={field.disabled}
         needEmptyValue={true}
         addButton={field.addButton}
-        placeholder={field.placeholder}
         values={field.selectOptions!}
       />
     );
@@ -62,7 +69,7 @@ const Field: FC<TInputFromElement> = field => {
     return (
       <Checkbox
         value={!!currentValue}
-        onChange={handleChangeForm}
+        onChange={handleChangeForm as unknown as (value: boolean) => void}
         label={field.label}
         className={field.className}
       />
@@ -75,32 +82,48 @@ const Field: FC<TInputFromElement> = field => {
       isForm={true}
       placeholder={field.placeholder}
       className={field.className}
-      onChange={e => handleChangeForm(e.currentTarget.value)}
+      onChange={e => handleChangeForm(e.currentTarget.value as T[typeof fieldName])}
       isError={!!field.errorText}
     />
   );
-};
+}
 
-export const InputFrom: FC<TInputFrom> = props => {
-  const { inputs, className } = props;
+export function InputFrom<T extends TBenefit | TUserData>(props: TInputFrom<T>) {
+  const { inputs, className, action, form } = props;
 
   return (
     <div className={classNames(styles.container, className)}>
       {inputs.map(el =>
         el.type === "checkbox" ? (
-          <Field {...el} />
+          <Field<T>
+            key={el.fieldName as string}
+            field={el}
+            form={form}
+            action={action}
+          />
         ) : (
-          <InputContainer key={el.fieldName}>
-            <InputLabel>
-              {el.label}&nbsp;{el.isRequired ? "*" : null}
-            </InputLabel>
+          <>
+            {el.isShow !== undefined && !el.isShow ? null : (
+              <InputContainer
+                className={el.className}
+                key={el.fieldName as string}
+              >
+                <InputLabel>
+                  {el.label}&nbsp;{el.isRequired ? "*" : null}
+                </InputLabel>
 
-            <Field {...el} />
+                <Field<T>
+                  field={el}
+                  form={form}
+                  action={action}
+                />
 
-            <InputErrorText isError={!!el.errorText}>{el.errorText}</InputErrorText>
-          </InputContainer>
+                <InputErrorText isError={!!el.errorText}>{el.errorText}</InputErrorText>
+              </InputContainer>
+            )}
+          </>
         )
       )}
     </div>
   );
-};
+}
