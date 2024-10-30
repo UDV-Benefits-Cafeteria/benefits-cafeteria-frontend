@@ -9,6 +9,7 @@ import { CreateEmployee } from "@pages/CreateEmployee";
 import { EmployeeEdit } from "@pages/EmployeeEdit";
 import { Employees } from "@pages/Employees";
 import { NotFoundPage } from "@pages/NotFoundPage/NotFoundPage";
+import { PersonalAccount } from "@pages/PersonalAccount/PersonalAccount";
 import { PreLanding } from "@pages/PreLanding";
 import { PurchaseHistory } from "@pages/PurchaseHistory/PurchaseHistory";
 import { RegisterPage } from "@pages/RegisterPage";
@@ -32,6 +33,7 @@ export const CREATE_EMPLOYEES = EMPLOYEES + "/create";
 export const CURRENT_EMPLOYEE = EMPLOYEES + "/:id";
 export const EMPLOYEES_EDIT = CURRENT_EMPLOYEE + "/edit";
 export const PURCHASE_HISTORY = MAIN + "/history";
+export const PERSONAL_ACCOUNT = MAIN + "/account";
 
 export const ROUTS: TRoute[] = [
   {
@@ -79,6 +81,12 @@ export const ROUTS: TRoute[] = [
   {
     path: CURRENT_BENEFITS,
     element: <BenefitPage />,
+    role: ["employee", "admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: PERSONAL_ACCOUNT,
+    element: <PersonalAccount />,
     role: ["employee", "admin", "hr"],
     needAuth: true,
   },

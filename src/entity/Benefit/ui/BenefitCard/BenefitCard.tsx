@@ -44,12 +44,7 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
         <Text> {benefit.name}</Text>
       </div>
 
-      <Button
-        disabled={user.coins < benefit.coins_cost || user.level < benefit.coins_cost || !benefit.amount}
-        onClick={() => addRequest(benefit.id)}
-      >
-        Отправить запрос
-      </Button>
+      <Button onClick={() => addRequest(benefit.id)}>Отправить запрос</Button>
     </div>
   );
 };

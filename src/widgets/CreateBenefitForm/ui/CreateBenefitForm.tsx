@@ -137,7 +137,7 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
     }
 
     if (res.data) {
-      navigate(BENEFITS + "/" + benefit?.id);
+      navigate(BENEFITS);
       dispatch(CreateBenefitFormActions.setInitialState());
     }
   };

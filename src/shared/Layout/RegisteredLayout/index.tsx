@@ -99,15 +99,6 @@ const SideBar: FC = () => {
   );
 };
 
-/* <button
-  onClick={async () => {
-    navigate(LOGIN);
-    await logout(null);
-  }}
->
-  Выйти
-</button>*/
-
 export const RegisteredLayout: FC<TRegisteredLayout> = props => {
   const { children, className } = props;
 

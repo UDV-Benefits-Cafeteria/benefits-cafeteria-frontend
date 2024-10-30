@@ -1,5 +1,6 @@
 import type { FC } from "react";
 
+import { useLogoutMutation } from "@entity/User";
 import emptyImage from "@shared/assets/images/Avatar.png";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
@@ -10,11 +11,12 @@ import { Title } from "@shared/ui/Title";
 import { BarHeader } from "@widgets/BarHeader/ui/BarHeader";
 import { useNavigate } from "react-router-dom";
 
-import { BENEFITS_BAR } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS_BAR, EMPLOYEES, LOGIN } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./PersonalAccount.module.scss";
 
 export const PersonalAccount: FC = () => {
+  const [logout] = useLogoutMutation();
   const user = useAppSelector(state => state.user.data!);
   const navigate = useNavigate();
 
@@ -26,7 +28,12 @@ export const PersonalAccount: FC = () => {
           <Link route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>
 
-        <Title type={"page"}>Личный кабинет</Title>
+        <Title
+          type={"page"}
+          className={styles.title}
+        >
+          Личный кабинет
+        </Title>
 
         <div className={styles.container}>
           <div className={styles.info_container}>
@@ -63,9 +70,23 @@ export const PersonalAccount: FC = () => {
         </div>
 
         <div className={styles.buttons}>
-          <Button>Редактировать профиль</Button>
+          <Button
+            onClick={async () => {
+              navigate(EMPLOYEES + "/" + user.id + "/edit");
+            }}
+          >
+            Редактировать профиль
+          </Button>
 
-          <Button buttonType={"secondary-red"}>Выйти из аккаунта</Button>
+          <Button
+            buttonType={"secondary-red"}
+            onClick={async () => {
+              navigate(LOGIN);
+              await logout(null);
+            }}
+          >
+            Выйти из аккаунта
+          </Button>
         </div>
       </div>
     </>

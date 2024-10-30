@@ -1,12 +1,13 @@
 import type { FC } from "react";
 
+import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Icon } from "@shared/ui/Icons/Icon";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
 import { InputField } from "@shared/ui/Input/InputField";
 import { useNavigate } from "react-router-dom";
 
-import { PURCHASE_HISTORY } from "@app/providers/AppRouter/AppRouter.config";
+import { PERSONAL_ACCOUNT, PURCHASE_HISTORY } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/BarHeader.module.scss";
 
@@ -34,21 +35,24 @@ export const BarHeader: FC = () => {
         </div>
 
         <div
-          className={styles.item}
+          className={classNames(styles.item, styles.click)}
           onClick={() => navigate(PURCHASE_HISTORY)}
         >
           <Icon
             className={styles.icon}
-            icon={"employees"}
+            icon={"bag"}
             size={"l"}
           />
           <span className={styles.text}> Покупки</span>
         </div>
 
-        <div className={styles.item}>
+        <div
+          className={classNames(styles.item, styles.click)}
+          onClick={() => navigate(PERSONAL_ACCOUNT)}
+        >
           <Icon
             className={styles.icon}
-            icon={"questions"}
+            icon={"account"}
             size={"l"}
           />
           <span className={styles.text}>{user.firstname}</span>
