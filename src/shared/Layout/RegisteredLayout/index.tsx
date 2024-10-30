@@ -9,7 +9,7 @@ import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { BENEFITS, EMPLOYEES, LOGIN } from "@app/providers/AppRouter/AppRouter.config";
+import { APPLICATION, BENEFITS, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./RegisteredLayout.module.scss";
 
@@ -39,7 +39,7 @@ const NAVBAR_CONTENT: TNavbarContent[] = [
   {
     title: "Заявки",
     icon: "applications",
-    link: "/qwe",
+    link: APPLICATION,
   },
 ];
 
@@ -95,18 +95,18 @@ const SideBar: FC = () => {
           <Text type={"description"}>{user.position?.name}</Text>
         </div>
       </div>
-
-      <button
-        onClick={async () => {
-          navigate(LOGIN);
-          await logout(null);
-        }}
-      >
-        Выйти
-      </button>
     </div>
   );
 };
+
+/* <button
+  onClick={async () => {
+    navigate(LOGIN);
+    await logout(null);
+  }}
+>
+  Выйти
+</button>*/
 
 export const RegisteredLayout: FC<TRegisteredLayout> = props => {
   const { children, className } = props;

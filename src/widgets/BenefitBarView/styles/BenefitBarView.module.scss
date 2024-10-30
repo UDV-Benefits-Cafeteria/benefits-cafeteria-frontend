@@ -5,3 +5,16 @@
   max-width: 1200px;
   gap: 70px 40px;
 }
+
+.title {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 70px;
+  gap: 24px;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 24px;
+  gap: 24px;
+}

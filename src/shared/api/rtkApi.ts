@@ -3,11 +3,12 @@ import { getCookieValue } from "@shared/utils/getCookieValue";
 
 export const rtkApi = createApi({
   reducerPath: "api",
-  tagTypes: ["User", "Positions", "LegalEntities", "Categories"],
+  tagTypes: ["User", "Positions", "LegalEntities", "Categories", "Requests"],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/v1",
     credentials: "include",
     mode: "cors",
+    headers: { "content-type": "application/json;charset=utf-8" },
     prepareHeaders: headers => {
       const csrfToken = getCookieValue("csrftoken");
 

@@ -4,11 +4,15 @@ import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector"
 import { Icon } from "@shared/ui/Icons/Icon";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
 import { InputField } from "@shared/ui/Input/InputField";
+import { useNavigate } from "react-router-dom";
+
+import { PURCHASE_HISTORY } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/BarHeader.module.scss";
 
 export const BarHeader: FC = () => {
   const user = useAppSelector(state => state.user.data!);
+  const navigate = useNavigate();
 
   return (
     <header className={styles.header}>
@@ -29,7 +33,10 @@ export const BarHeader: FC = () => {
           <span className={styles.text}>Уровень</span>
         </div>
 
-        <div className={styles.item}>
+        <div
+          className={styles.item}
+          onClick={() => navigate(PURCHASE_HISTORY)}
+        >
           <Icon
             className={styles.icon}
             icon={"employees"}

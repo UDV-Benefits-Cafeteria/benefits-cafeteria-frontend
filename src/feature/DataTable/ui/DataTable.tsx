@@ -9,6 +9,7 @@ import styles from "../styles/DataTable.module.scss";
 
 export type DataTableProps = {
   headers: { data: string; text: string }[];
+  needRedirect?: boolean;
   data: {
     id: number;
     [key: string]: ReactNode;
@@ -16,7 +17,7 @@ export type DataTableProps = {
 };
 
 export const DataTable: FC<DataTableProps> = props => {
-  const { headers, data } = props;
+  const { headers, data, needRedirect = true } = props;
   const navigate = useNavigate();
 
   return (
@@ -31,7 +32,7 @@ export const DataTable: FC<DataTableProps> = props => {
       <tbody>
         {data.map((row, index) => (
           <tr
-            onClick={() => navigate(EMPLOYEES + "/" + row.id)}
+            onClick={() => needRedirect && navigate(`${EMPLOYEES}/${row.id}`)}
             className={styles.row}
             key={++index}
           >

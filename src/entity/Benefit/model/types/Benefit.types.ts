@@ -24,4 +24,13 @@ export type TBenefitData = {
   amount: number;
   primary_image_url: string;
   real_currency_cost: number;
+  images: benefitImages[];
+};
+
+type benefitImages = {
+  image_url: string;
+  benefit_id: 0;
+  is_primary: false;
+  description: string;
+  id: 0;
 };

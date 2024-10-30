@@ -1,3 +1,4 @@
+import { ApplicationsAsync } from "@pages/Applications/Applications.async";
 import { AuthorizationPage } from "@pages/AuthorizationPage";
 import { Benefits } from "@pages/Benefits";
 import { BenefitsBar } from "@pages/BenefitsBar";
@@ -6,6 +7,7 @@ import { CreateEmployee } from "@pages/CreateEmployee";
 import { Employees } from "@pages/Employees";
 import { NotFoundPage } from "@pages/NotFoundPage/NotFoundPage";
 import { PreLanding } from "@pages/PreLanding";
+import { PurchaseHistory } from "@pages/PurchaseHistory/PurchaseHistory";
 import { RegisterPage } from "@pages/RegisterPage";
 import { Navigate } from "react-router-dom";
 
@@ -16,12 +18,14 @@ export const LOGIN = AUTH + "/login";
 export const REGISTER = AUTH + "/register";
 export const PRE_LANDING = "/landing";
 export const MAIN = "/main";
+export const APPLICATION = MAIN + "/application";
 export const BENEFITS = MAIN + "/benefits";
 export const BENEFITS_BAR = BENEFITS + "/bar";
 export const CREATE_BENEFITS = BENEFITS + "/create";
 export const EMPLOYEES = MAIN + "/employees";
 export const CREATE_EMPLOYEES = EMPLOYEES + "/create";
 export const CURRENT_EMPLOYEE = EMPLOYEES + "/:id";
+export const PURCHASE_HISTORY = MAIN + "/history";
 
 export const ROUTS: TRoute[] = [
   {
@@ -56,13 +60,25 @@ export const ROUTS: TRoute[] = [
   },
   {
     path: MAIN,
-    element: <Navigate to={EMPLOYEES} />,
+    element: <Navigate to={BENEFITS_BAR} />,
     role: ["admin", "employee", "hr"],
     needAuth: true,
   },
   {
     path: BENEFITS_BAR,
     element: <BenefitsBar />,
+    role: ["employee", "admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: APPLICATION,
+    element: <ApplicationsAsync />,
+    role: ["admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: PURCHASE_HISTORY,
+    element: <PurchaseHistory />,
     role: ["employee", "admin", "hr"],
     needAuth: true,
   },
