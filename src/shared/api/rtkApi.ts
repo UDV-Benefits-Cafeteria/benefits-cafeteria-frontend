@@ -5,7 +5,7 @@ export const rtkApi = createApi({
   reducerPath: "api",
   tagTypes: ["User", "Positions", "LegalEntities", "Categories", "Requests", "Benefits"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1",
+    baseUrl: __API__,
     credentials: "include",
     mode: "cors",
     headers: { "content-type": "application/json;charset=utf-8" },

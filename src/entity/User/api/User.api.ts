@@ -67,7 +67,7 @@ export const UserApi = rtkApi.injectEndpoints({
     createUser: build.mutation<TUserData, TUserData>({
       query: (body: TUserData) => ({
         method: "POST",
-        url: "/users",
+        url: "/users/",
         body: body,
       }),
     }),
