@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 
-import { TRequestStatus, useGetAllRequestsQuery, useUpdateRequestsMutation } from "@entity/Requests/api/Requests.api";
+import { TRequestStatus, useGetUserRequestsQuery, useUpdateRequestsMutation } from "@entity/Requests/api/Requests.api";
 import { DataTable } from "@feature/DataTable";
 import emptyImage from "@shared/assets/images/Avatar.png";
 import { classNames } from "@shared/lib/classNames/classNames";
@@ -38,7 +38,7 @@ const status = {
 
 export const PurchaseHistoryTable: FC = () => {
   const [activeFilter, setActiveFilter] = useState<"all" | TRequestStatus>("all");
-  const requests = useGetAllRequestsQuery(null);
+  const requests = useGetUserRequestsQuery(null);
   const [updateRequest] = useUpdateRequestsMutation();
   // TODO сделать обьект для этого
 

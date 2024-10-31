@@ -47,7 +47,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
         },
         {
           data: "admin",
-          text: "Админитсратор",
+          text: "Администратор",
         },
       ],
       fieldName: "role",
@@ -134,10 +134,8 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
   const [editUser] = useEditUserMutation();
 
   useEffect(() => {
-    console.log(user);
-
-    if (user) dispatch(CreateEmployeeFormActions.setFormData(user));
-  }, [user]);
+    if (user && isEdit) dispatch(CreateEmployeeFormActions.setFormData(user));
+  }, [user, isEdit]);
 
   useEffect(() => {
     if (positionsData) dispatch(PositionSliceActions.setPositions(positionsData));
@@ -146,6 +144,10 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
   useEffect(() => {
     if (legalEntityData) dispatch(LegalEntitiesActions.setLegalEntities(legalEntityData));
   }, [legalEntityData]);
+
+  useEffect(() => {
+    return () => dispatch(CreateEmployeeFormActions.setInitialState());
+  }, []);
 
   const handleAddUser = async () => {
     let res;
@@ -161,6 +163,11 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
       dispatch(CreateEmployeeFormActions.setInitialState());
     }
   };
+
+  const handleCancel = async () => {
+      navigate(EMPLOYEES);
+      dispatch(CreateEmployeeFormActions.setInitialState());
+  }
 
   return (
     <>
@@ -183,7 +190,7 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
       <div className={styles.form_buttons}>
         <Button onClick={handleAddUser}>{isEdit ? "Редактировать" : "Добавить"}</Button>
 
-        <Button buttonType={"secondary"}>Отменить</Button>
+        <Button onClick={handleCancel} buttonType={"secondary"}>Отменить</Button>
       </div>
 
       <ModalCreatePosition

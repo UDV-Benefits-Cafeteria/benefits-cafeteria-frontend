@@ -127,6 +127,10 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
     if (categoryData) dispatch(CategorySliceActions.setCategory(categoryData));
   }, [categoryData]);
 
+  useEffect(() => {
+    return () => dispatch(CreateBenefitFormActions.setInitialState());
+  }, []);
+
   const handleAddBenefit = async () => {
     let res;
 
@@ -141,6 +145,11 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
       dispatch(CreateBenefitFormActions.setInitialState());
     }
   };
+
+  const handleCancel = async () => {
+      navigate(BENEFITS);
+      dispatch(CreateBenefitFormActions.setInitialState());
+  }
 
   return (
     <>
@@ -163,7 +172,7 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
       <div className={styles.form_buttons}>
         <Button onClick={handleAddBenefit}>{isEdit ? "Редактировать" : "Добавить"}</Button>
 
-        <Button buttonType={"secondary"}>Отменить</Button>
+        <Button onClick={handleCancel} buttonType={"secondary"}>Отменить</Button>
       </div>
 
       <ModalCreateCategory

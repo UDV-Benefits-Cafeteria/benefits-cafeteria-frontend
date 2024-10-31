@@ -52,7 +52,7 @@ export const BenefitPage: FC = () => {
 
               <Text>C {benefit.min_level_cost} уровня</Text>
 
-              <Text className={styles.count}>{benefit.amount || "Неограниченное количество"}</Text>
+              <Text className={styles.count}>Кол-во: {benefit.amount || "Неограниченное количество"}</Text>
             </div>
           </div>
         </div>

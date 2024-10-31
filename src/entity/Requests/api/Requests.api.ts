@@ -53,7 +53,7 @@ export const RequestsApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["Requests", "User"],
     }),
-    getUserRequests: build.mutation<TRequest[], null>({
+    getUserRequests: build.query<TRequest[], null>({
       query: () => ({
         url: "/benefit-requests/current-user",
       }),
@@ -76,7 +76,7 @@ export const RequestsApi = rtkApi.injectEndpoints({
 
 export const {
   useGetAllRequestsQuery,
-  useGetUserRequestsMutation,
+  useGetUserRequestsQuery,
   useDeleteRequestsMutation,
   useUpdateRequestsMutation,
   useCreateRequestsMutation,

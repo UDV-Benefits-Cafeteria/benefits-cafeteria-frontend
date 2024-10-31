@@ -30,6 +30,7 @@ export const BenefitApi = rtkApi.injectEndpoints({
         url: "/benefits/",
         body: body,
       }),
+      invalidatesTags: ["Benefits"],
     }),
     editBenefit: build.mutation<TBenefitData, { id: number } & TBenefit>({
       query: (body: { id: number } & TBenefit) => ({
