@@ -29,8 +29,8 @@ jobs:
             git checkout dev;
             
             echo '--- Upgrade repo ---';
-            git fetch --all
-            git reset --hard origin/dev
+            git fetch --all;
+            git reset --hard origin/dev;
             
             echo '--- Turning off service ---';
             docker compose -f docker-compose-prod.yml down;
