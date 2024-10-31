@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { useGetBenefitQuery } from "@entity/Benefit/api/Benefit.api";
-import emptyImage from "@shared/assets/images/Avatar.png";
+import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -27,7 +27,7 @@ export const BenefitPage: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "100px" }}>
+      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "100px"}}>
         <Title type={"page"}>
           <Link route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>
@@ -35,7 +35,7 @@ export const BenefitPage: FC = () => {
         <div className={styles.container}>
           <div className={styles.info_container}>
             <Image
-              srs={benefit.images[0]?.image_url || emptyImage}
+              srs={benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
               className={styles.image}
             />
 
@@ -52,7 +52,7 @@ export const BenefitPage: FC = () => {
 
               <Text>C {benefit.min_level_cost} уровня</Text>
 
-              <Text className={styles.count}>Кол-во: {benefit.amount || "Неограниченное количество"}</Text>
+              <Text className={styles.count}>В наличии: {benefit.amount || "Неограниченное количество"}</Text>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@ export const BenefitPage: FC = () => {
 
           <div className={styles.characteristic}>
             <Text>
-              Категоря <span className={styles.count}>{benefit.category.name || "нет категории"}</span>
+              Категория <span className={styles.count}>{benefit.category?.name || "нет категорий"}</span>
             </Text>
 
             <Text>

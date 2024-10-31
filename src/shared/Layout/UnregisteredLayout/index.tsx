@@ -1,9 +1,8 @@
 import { FC, PropsWithChildren } from "react";
 
-import image from "@shared/assets/images/pattern.png";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Image } from "@shared/ui/Image/Image";
-
+import {PATTERN} from "@shared/assets/ImageConsts"
 import styles from "./UnregisteredLayout.module.scss";
 
 type TUnregisteredLayoutProps = {
@@ -18,7 +17,7 @@ export const UnregisteredLayout: FC<TUnregisteredLayoutProps> = props => {
     <main className={classNames(styles.page, withPattern ? styles.with_pattern : null, className)}>
       {withPattern ? (
         <Image
-          srs={image}
+          srs={PATTERN}
           className={styles.pattern}
         />
       ) : null}

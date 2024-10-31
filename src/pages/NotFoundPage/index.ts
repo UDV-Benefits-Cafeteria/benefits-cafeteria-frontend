@@ -1,1 +1,1 @@
-export { NotFoundPageAsync as PreLanding } from "./NotFoundPage.async";
+export { NotFoundPageAsync as NotFoundPage } from "./NotFoundPage.async";

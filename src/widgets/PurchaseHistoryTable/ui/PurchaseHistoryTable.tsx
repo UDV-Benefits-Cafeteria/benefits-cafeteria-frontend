@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 import { TRequestStatus, useGetUserRequestsQuery, useUpdateRequestsMutation } from "@entity/Requests/api/Requests.api";
 import { DataTable } from "@feature/DataTable";
-import emptyImage from "@shared/assets/images/Avatar.png";
+import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -53,7 +53,7 @@ export const PurchaseHistoryTable: FC = () => {
             <span className={styles.fullname}>
               <Image
                 type={"avatar"}
-                srs={el.benefit.images[0]?.image_url || emptyImage}
+                srs={el.benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
               />
               {el.benefit.name}
             </span>

@@ -6,8 +6,8 @@ import { Icon } from "@shared/ui/Icons/Icon";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
 import { InputField } from "@shared/ui/Input/InputField";
 import { useNavigate } from "react-router-dom";
-
-import { PERSONAL_ACCOUNT, PURCHASE_HISTORY } from "@app/providers/AppRouter/AppRouter.config";
+import { Link } from "@shared/ui/Link";
+import { PERSONAL_ACCOUNT, PURCHASE_HISTORY, BENEFITS_BAR } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/BarHeader.module.scss";
 
@@ -18,7 +18,7 @@ export const BarHeader: FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.content}>
-        <div className={styles.logo} />
+        <Link route={BENEFITS_BAR} className={styles.logo} />
 
         <InputContainer>
           <InputField icon={"loupe"} />

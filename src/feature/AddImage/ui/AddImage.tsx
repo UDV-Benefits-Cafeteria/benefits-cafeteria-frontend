@@ -1,7 +1,7 @@
 import { ChangeEvent, type FC, useState } from "react";
 
 import { useAddImageMutation } from "@entity/User";
-import emptyImage from "@shared/assets/images/Avatar.png";
+import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Image } from "@shared/ui/Image/Image";
 import { InputField } from "@shared/ui/Input/InputField";
@@ -34,7 +34,7 @@ export const AddImage: FC<TAddImage> = () => {
     <div className={styles.container}>
       <Image
         className={styles.image}
-        srs={emptyImage}
+        srs={BENEFIT_PLACEHOLDER}
       />
 
       <InputField

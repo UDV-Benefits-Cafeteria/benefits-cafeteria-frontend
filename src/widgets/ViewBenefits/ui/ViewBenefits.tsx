@@ -3,14 +3,14 @@ import type { FC } from "react";
 import { useGetAllBenefitQuery } from "@entity/Benefit/api/Benefit.api";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
-import emptyImage from "@shared/assets/images/Avatar.png";
+import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
 import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
 import { useNavigate } from "react-router-dom";
 
-import { BENEFITS, CREATE_BENEFITS, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS, CREATE_BENEFITS, EMPLOYEES, BENEFITS_BAR } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/ViewBenefits.module.scss";
 
@@ -48,7 +48,7 @@ export const ViewBenefits: FC = () => {
           <span className={styles.fullname}>
             <Image
               type={"avatar"}
-              srs={el.primary_image_url || emptyImage}
+              srs={el.primary_image_url || BENEFIT_PLACEHOLDER}
             />
             {el.name}
           </span>
@@ -66,8 +66,10 @@ export const ViewBenefits: FC = () => {
         title={"Бенефиты"}
         searchBar={<SearchBar />}
       >
-        <div style={{ display: "flex", width: 300, gap: 32 }}>
+        <div style={{ display: "flex", width: 500, gap: 32 }}>
           <Button onClick={() => navigate(CREATE_BENEFITS)}>Добавить бенефит</Button>
+
+            <Button onClick={() => navigate(BENEFITS_BAR)} buttonType="secondary">Режим пользователя</Button>
         </div>
       </ViewHeader>
 

@@ -119,7 +119,7 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
   useEffect(() => {
     if (benefit) {
       setTrigger(!trigger);
-      dispatch(CreateBenefitFormActions.setFormData(benefit));
+      dispatch(CreateBenefitFormActions.setFormData({...benefit,category_id: benefit.category?.id }));
     }
   }, [benefit]);
 
@@ -170,7 +170,7 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
       </div>
 
       <div className={styles.form_buttons}>
-        <Button onClick={handleAddBenefit}>{isEdit ? "Редактировать" : "Добавить"}</Button>
+        <Button onClick={handleAddBenefit}>{isEdit ? "Сохранить" : "Добавить"}</Button>
 
         <Button onClick={handleCancel} buttonType={"secondary"}>Отменить</Button>
       </div>

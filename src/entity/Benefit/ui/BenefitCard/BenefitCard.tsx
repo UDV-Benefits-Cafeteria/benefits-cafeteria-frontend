@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import emptyImage from "@shared/assets/images/Avatar.png";
+import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -28,7 +28,7 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
       >
         <Image
           className={styles.image}
-          srs={benefit.primary_image_url || emptyImage}
+          srs={benefit.primary_image_url || BENEFIT_PLACEHOLDER}
         />
 
         <div className={styles.price}>

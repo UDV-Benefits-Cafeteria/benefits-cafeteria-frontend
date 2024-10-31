@@ -8,7 +8,7 @@ import { CreateBenefit } from "@pages/CreateBenefit";
 import { CreateEmployee } from "@pages/CreateEmployee";
 import { EmployeeEdit } from "@pages/EmployeeEdit";
 import { Employees } from "@pages/Employees";
-import { NotFoundPage } from "@pages/NotFoundPage/NotFoundPage";
+import { NotFoundPage } from "@pages/NotFoundPage";
 import { PersonalAccount } from "@pages/PersonalAccount/PersonalAccount";
 import { PreLanding } from "@pages/PreLanding";
 import { PurchaseHistory } from "@pages/PurchaseHistory/PurchaseHistory";
@@ -145,7 +145,7 @@ export const ROUTS: TRoute[] = [
     needAuth: true,
   },
   {
-    path: "*",
+    path: "/*",
     element: <NotFoundPage />,
     role: ["admin", "employee", "hr"],
     needAuth: false,

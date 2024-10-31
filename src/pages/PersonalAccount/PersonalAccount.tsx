@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { useLogoutMutation } from "@entity/User";
-import emptyImage from "@shared/assets/images/Avatar.png";
+import {USER_PLACEHOLDER} from "@shared/assets/imageConsts"
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -39,7 +39,7 @@ export const PersonalAccount: FC = () => {
           <div className={styles.info_container}>
             <Image
               className={styles.image}
-              srs={user.image_url || emptyImage}
+              srs={user.image_url || USER_PLACEHOLDER}
             />
 
             <div className={styles.data_container}>
