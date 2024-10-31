@@ -82,7 +82,7 @@ export const BenefitPage: FC = () => {
             </Text>
 
             <Text>
-              Адаптационный период:{" "}
+              Период сброса использований:{" "}
               <span className={styles.count}>
                 {benefit.is_fixed_period ? "не обновляется" : benefit.usage_period_days || "не обновляется"}
               </span>

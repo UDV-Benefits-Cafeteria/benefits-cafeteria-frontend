@@ -42,7 +42,7 @@ export const ApplicationsView: FC = () => {
         acc.push({
           id: el.id,
           date: el.created_at,
-          name: (
+          fullname: (
             <span>
               {el.user.firstname} {el.user.middlename} {el.user.lastname}
             </span>
