@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from "react";
 
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Image } from "@shared/ui/Image/Image";
-import {PATTERN} from "@shared/assets/ImageConsts"
+import {PATTERN} from "@shared/assets/imageConsts"
 import styles from "./UnregisteredLayout.module.scss";
 
 type TUnregisteredLayoutProps = {
