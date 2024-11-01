@@ -16,10 +16,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .coin {
   width: 24px;
   height: 29px;
   background-image: icons.$coin;
+}
+
+.amount {
+  color: var(--primary);
 }

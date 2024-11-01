@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 
 import { useLogoutMutation } from "@entity/User";
-import {USER_PLACEHOLDER} from "@shared/assets/imageConsts"
+import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Icon } from "@shared/ui/Icons/Icon";
@@ -55,7 +55,10 @@ const SideBar: FC = () => {
         <div className={styles.logo} />
 
         <Text type={"description"}>
-          Юридическое лицо: <span className={styles.company_name}>{user.legal_entity?.name}</span>
+          Юридическое лицо:{" "}
+          <span className={styles.company_name}>
+            {user.legal_entity?.name ? user.legal_entity?.name : "не выбрано"}
+          </span>
         </Text>
 
         <nav className={styles.navbar}>

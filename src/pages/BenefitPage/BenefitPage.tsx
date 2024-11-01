@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { useGetBenefitQuery } from "@entity/Benefit/api/Benefit.api";
-import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
+import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -27,7 +27,7 @@ export const BenefitPage: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "100px"}}>
+      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "100px" }}>
         <Title type={"page"}>
           <Link route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>
@@ -52,7 +52,9 @@ export const BenefitPage: FC = () => {
 
               <Text>C {benefit.min_level_cost} уровня</Text>
 
-              <Text className={styles.count}>В наличии: {benefit.amount || "Неограниченное количество"}</Text>
+              <Text className={styles.count}>
+                {benefit.amount > 0 ? <>Осталось {benefit.amount} шт.</> : "Бенефит закончился!"}
+              </Text>
             </div>
           </div>
         </div>
@@ -68,7 +70,7 @@ export const BenefitPage: FC = () => {
 
           <div className={styles.characteristic}>
             <Text>
-              Категория <span className={styles.count}>{benefit.category?.name || "нет категорий"}</span>
+              Категория: <span className={styles.count}>{benefit.category?.name || "категория отсутствует"}</span>
             </Text>
 
             <Text>

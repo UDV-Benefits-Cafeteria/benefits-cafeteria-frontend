@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
+import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -39,12 +39,19 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
 
         <Text>C {benefit.min_level_cost} уровня</Text>
 
-        <Text>Осталось {benefit.amount}</Text>
+        <Text className={styles.amount}>
+          {benefit.amount > 0 ? <>Осталось {benefit.amount} шт.</> : "Бенефит закончился!"}
+        </Text>
 
         <Text> {benefit.name}</Text>
       </div>
 
-      <Button onClick={() => addRequest(benefit.id)}>Отправить запрос</Button>
+      <Button
+        onClick={() => addRequest(benefit.id)}
+        disabled={benefit.amount === 0}
+      >
+        Отправить запрос
+      </Button>
     </div>
   );
 };

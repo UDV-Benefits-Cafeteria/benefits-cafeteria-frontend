@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { useLogoutMutation } from "@entity/User";
-import {USER_PLACEHOLDER} from "@shared/assets/imageConsts"
+import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -43,19 +43,22 @@ export const PersonalAccount: FC = () => {
             />
 
             <div className={styles.data_container}>
-              <Text>
+              <Text className={styles.user_name}>
                 {user.firstname} {user.middlename} {user.lastname}
               </Text>
 
-              <Text type={"description"}>
-                {user.position?.name}, юридическое лицо {user.legal_entity?.name}
+              <Text
+                type={"description"}
+                className={styles.user_entity}
+              >
+                {user.position?.name} {user.legal_entity?.name ? ", юридическое лицо" : ""} {user.legal_entity?.name}
               </Text>
 
-              <Text>{user.email}</Text>
+              <Text className={styles.user_other_info}>{user.email}</Text>
 
-              <Text>{user.experience}</Text>
+              {/* <Text>{user.experience}</Text>*/}
 
-              <Text>{user.level} уровень</Text>
+              <Text className={styles.user_other_info}>{user.level} уровень</Text>
             </div>
           </div>
 

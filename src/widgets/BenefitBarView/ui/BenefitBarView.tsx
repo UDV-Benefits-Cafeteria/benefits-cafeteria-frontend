@@ -76,7 +76,7 @@ const CreateRequestModal: FC<TCreateRequestModalProps> = props => {
           <Text>Вы уверены, что хотите отправить запрос на&nbsp;покупку бенефита?</Text>
 
           <div className={styles.buttons}>
-            <Button onClick={handleAddRequest}>Да</Button>
+            <Button onClick={handleAddRequest}>Отправить</Button>
 
             <Button
               onClick={onClose}
