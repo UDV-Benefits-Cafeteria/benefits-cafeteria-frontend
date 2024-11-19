@@ -1,0 +1,20 @@
+.sidebar {
+  position: fixed;
+  right: 0;
+  top: 120px;
+  padding: 30px;
+  height: calc(100dvh - 120px);
+  box-shadow: -8px 43px 60px -9px #00000040;
+  background-color: white;
+
+  &.open {
+    transform: translateX(0);
+    transition: all ease 0.3s;
+  }
+
+  &.close {
+    box-shadow: none;
+    transform: translateX(100%);
+    transition: all ease 0.3s;
+  }
+}

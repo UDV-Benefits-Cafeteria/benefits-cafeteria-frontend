@@ -17,7 +17,15 @@ export const BenefitsBar: FC = () => {
     <>
       <BarHeader />
 
-      <div style={{ margin: "40px auto", display: "flex", justifyContent: "space-between", maxWidth: 1200 }}>
+      <div
+        style={{
+          margin: "40px auto",
+          marginTop: "160px",
+          display: "flex",
+          justifyContent: "space-between",
+          maxWidth: 1200,
+        }}
+      >
         <Title type={"page"}>Бар бенефитов</Title>
 
         {userRole !== "employee" ? (

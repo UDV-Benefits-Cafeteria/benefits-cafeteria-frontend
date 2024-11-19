@@ -5,6 +5,7 @@ import { BenefitCard } from "@entity/Benefit/ui/BenefitCard/BenefitCard";
 import { useCreateRequestsMutation } from "@entity/Requests/api/Requests.api";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
+import { FiltersSidebar } from "@shared/ui/FiltersSidebar/FiltersSidebar";
 import { Modal } from "@shared/ui/Modal";
 import { Text } from "@shared/ui/Text";
 
@@ -16,6 +17,7 @@ export const BenefitBarView: FC = () => {
   const user = useAppSelector(state => state.user);
   const [addStep, setAddStep] = useState<"add" | "success">("add");
   const [currentBenefit, setCurrentBenefit] = useState(-1);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [createRequest] = useCreateRequestsMutation();
 
   const handleAddRequestResp = async () => {
@@ -51,6 +53,16 @@ export const BenefitBarView: FC = () => {
           />
         ))}
       </main>
+
+      <Button onClick={() => setSidebarOpen(true)}>test</Button>
+
+      <FiltersSidebar
+        title={"Все фильтры"}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      >
+        test
+      </FiltersSidebar>
 
       <CreateRequestModal
         isOpen={isOpenCreateRequestModal}

@@ -11,7 +11,7 @@ export const PurchaseHistory: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "100px" }}>
+      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "220px" }}>
         <Title type={"page"}>
           <Link route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>

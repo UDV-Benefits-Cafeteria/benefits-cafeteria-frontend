@@ -16,16 +16,19 @@
 }
 
 .header {
+  position: fixed;
+  top: 0;
   width: 100%;
   box-shadow: 0 4px 51.4px 2px #00000040;
+  background-color: white;
 
   .content {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    max-width: 1200px;
     height: 120px;
+    max-width: 1200px;
   }
 
   .search {
