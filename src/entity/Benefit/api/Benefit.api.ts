@@ -32,6 +32,14 @@ export const BenefitApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["Benefits"],
     }),
+    deleteBenefitImage: build.mutation<TBenefit, { id: number; imagesId: number[] }>({
+      query: (body: { id: number; imagesId: number[] }) => ({
+        method: "DELETE",
+        url: `/benefits/${body.id}/images`,
+        body: body.imagesId,
+      }),
+      invalidatesTags: ["Benefits"],
+    }),
     createBenefit: build.mutation<TBenefitData, TBenefit>({
       query: (body: TBenefit) => ({
         method: "POST",
@@ -55,6 +63,7 @@ export const {
   useCreateBenefitMutation,
   useGetAllBenefitQuery,
   useGetBenefitQuery,
+  useDeleteBenefitImageMutation,
   useAddBenefitImageMutation,
   useEditBenefitMutation,
 } = BenefitApi;

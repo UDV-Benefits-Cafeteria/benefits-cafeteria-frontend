@@ -4,6 +4,7 @@ import { type FC, useEffect, useState } from "react";
 import {
   useAddBenefitImageMutation,
   useCreateBenefitMutation,
+  useDeleteBenefitImageMutation,
   useEditBenefitMutation,
 } from "@entity/Benefit/api/Benefit.api";
 import { useCreateCategoryMutation, useGetCategoryQuery } from "@entity/Category/api/Category.api";
@@ -116,6 +117,7 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
   const [createBenefit] = useCreateBenefitMutation();
   const [editBenefit] = useEditBenefitMutation();
   const [addImage] = useAddBenefitImageMutation();
+  const [deleteImages] = useDeleteBenefitImageMutation();
   const { data: categoryData } = useGetCategoryQuery(null);
   const [trigger, setTrigger] = useState(false);
   const [image, setImage] = useState<File>();
@@ -147,7 +149,11 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
       res = await createBenefit(benefitForm);
     }
 
-    if (image) imageRes = await addImage({ id: res?.data?.id || 0, image: image });
+    if (image) {
+      await deleteImages({ id: res?.data?.id || 0, imagesId: res?.data?.images.map(el => el.id || []) });
+
+      imageRes = await addImage({ id: res?.data?.id || 0, image: image });
+    }
 
     if (res.data && ((image && imageRes?.data) || (!image && !imageRes?.data))) {
       navigate(BENEFITS);

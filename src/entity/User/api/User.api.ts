@@ -68,7 +68,7 @@ export const UserApi = rtkApi.injectEndpoints({
     addImage: build.mutation<TUserData, TAddImageData>({
       query: (body: TAddImageData) => ({
         method: "PATCH",
-        url: `/users/${body.id}/image/`,
+        url: `/users/${body.id}/image`,
         body: transform(body.image),
       }),
     }),
