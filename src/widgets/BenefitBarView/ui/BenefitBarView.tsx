@@ -69,7 +69,7 @@ type TCreateRequestModalProps = {
   handleAddRequest: () => void;
 };
 
-const CreateRequestModal: FC<TCreateRequestModalProps> = props => {
+export const CreateRequestModal: FC<TCreateRequestModalProps> = props => {
   const { isOpen, onClose, handleAddRequest, step } = props;
 
   return (
