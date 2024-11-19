@@ -13,6 +13,14 @@ type TLoginData = { email: string; password: string };
 
 type TAddImageData = { image: File; id: number };
 
+const transform = (image: File) => {
+  const formData = new FormData();
+
+  formData.append("image", image);
+
+  return formData;
+};
+
 export const UserApi = rtkApi.injectEndpoints({
   endpoints: build => ({
     getUser: build.query<TUserData, null>({
@@ -61,7 +69,7 @@ export const UserApi = rtkApi.injectEndpoints({
       query: (body: TAddImageData) => ({
         method: "PATCH",
         url: `/users/${body.id}/image/`,
-        body: { image: body.image },
+        body: transform(body.image),
       }),
     }),
     createUser: build.mutation<TUserData, TUserData>({

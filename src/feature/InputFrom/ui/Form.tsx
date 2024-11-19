@@ -27,7 +27,7 @@ export type TInputFromElement<T> = {
   type?: "date" | "select" | "text" | "number" | "checkbox";
 };
 
-type TInputFrom<T> = {
+type TFormProps<T> = {
   action: (value: { field: keyof T; value: T[keyof T] }) => UnknownAction;
   inputs: TInputFromElement<T>[];
   className?: string;
@@ -35,17 +35,16 @@ type TInputFrom<T> = {
 };
 
 function Field<T extends TBenefit | TUserData>({
-  form,
+  currentValue,
   field,
   action,
 }: {
-  form: T;
+  currentValue: T[keyof T];
   field: TInputFromElement<T>;
   action: (value: { field: keyof T; value: T[keyof T] }) => UnknownAction;
 }) {
   const dispatch = useAppDispatch();
   const { type = "text", fieldName } = field;
-  const currentValue = form[fieldName];
 
   const handleChangeForm = (value: T[typeof fieldName]) => {
     dispatch(action({ field: fieldName, value }));
@@ -89,7 +88,7 @@ function Field<T extends TBenefit | TUserData>({
   );
 }
 
-export function InputFrom<T extends TBenefit | TUserData>(props: TInputFrom<T>) {
+export function Form<T extends TBenefit | TUserData>(props: TFormProps<T>) {
   const { inputs, className, action, form } = props;
 
   return (
@@ -99,7 +98,7 @@ export function InputFrom<T extends TBenefit | TUserData>(props: TInputFrom<T>) 
           <Field<T>
             key={el.fieldName as string}
             field={el}
-            form={form}
+            currentValue={form[el.fieldName]}
             action={action}
           />
         ) : (
@@ -115,7 +114,7 @@ export function InputFrom<T extends TBenefit | TUserData>(props: TInputFrom<T>) 
 
                 <Field<T>
                   field={el}
-                  form={form}
+                  currentValue={form[el.fieldName]}
                   action={action}
                 />
 

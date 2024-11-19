@@ -45,9 +45,7 @@ const NAVBAR_CONTENT: TNavbarContent[] = [
 
 const SideBar: FC = () => {
   const location = useLocation();
-  const [logout] = useLogoutMutation();
   const user = useAppSelector(state => state.user.data!);
-  const navigate = useNavigate();
 
   return (
     <div className={styles.sidebar}>

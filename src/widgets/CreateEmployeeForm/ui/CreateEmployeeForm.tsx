@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 import { type FC, useEffect, useState } from "react";
 
-import { useGetLegalEntitiesQuery,  useCreateLegalEntitiesMutation} from "@entity/LegalEntities/api/LegalEntities.api";
+import { useCreateLegalEntitiesMutation, useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
 import { LegalEntitiesActions } from "@entity/LegalEntities/model/slice/LegalEntities.slice";
 import { useCreatePositionMutation, useGetPositionQuery } from "@entity/Position/api/Position.api";
 import { PositionSliceActions } from "@entity/Position/model/slice/User.slice";
-import { useCreateUserMutation, useEditUserMutation, useGetCurrentUserQuery } from "@entity/User";
+import { useAddImageMutation, useCreateUserMutation, useEditUserMutation, useGetCurrentUserQuery } from "@entity/User";
 import { AddImage } from "@feature/AddImage";
-import { InputFrom } from "@feature/InputFrom";
-import { TInputFromElement } from "@feature/InputFrom/ui/InputFrom";
+import { Form } from "@feature/InputFrom";
+import { TInputFromElement } from "@feature/InputFrom/ui/Form";
 import { useAppDispatch } from "@shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
@@ -125,21 +125,31 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
 
   const dispatch = useAppDispatch();
   const [isAddPositionOpen, setIsAddPositionOpen] = useState(false);
-  //TODO нейминг
   const [isAddPositionOpen1, setIsAddPositionOpen1] = useState(false);
+  const [image, setImage] = useState<File>();
 
   const navigate = useNavigate();
 
   const userForm = useAppSelector(state => state.createEmployeeForm);
-  const inputs = useGetInputs(() => setIsAddPositionOpen(true),() => setIsAddPositionOpen1(true) );
+  const inputs = useGetInputs(
+    () => setIsAddPositionOpen(true),
+    () => setIsAddPositionOpen1(true)
+  );
   const { data: positionsData } = useGetPositionQuery(null);
   const { data: legalEntityData } = useGetLegalEntitiesQuery(null);
+  const [addImage] = useAddImageMutation();
   const [createUser] = useCreateUserMutation();
   const [editUser] = useEditUserMutation();
 
   useEffect(() => {
-    if (user && isEdit) dispatch(CreateEmployeeFormActions.setFormData({...user, position_id: user.position?.id,
-        legal_entity_id: user.legal_entity?.id}));
+    if (user && isEdit)
+      dispatch(
+        CreateEmployeeFormActions.setFormData({
+          ...user,
+          position_id: user.position?.id,
+          legal_entity_id: user.legal_entity?.id,
+        })
+      );
   }, [user, isEdit]);
 
   useEffect(() => {
@@ -151,11 +161,16 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
   }, [legalEntityData]);
 
   useEffect(() => {
-    return () => dispatch(CreateEmployeeFormActions.setInitialState());
+    return () => {
+      dispatch(CreateEmployeeFormActions.setInitialState());
+    };
   }, []);
 
   const handleAddUser = async () => {
     let res;
+    let imageRes;
+
+    if (image) imageRes = await addImage({ id: user?.id || 0, image: image });
 
     if (isEdit) {
       res = await editUser({ ...userForm, id: user?.id || 0 });
@@ -163,16 +178,16 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
       res = await createUser(userForm);
     }
 
-    if (res.data) {
+    if (res.data && ((image && imageRes?.data) || (!image && !imageRes?.data))) {
       navigate(EMPLOYEES);
       dispatch(CreateEmployeeFormActions.setInitialState());
     }
   };
 
   const handleCancel = async () => {
-      navigate(EMPLOYEES);
-      dispatch(CreateEmployeeFormActions.setInitialState());
-  }
+    navigate(EMPLOYEES);
+    dispatch(CreateEmployeeFormActions.setInitialState());
+  };
 
   return (
     <>
@@ -183,26 +198,36 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
       </div>
 
       <div className={styles.form_container}>
-        <InputFrom<TUserData>
+        <Form<TUserData>
           form={userForm}
           inputs={inputs}
           action={CreateEmployeeFormActions.setUserData}
         />
 
-        <AddImage />
+        {isEdit && (
+          <AddImage
+            imageUrl={user?.image_url}
+            setImage={setImage}
+          />
+        )}
       </div>
 
       <div className={styles.form_buttons}>
         <Button onClick={handleAddUser}>{isEdit ? "Сохранить" : "Добавить"}</Button>
 
-        <Button onClick={handleCancel} buttonType={"secondary"}>Отменить</Button>
+        <Button
+          onClick={handleCancel}
+          buttonType={"secondary"}
+        >
+          Отменить
+        </Button>
       </div>
 
       <ModalCreatePosition
         isOpen={isAddPositionOpen}
         onClose={() => setIsAddPositionOpen(false)}
       />
-            <ModalCreatePosition1
+      <ModalCreatePosition1
         isOpen={isAddPositionOpen1}
         onClose={() => setIsAddPositionOpen1(false)}
       />
@@ -252,7 +277,6 @@ const ModalCreatePosition: FC<{ isOpen: boolean; onClose: () => void }> = props 
     </Modal>
   );
 };
-
 
 const ModalCreatePosition1: FC<{ isOpen: boolean; onClose: () => void }> = props => {
   const { isOpen, onClose } = props;

@@ -1,12 +1,16 @@
 /* eslint-disable camelcase */
 import { type FC, useEffect, useState } from "react";
 
-import { useCreateBenefitMutation, useEditBenefitMutation, useGetBenefitQuery } from "@entity/Benefit/api/Benefit.api";
+import {
+  useAddBenefitImageMutation,
+  useCreateBenefitMutation,
+  useEditBenefitMutation,
+} from "@entity/Benefit/api/Benefit.api";
 import { useCreateCategoryMutation, useGetCategoryQuery } from "@entity/Category/api/Category.api";
 import { CategorySliceActions } from "@entity/Category/model/slice/Category.slice";
 import { AddImage } from "@feature/AddImage";
-import { InputFrom } from "@feature/InputFrom";
-import { TInputFromElement } from "@feature/InputFrom/ui/InputFrom";
+import { Form } from "@feature/InputFrom";
+import type { TInputFromElement } from "@feature/InputFrom/ui/Form";
 import { useAppDispatch } from "@shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
@@ -17,11 +21,11 @@ import { Modal } from "@shared/ui/Modal";
 import { Title } from "@shared/ui/Title";
 import { CreateBenefitFormActions } from "@widgets/CreateBenefitForm/model/slice/CreateBenefitForm.slice";
 import { shallowEqual } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
-import { TBenefit } from "@entity/Benefit/model/types/Benefit.types";
+import type { TBenefit, TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 
 import styles from "../styles/CreateBenefitForm.module.scss";
 
@@ -101,11 +105,9 @@ const useGetInputs = (addButtonEvent: () => void) => {
   return INPUTS;
 };
 
-export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
-  const { isEdit } = props;
-  const pathname = useLocation().pathname;
+export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
+  const { benefit } = props;
 
-  const benefit = useGetBenefitQuery(Number(pathname.split("/")[3])).data;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
@@ -113,13 +115,15 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
   const inputs = useGetInputs(() => setIsAddCategoryOpen(true));
   const [createBenefit] = useCreateBenefitMutation();
   const [editBenefit] = useEditBenefitMutation();
+  const [addImage] = useAddBenefitImageMutation();
   const { data: categoryData } = useGetCategoryQuery(null);
   const [trigger, setTrigger] = useState(false);
+  const [image, setImage] = useState<File>();
 
   useEffect(() => {
     if (benefit) {
       setTrigger(!trigger);
-      dispatch(CreateBenefitFormActions.setFormData({...benefit,category_id: benefit.category?.id }));
+      dispatch(CreateBenefitFormActions.setFormData({ ...benefit, category_id: benefit.category?.id }));
     }
   }, [benefit]);
 
@@ -128,51 +132,64 @@ export const CreateBenefitForm: FC<{ isEdit?: boolean }> = props => {
   }, [categoryData]);
 
   useEffect(() => {
-    return () => dispatch(CreateBenefitFormActions.setInitialState());
+    return () => {
+      dispatch(CreateBenefitFormActions.setInitialState());
+    };
   }, []);
 
   const handleAddBenefit = async () => {
     let res;
+    let imageRes;
 
-    if (isEdit) {
+    if (benefit) {
       res = await editBenefit({ id: benefit?.id || 0, ...benefitForm });
     } else {
       res = await createBenefit(benefitForm);
     }
 
-    if (res.data) {
+    if (image) imageRes = await addImage({ id: res?.data?.id || 0, image: image });
+
+    if (res.data && ((image && imageRes?.data) || (!image && !imageRes?.data))) {
       navigate(BENEFITS);
       dispatch(CreateBenefitFormActions.setInitialState());
     }
   };
 
   const handleCancel = async () => {
-      navigate(BENEFITS);
-      dispatch(CreateBenefitFormActions.setInitialState());
-  }
+    navigate(BENEFITS);
+    dispatch(CreateBenefitFormActions.setInitialState());
+  };
 
   return (
     <>
       <div className={styles.title}>
         <Title type={"page"}>Бенефиты</Title>
 
-        <Title type={"block"}>{isEdit ? "Редактирование" : "Добавление"} бенефита</Title>
+        <Title type={"block"}>{benefit ? "Редактирование" : "Добавление"} бенефита</Title>
       </div>
 
       <div className={styles.form_container}>
-        <InputFrom<TBenefit>
+        <Form<TBenefit>
           form={benefitForm}
           inputs={inputs}
           action={CreateBenefitFormActions.setBenefitData}
         />
 
-        <AddImage />
+        <AddImage
+          imageUrl={benefit?.images[0]?.image_url}
+          setImage={setImage}
+        />
       </div>
 
       <div className={styles.form_buttons}>
-        <Button onClick={handleAddBenefit}>{isEdit ? "Сохранить" : "Добавить"}</Button>
+        <Button onClick={handleAddBenefit}>{benefit ? "Сохранить" : "Добавить"}</Button>
 
-        <Button onClick={handleCancel} buttonType={"secondary"}>Отменить</Button>
+        <Button
+          onClick={handleCancel}
+          buttonType={"secondary"}
+        >
+          Отменить
+        </Button>
       </div>
 
       <ModalCreateCategory

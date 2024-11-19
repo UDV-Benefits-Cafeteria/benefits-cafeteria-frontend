@@ -1,4 +1,4 @@
-import { TCategory } from "@entity/Category/model/types/Category.types";
+import type { TCategory } from "@entity/Category/model/types/Category.types";
 
 export type TBenefit = {
   name: string;
@@ -9,7 +9,7 @@ export type TBenefit = {
   amount: number;
   is_fixed_period: boolean;
   usage_limit: number;
-  usage_period_days: number;
+  usage_period_days?: number;
   period_start_date?: string;
   available_from?: string;
   available_by?: string;

@@ -2,6 +2,14 @@ import { rtkApi } from "@shared/api/rtkApi";
 
 import type { TBenefit, TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 
+const transform = (image: File) => {
+  const formData = new FormData();
+
+  formData.append("images", image);
+
+  return formData;
+};
+
 export const BenefitApi = rtkApi.injectEndpoints({
   endpoints: build => ({
     getBenefit: build.query<TBenefitData, number>({
@@ -16,11 +24,11 @@ export const BenefitApi = rtkApi.injectEndpoints({
       }),
       providesTags: ["Benefits"],
     }),
-    addBenefitImage: build.mutation<TBenefit, { image: string }>({
-      query: (body: { image: string }) => ({
-        method: "PATCH",
-        url: `/benefits/${1}/image/`,
-        body: { image: body.image },
+    addBenefitImage: build.mutation<TBenefit, { id: number; image: File }>({
+      query: (body: { id: number; image: File }) => ({
+        method: "POST",
+        url: `/benefits/${body.id}/images`,
+        body: transform(body.image),
       }),
       invalidatesTags: ["Benefits"],
     }),

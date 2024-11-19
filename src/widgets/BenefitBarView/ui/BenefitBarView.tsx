@@ -35,6 +35,11 @@ export const BenefitBarView: FC = () => {
     setCurrentBenefit(id);
   };
 
+  const handleClose = () => {
+    setIsOpenCreateRequestModal(false);
+    setAddStep("add");
+  };
+
   return (
     <>
       <main className={styles.container}>
@@ -46,10 +51,11 @@ export const BenefitBarView: FC = () => {
           />
         ))}
       </main>
+
       <CreateRequestModal
         isOpen={isOpenCreateRequestModal}
         step={addStep}
-        onClose={() => setIsOpenCreateRequestModal(false)}
+        onClose={handleClose}
         handleAddRequest={handleAddRequestResp}
       />
     </>
