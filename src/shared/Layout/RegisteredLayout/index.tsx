@@ -1,13 +1,12 @@
 import type { FC, PropsWithChildren } from "react";
 
-import { useLogoutMutation } from "@entity/User";
 import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { APPLICATION, BENEFITS, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
