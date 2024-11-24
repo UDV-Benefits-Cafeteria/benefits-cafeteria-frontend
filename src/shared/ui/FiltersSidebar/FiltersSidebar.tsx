@@ -19,7 +19,7 @@ export const FiltersSidebar: FC<filtersSidebarProps> = props => {
   return (
     <div className={classNames(styles.sidebar, isOpen ? styles.open : styles.close, className)}>
       <div>
-        <Title type={"element"}>{title}</Title>
+        <Title type={"block"}>{title}</Title>
 
         <Icon
           size={"l"}

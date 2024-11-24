@@ -5,19 +5,18 @@ import { BenefitCard } from "@entity/Benefit/ui/BenefitCard/BenefitCard";
 import { useCreateRequestsMutation } from "@entity/Requests/api/Requests.api";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
-import { FiltersSidebar } from "@shared/ui/FiltersSidebar/FiltersSidebar";
 import { Modal } from "@shared/ui/Modal";
 import { Text } from "@shared/ui/Text";
 
+import type { TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
+
 import styles from "../styles/BenefitBarView.module.scss";
 
-export const BenefitBarView: FC = () => {
-  const benefits = useGetAllBenefitQuery(null);
+export const BenefitBarView: FC<{ benefits: TBenefitData[] }> = ({ benefits }) => {
   const [isOpenCreateRequestModal, setIsOpenCreateRequestModal] = useState(false);
   const user = useAppSelector(state => state.user);
   const [addStep, setAddStep] = useState<"add" | "success">("add");
   const [currentBenefit, setCurrentBenefit] = useState(-1);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [createRequest] = useCreateRequestsMutation();
 
   const handleAddRequestResp = async () => {
@@ -45,7 +44,7 @@ export const BenefitBarView: FC = () => {
   return (
     <>
       <main className={styles.container}>
-        {benefits.data?.map(el => (
+        {benefits?.map(el => (
           <BenefitCard
             benefit={el}
             key={el.id}
@@ -53,16 +52,6 @@ export const BenefitBarView: FC = () => {
           />
         ))}
       </main>
-
-      <Button onClick={() => setSidebarOpen(true)}>test</Button>
-
-      <FiltersSidebar
-        title={"Все фильтры"}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      >
-        test
-      </FiltersSidebar>
 
       <CreateRequestModal
         isOpen={isOpenCreateRequestModal}

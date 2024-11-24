@@ -1,0 +1,77 @@
+@import "@shared/styles/mixins";
+
+.top {
+  display: flex;
+  flex-direction: column;
+  margin: 160px auto 40px;
+  max-width: 1200px;
+  gap: 30px;
+}
+
+.filter_button {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 5px;
+  width: 140px;
+  font-size: 14px;
+  gap: 5px;
+
+  &__icon {
+    background-color: var(--main_text);
+  }
+}
+
+.filter_container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.filter_block {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(2, 160px);
+  gap: 15px;
+
+  &__input {
+    font-size: 16px !important;
+  }
+}
+
+.checkbox_container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  .element {
+    flex-direction: row-reverse;
+    width: fit-content;
+    font-weight: 400;
+  }
+}
+
+.active_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio {
+  flex-direction: row-reverse;
+  width: fit-content !important;
+
+  input {
+    border-radius: 10px;
+  }
+}
+
+.adaptation {
+  justify-content: space-between;
+  width: 100%;
+}

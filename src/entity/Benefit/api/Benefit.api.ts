@@ -10,6 +10,14 @@ const transform = (image: File) => {
   return formData;
 };
 
+export type TFilterParams = {
+  is_active: boolean;
+  adaptation_required: boolean;
+  coins_cost: string;
+  min_level_cost: string;
+  categories: string;
+};
+
 export const BenefitApi = rtkApi.injectEndpoints({
   endpoints: build => ({
     getBenefit: build.query<TBenefitData, number>({
@@ -18,9 +26,10 @@ export const BenefitApi = rtkApi.injectEndpoints({
       }),
       providesTags: ["Benefits"],
     }),
-    getAllBenefit: build.query<TBenefitData[], null>({
-      query: () => ({
-        url: "/benefits/",
+    getAllBenefit: build.query<TBenefitData[], Partial<TFilterParams>>({
+      query: filters => ({
+        url: "/benefits/?" + (filters.categories ?? ""),
+        params: { ...filters, categories: undefined },
       }),
       providesTags: ["Benefits"],
     }),

@@ -11,6 +11,18 @@
   width: 100%;
   font-family: inherit;
 
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:disabled {
+    background-color: var(--grey_100);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
   &.primary {
     border: none;
     color: white;
@@ -24,20 +36,14 @@
   }
 
   &.secondary-red {
-    background-color: white;
     border: solid 1px var(--error_text);
     color: var(--error_text);
+    background-color: white;
   }
 
-  &:hover {
-    opacity: 0.6;
-  }
-
-  &:disabled {
-    background-color: var(--grey_100);
-
-    &:hover {
-      opacity: 1;
-    }
+  &.secondary-black {
+    border: solid 1px var(--main_text);
+    color: var(--main_text);
+    background-color: white;
   }
 }
