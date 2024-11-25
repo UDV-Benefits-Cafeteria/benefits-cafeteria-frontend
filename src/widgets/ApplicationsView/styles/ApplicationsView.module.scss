@@ -1,4 +1,46 @@
-.buttons{
+@import "@shared/styles/mixins";
+
+.buttons {
   display: flex;
   gap: 16px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  gap: 48px;
+}
+
+.filter {
+  display: flex;
+  gap: 24px;
+
+  .text {
+    @include largeText;
+
+    color: var(--grey_100);
+
+    &.active {
+      color: var(--primary);
+    }
+  }
+}
+
+.fullname {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pending {
+  color: #e7ab08;
+}
+
+.approved {
+  color: #00be00;
+}
+
+.declined {
+  color: #FF4040;
 }

@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 import { TRequestStatus, useGetUserRequestsQuery, useUpdateRequestsMutation } from "@entity/Requests/api/Requests.api";
 import { DataTable } from "@feature/DataTable";
-import {BENEFIT_PLACEHOLDER} from "@shared/assets/imageConsts"
+import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -31,6 +31,7 @@ const tableHeader = [
 ];
 
 const status = {
+  processing: "В работе",
   pending: "На рассмотрении",
   approved: "Подтверждён",
   declined: "Отменён",
@@ -81,38 +82,58 @@ export const PurchaseHistoryTable: FC = () => {
     <div className={styles.container}>
       <Title type={"page"}>История покупок</Title>
 
-      <div className={styles.filter}>
-        <Text
-          className={classNames(styles.text, activeFilter === "all" ? styles.active : null)}
-          onClick={() => setActiveFilter("all")}
-        >
-          Все заявки
-        </Text>
-        <Text
-          className={classNames(styles.text, activeFilter === "pending" ? styles.active : null)}
-          onClick={() => setActiveFilter("pending")}
-        >
-          На рассмотрении
-        </Text>
-        <Text
-          className={classNames(styles.text, activeFilter === "approved" ? styles.active : null)}
-          onClick={() => setActiveFilter("approved")}
-        >
-          Подтвержденные
-        </Text>
-        <Text
-          className={classNames(styles.text, activeFilter === "declined" ? styles.active : null)}
-          onClick={() => setActiveFilter("declined")}
-        >
-          Отменённые
-        </Text>
-      </div>
+      <RequestTabulator
+        filter={activeFilter}
+        setFilter={setActiveFilter}
+      />
 
       <DataTable
         needRedirect={false}
         headers={tableHeader}
         data={data}
       />
+    </div>
+  );
+};
+
+export const RequestTabulator: FC<{
+  filter: "all" | TRequestStatus;
+  setFilter: (value: "all" | TRequestStatus) => void;
+}> = props => {
+  const { filter, setFilter } = props;
+
+  return (
+    <div className={styles.filter}>
+      <Text
+        className={classNames(styles.text, filter === "all" ? styles.active : null)}
+        onClick={() => setFilter("all")}
+      >
+        Все заявки
+      </Text>
+      <Text
+        className={classNames(styles.text, filter === "pending" ? styles.active : null)}
+        onClick={() => setFilter("pending")}
+      >
+        Оформлена
+      </Text>
+      <Text
+        className={classNames(styles.text, filter === "processing" ? styles.active : null)}
+        onClick={() => setFilter("processing")}
+      >
+        В работе
+      </Text>
+      <Text
+        className={classNames(styles.text, filter === "approved" ? styles.active : null)}
+        onClick={() => setFilter("approved")}
+      >
+        Подтвержденные
+      </Text>
+      <Text
+        className={classNames(styles.text, filter === "declined" ? styles.active : null)}
+        onClick={() => setFilter("declined")}
+      >
+        Отменённые
+      </Text>
     </div>
   );
 };

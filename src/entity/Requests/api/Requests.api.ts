@@ -1,9 +1,9 @@
 import { rtkApi } from "@shared/api/rtkApi";
 
-import type { TBenefit, TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
+import type { TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 import type { TUserData } from "@entity/User/model/types/User.types";
 
-export type TRequestStatus = "pending" | "approved" | "declined";
+export type TRequestStatus = "pending" | "approved" | "declined" | "processing";
 
 type TRequestData = {
   benefit_id: number;
@@ -32,9 +32,10 @@ type TRequest = {
 
 export const RequestsApi = rtkApi.injectEndpoints({
   endpoints: build => ({
-    getAllRequests: build.query<TRequest[], null>({
-      query: () => ({
+    getAllRequests: build.query<TRequest[], string>({
+      query: filter => ({
         url: "/benefit-requests/",
+        ...(filter !== null ? { params: { status: filter } } : {}),
       }),
       providesTags: ["Requests"],
     }),
