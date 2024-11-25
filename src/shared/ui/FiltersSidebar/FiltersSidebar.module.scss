@@ -6,6 +6,7 @@
   height: calc(100dvh - 120px);
   box-shadow: -8px 43px 60px -9px #00000040;
   background-color: white;
+  overflow-y: auto;
 
   &.open {
     transform: translateX(0);

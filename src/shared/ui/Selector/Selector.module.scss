@@ -3,9 +3,16 @@
 .selector {
   @include largeText;
 
-  border: 1px solid var(--grey_300);
   border-radius: 12px;
   padding: 14px 16px;
+
+  .default {
+    border: 1px solid var(--grey_300);
+  }
+
+  .filter {
+    border: 1px solid var(--main_text);
+  }
 }
 
 .option:hover {

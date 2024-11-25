@@ -6,6 +6,15 @@
   margin: 160px auto 40px;
   max-width: 1200px;
   gap: 30px;
+
+  &__filters {
+    display: flex;
+    gap: 16px;
+  }
+}
+
+.filters {
+  padding: 5px;
 }
 
 .filter_button {
@@ -74,4 +83,10 @@
 .adaptation {
   justify-content: space-between;
   width: 100%;
+}
+
+.buttons {
+  display: flex;
+  margin-bottom: 32px;
+  gap: 21px;
 }

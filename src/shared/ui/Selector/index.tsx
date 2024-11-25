@@ -14,13 +14,23 @@ type TSelectorProps = {
   needEmptyValue?: boolean;
   currentValue: string;
   setCurrentValue: (value: string) => void;
+  selectorType?: "default" | "filter";
   values: TSelectValue[];
   disabled?: boolean;
   addButton?: { text: string; event: () => void };
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLSelectElement>, HTMLSelectElement>;
 
 export const Selector: FC<TSelectorProps> = props => {
-  const { values, needEmptyValue, currentValue, setCurrentValue, className, addButton, disabled } = props;
+  const {
+    values,
+    needEmptyValue,
+    currentValue,
+    setCurrentValue,
+    className,
+    addButton,
+    disabled,
+    selectorType = "filter",
+  } = props;
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newValue = event.currentTarget.value;
@@ -37,7 +47,7 @@ export const Selector: FC<TSelectorProps> = props => {
 
   return (
     <select
-      className={classNames(styles.selector, className)}
+      className={classNames(styles.selector, styles[selectorType], className)}
       value={currentValue}
       disabled={disabled}
       onChange={handleSelect}
