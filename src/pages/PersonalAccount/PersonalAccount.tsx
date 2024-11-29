@@ -23,9 +23,9 @@ export const PersonalAccount: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "220px" }}>
+      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
         <Title type={"page"}>
-          <Link route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
+          <Link className={styles.link} route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>
 
         <Title
@@ -44,6 +44,7 @@ export const PersonalAccount: FC = () => {
             />
 
             <div className={styles.data_container}>
+            <div>
               <Text className={styles.user_name}>
                 {user.firstname} {user.middlename} {user.lastname}
               </Text>
@@ -56,15 +57,17 @@ export const PersonalAccount: FC = () => {
               </Text>
 
               <Text className={styles.user_other_info}>{user.email}</Text>
-
+              </div>
+               <div>
               {/* <Text>{user.experience}</Text>*/}
 
               <Text className={styles.user_other_info}>{user.level} уровень</Text>
+              </div>
             </div>
           </div>
 
           <div className={styles.coin_container}>
-            <Text>Ваш баланс</Text>
+            <Text className={styles.coin_title}>Ваш баланс</Text>
 
             <span className={styles.coin_info}>
               {user.coins}
@@ -75,6 +78,7 @@ export const PersonalAccount: FC = () => {
 
         <div className={styles.buttons}>
           <Button
+            className={styles.btn}
             onClick={async () => {
               navigate(EMPLOYEES + "/" + user.id + "/edit");
             }}
@@ -83,6 +87,7 @@ export const PersonalAccount: FC = () => {
           </Button>
 
           <Button
+            className={styles.btn}
             buttonType={"secondary-red"}
             onClick={async () => {
               navigate(LOGIN);
