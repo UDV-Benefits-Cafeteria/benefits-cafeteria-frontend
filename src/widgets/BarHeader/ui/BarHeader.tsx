@@ -1,5 +1,6 @@
-import type { FC } from "react";
+import { type FC, useEffect } from "react";
 
+import { PATH } from "@shared/consts/localStorage";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Icon } from "@shared/ui/Icons/Icon";
@@ -15,6 +16,10 @@ import styles from "../styles/BarHeader.module.scss";
 export const BarHeader: FC = () => {
   const user = useAppSelector(state => state.user.data!);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem(PATH, "user");
+  }, []);
 
   return (
     <header className={styles.header}>

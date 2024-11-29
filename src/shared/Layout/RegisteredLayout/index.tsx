@@ -1,6 +1,7 @@
-import type { FC, PropsWithChildren } from "react";
+import { type FC, type PropsWithChildren, useEffect } from "react";
 
 import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
+import { PATH } from "@shared/consts/localStorage";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Icon } from "@shared/ui/Icons/Icon";
@@ -45,6 +46,10 @@ const NAVBAR_CONTENT: TNavbarContent[] = [
 const SideBar: FC = () => {
   const location = useLocation();
   const user = useAppSelector(state => state.user.data!);
+
+  useEffect(() => {
+    localStorage.setItem(PATH, "admin");
+  }, []);
 
   return (
     <div className={styles.sidebar}>

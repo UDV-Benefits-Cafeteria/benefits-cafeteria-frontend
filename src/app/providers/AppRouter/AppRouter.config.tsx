@@ -13,6 +13,7 @@ import { PersonalAccount } from "@pages/PersonalAccount/PersonalAccount";
 import { PreLanding } from "@pages/PreLanding";
 import { PurchaseHistory } from "@pages/PurchaseHistory/PurchaseHistory";
 import { RegisterPage } from "@pages/RegisterPage";
+import { PATH } from "@shared/consts/localStorage";
 import { Navigate } from "react-router-dom";
 
 import type { TRoute } from "./AppRouter.types";
@@ -35,13 +36,37 @@ export const EMPLOYEES_EDIT = CURRENT_EMPLOYEE + "/edit";
 export const PURCHASE_HISTORY = MAIN + "/history";
 export const PERSONAL_ACCOUNT = MAIN + "/account";
 
+const lastVisit = localStorage.getItem(PATH);
+
+const navigateToAdmin: TRoute = {
+  path: "/",
+  element: <Navigate to={EMPLOYEES} />,
+  role: ["admin", "hr"],
+  needAuth: true,
+};
+
+const navigateToBar: TRoute = {
+  path: "/",
+  element: <Navigate to={BENEFITS_BAR} />,
+  role: ["admin", "employee", "hr"],
+  needAuth: true,
+};
+
+let navigateTo: TRoute = {
+  path: "/",
+  element: <Navigate to={PRE_LANDING} />,
+  role: ["admin", "employee", "hr"],
+  needAuth: false,
+};
+
+if (lastVisit) {
+  if (lastVisit === "admin") navigateTo = navigateToAdmin;
+
+  if (lastVisit === "user") navigateTo = navigateToBar;
+}
+
 export const ROUTS: TRoute[] = [
-  {
-    path: "/",
-    element: <Navigate to={PRE_LANDING} />,
-    role: ["admin", "employee", "hr"],
-    needAuth: false,
-  },
+  navigateTo,
   {
     path: PRE_LANDING,
     element: <PreLanding />,

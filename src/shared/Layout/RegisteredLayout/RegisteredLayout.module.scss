@@ -34,8 +34,8 @@
 }
 
 .logo {
-  width: 226px;
-  height: 45px;
+  width: 246px;
+  height: 65px;
   background-image: icons.$logo;
   background-position: center center;
   background-size: contain;
@@ -50,9 +50,9 @@
 
   .element {
     display: flex;
+    align-items: center;
     padding: 10px 0 10px 10px;
     width: 100%;
-    align-items: center;
     text-decoration: none;
     gap: 15px;
 

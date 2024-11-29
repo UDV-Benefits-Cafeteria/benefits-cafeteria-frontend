@@ -3,3 +3,34 @@
   gap: 8px;
   align-items: center;
 }
+
+.top {
+  display: flex;
+  flex-direction: column;
+  margin: 160px auto 40px;
+  max-width: 1200px;
+  gap: 30px;
+
+  &__filters {
+    display: flex;
+    gap: 16px;
+  }
+}
+
+.filter_button {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 5px;
+  width: 140px;
+  font-size: 14px;
+  gap: 5px;
+
+  &__icon {
+    background-color: var(--main_text);
+  }
+}
+
+.filters {
+  padding: 5px;
+}

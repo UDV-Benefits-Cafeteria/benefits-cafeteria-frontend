@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { type FC } from "react";
 
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";

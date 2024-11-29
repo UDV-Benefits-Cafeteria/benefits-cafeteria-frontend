@@ -26,9 +26,9 @@ export const BenefitApi = rtkApi.injectEndpoints({
       }),
       providesTags: ["Benefits"],
     }),
-    getAllBenefit: build.query<TBenefitData[], { filters: Partial<TFilterParams>; sort: string }>({
+    getAllBenefit: build.query<TBenefitData[], { filters?: Partial<TFilterParams>; sort?: string }>({
       query: params => ({
-        url: "/benefits/?" + params.sort + (params.filters.categories ?? ""),
+        url: "/benefits/?" + params.sort + "&" + (params.filters?.categories ?? ""),
         params: { ...params.filters, categories: undefined },
       }),
       providesTags: ["Benefits"],

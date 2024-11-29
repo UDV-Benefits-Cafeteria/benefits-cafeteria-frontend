@@ -27,7 +27,7 @@ type TSortParam = {
   sortOrder: TSortOrder;
 };
 
-const SORT_PARAMS: TSortParam[] = [
+export const SORT_PARAMS: TSortParam[] = [
   {
     text: "Новинка",
     sortBy: "created_at",
@@ -65,7 +65,7 @@ const SORT_PARAMS: TSortParam[] = [
   },
 ];
 
-const toQuery = (sort: string, order: string): string => `sort_by=${sort}&sort_order=${order}`;
+export const toQuery = (sort: string, order: string): string => `sort_by=${sort}&sort_order=${order}`;
 
 const preparePeriod = (min: number, max: number) => `gte:${min},lte:${max}`;
 
@@ -153,6 +153,27 @@ export const BenefitsBar: FC = () => {
             <Text boldness={"medium"}>Все фильтры</Text>
           </Button>
 
+          <BenefitFilter
+            setMinLevel={setMinLevel}
+            setActive={setActive}
+            setAdaptation={setAdaptation}
+            setMaxCost={setMaxCost}
+            setMinCost={setMinCost}
+            setSidebarOpen={setSidebarOpen}
+            setMaxLevel={setMaxLevel}
+            sidebarOpen={sidebarOpen}
+            toInitialState={toInitialState}
+            minCost={minCost}
+            setFilters={setFilters}
+            adaptation={adaptation}
+            active={active}
+            minLevel={minLevel}
+            maxLevel={maxLevel}
+            categoriesCheckbox={categoriesCheckbox}
+            maxCost={maxCost}
+            setCategoriesCheckbox={setCategoriesCheckbox}
+          />
+
           <Selector
             currentValue={sort}
             setCurrentValue={setSort}
@@ -163,177 +184,200 @@ export const BenefitsBar: FC = () => {
             }))}
           />
         </div>
-
-        <FiltersSidebar
-          title={"Все фильтры"}
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        >
-          <div className={styles.filter_container}>
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Цена, UDV-coins</Title>
-
-              <div className={styles.numbers}>
-                <InputContainer>
-                  <InputLabel>
-                    <Text type={"description"}>От</Text>
-                  </InputLabel>
-
-                  <InputField
-                    isForm={true}
-                    type={"number"}
-                    value={minCost}
-                    placeholder={"Введите число"}
-                    className={styles.numbers__input}
-                    onChange={e => setMinCost(Number(e.currentTarget.value))}
-                  />
-                </InputContainer>
-
-                <InputContainer>
-                  <InputLabel>
-                    <Text type={"description"}>До</Text>
-                  </InputLabel>
-
-                  <InputField
-                    isForm={true}
-                    type={"number"}
-                    value={maxCost}
-                    placeholder={"Введите число"}
-                    className={styles.numbers__input}
-                    onChange={e => setMaxCost(Number(e.currentTarget.value))}
-                  />
-                </InputContainer>
-              </div>
-            </div>
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Уровень</Title>
-
-              <div className={styles.numbers}>
-                <InputContainer>
-                  <InputLabel>
-                    <Text type={"description"}>От</Text>
-                  </InputLabel>
-
-                  <InputField
-                    isForm={true}
-                    type={"number"}
-                    value={minLevel}
-                    placeholder={"Введите число"}
-                    className={styles.numbers__input}
-                    onChange={e => setMinLevel(Number(e.currentTarget.value))}
-                  />
-                </InputContainer>
-
-                <InputContainer>
-                  <InputLabel>
-                    <Text type={"description"}>До</Text>
-                  </InputLabel>
-
-                  <InputField
-                    isForm={true}
-                    type={"number"}
-                    placeholder={"Введите число"}
-                    className={styles.numbers__input}
-                    value={maxLevel}
-                    onChange={e => setMaxLevel(Number(e.currentTarget.value))}
-                  />
-                </InputContainer>
-              </div>
-            </div>
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Категории</Title>
-
-              {categoriesCheckbox && (
-                <div className={styles.checkbox_container}>
-                  {Object.keys(categoriesCheckbox).map(el => (
-                    <Checkbox
-                      key={el}
-                      className={styles.element}
-                      value={categoriesCheckbox[el].active}
-                      label={el}
-                      onChange={() =>
-                        setCategoriesCheckbox(prev => ({
-                          ...prev,
-                          [el]: { active: !prev![el].active, id: prev![el].id },
-                        }))
-                      }
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <Checkbox
-              className={styles.adaptation}
-              onChange={() => setAdaptation(prev => !prev)}
-              label={"Адаптационный период"}
-              value={adaptation !== null ? adaptation : false}
-            />
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Состояние бенефита</Title>
-
-              <div className={styles.active_container}>
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setActive(true)}
-                  label={"Активные"}
-                  value={active !== null ? active : false}
-                />
-
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setActive(false)}
-                  label={"Неактивные"}
-                  value={active !== null ? !active : false}
-                />
-              </div>
-            </div>
-
-            <div className={styles.buttons}>
-              <Button
-                onClick={() => {
-                  toInitialState();
-                  setFilters({});
-                }}
-                buttonType={"secondary"}
-              >
-                Сбросить
-              </Button>
-
-              <Button
-                onClick={() =>
-                  setFilters({
-                    ...(getActiveCategory(categoriesCheckbox).length
-                      ? {
-                          categories: getActiveCategory(categoriesCheckbox).reduce((acc, el, index) => {
-                            acc +=
-                              `categories=${categoriesCheckbox[el].id}` +
-                              `${index === getActiveCategory(categoriesCheckbox).length - 1 ? "" : "&"}`;
-
-                            return acc;
-                          }, ""),
-                        }
-                      : {}),
-                    ...(adaptation !== null ? { adaptation_required: adaptation } : {}),
-                    ...(active !== null ? { is_active: active } : {}),
-                    ...(minLevel !== null && maxLevel !== null
-                      ? { min_level_cost: preparePeriod(minLevel, maxLevel) }
-                      : {}),
-                    ...(minCost !== null && maxCost !== null ? { coins_cost: preparePeriod(minCost, maxCost) } : {}),
-                  })
-                }
-              >
-                Показать
-              </Button>
-            </div>
-          </div>
-        </FiltersSidebar>
       </div>
 
       {benefits && <BenefitBarView benefits={benefits} />}
     </>
+  );
+};
+
+export const BenefitFilter = ({
+  sidebarOpen,
+  setSidebarOpen,
+  minCost,
+  setMinCost,
+  maxCost,
+  setMaxCost,
+  setMinLevel,
+  minLevel,
+  setMaxLevel,
+  maxLevel,
+  categoriesCheckbox,
+  setCategoriesCheckbox,
+  setAdaptation,
+  adaptation,
+  setActive,
+  active,
+  toInitialState,
+  setFilters,
+}) => {
+  return (
+    <FiltersSidebar
+      title={"Все фильтры"}
+      isOpen={sidebarOpen}
+      onClose={() => setSidebarOpen(false)}
+    >
+      <div className={styles.filter_container}>
+        <div className={styles.filter_block}>
+          <Title type={"element"}>Цена, UDV-coins</Title>
+
+          <div className={styles.numbers}>
+            <InputContainer>
+              <InputLabel>
+                <Text type={"description"}>От</Text>
+              </InputLabel>
+
+              <InputField
+                isForm={true}
+                type={"number"}
+                value={minCost}
+                placeholder={"Введите число"}
+                className={styles.numbers__input}
+                onChange={e => setMinCost(Number(e.currentTarget.value))}
+              />
+            </InputContainer>
+
+            <InputContainer>
+              <InputLabel>
+                <Text type={"description"}>До</Text>
+              </InputLabel>
+
+              <InputField
+                isForm={true}
+                type={"number"}
+                value={maxCost}
+                placeholder={"Введите число"}
+                className={styles.numbers__input}
+                onChange={e => setMaxCost(Number(e.currentTarget.value))}
+              />
+            </InputContainer>
+          </div>
+        </div>
+
+        <div className={styles.filter_block}>
+          <Title type={"element"}>Уровень</Title>
+
+          <div className={styles.numbers}>
+            <InputContainer>
+              <InputLabel>
+                <Text type={"description"}>От</Text>
+              </InputLabel>
+
+              <InputField
+                isForm={true}
+                type={"number"}
+                value={minLevel}
+                placeholder={"Введите число"}
+                className={styles.numbers__input}
+                onChange={e => setMinLevel(Number(e.currentTarget.value))}
+              />
+            </InputContainer>
+
+            <InputContainer>
+              <InputLabel>
+                <Text type={"description"}>До</Text>
+              </InputLabel>
+
+              <InputField
+                isForm={true}
+                type={"number"}
+                placeholder={"Введите число"}
+                className={styles.numbers__input}
+                value={maxLevel}
+                onChange={e => setMaxLevel(Number(e.currentTarget.value))}
+              />
+            </InputContainer>
+          </div>
+        </div>
+
+        <div className={styles.filter_block}>
+          <Title type={"element"}>Категории</Title>
+
+          {categoriesCheckbox && (
+            <div className={styles.checkbox_container}>
+              {Object.keys(categoriesCheckbox).map(el => (
+                <Checkbox
+                  key={el}
+                  className={styles.element}
+                  value={categoriesCheckbox[el].active}
+                  label={el}
+                  onChange={() =>
+                    setCategoriesCheckbox(prev => ({
+                      ...prev,
+                      [el]: { active: !prev![el].active, id: prev![el].id },
+                    }))
+                  }
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <Checkbox
+          className={styles.adaptation}
+          onChange={() => setAdaptation(prev => !prev)}
+          label={"Адаптационный период"}
+          value={adaptation !== null ? adaptation : false}
+        />
+
+        <div className={styles.filter_block}>
+          <Title type={"element"}>Состояние бенефита</Title>
+
+          <div className={styles.active_container}>
+            <Checkbox
+              className={styles.radio}
+              onChange={() => setActive(true)}
+              label={"Активные"}
+              value={active !== null ? active : false}
+            />
+
+            <Checkbox
+              className={styles.radio}
+              onChange={() => setActive(false)}
+              label={"Неактивные"}
+              value={active !== null ? !active : false}
+            />
+          </div>
+        </div>
+
+        <div className={styles.buttons}>
+          <Button
+            onClick={() => {
+              toInitialState();
+              setFilters({});
+            }}
+            buttonType={"secondary"}
+          >
+            Сбросить
+          </Button>
+
+          <Button
+            onClick={() =>
+              setFilters({
+                ...(getActiveCategory(categoriesCheckbox).length
+                  ? {
+                      categories: getActiveCategory(categoriesCheckbox).reduce((acc, el, index) => {
+                        acc +=
+                          `categories=${categoriesCheckbox[el].id}` +
+                          `${index === getActiveCategory(categoriesCheckbox).length - 1 ? "" : "&"}`;
+
+                        return acc;
+                      }, ""),
+                    }
+                  : {}),
+                ...(adaptation !== null ? { adaptation_required: adaptation } : {}),
+                ...(active !== null ? { is_active: active } : {}),
+                ...(minLevel !== null && maxLevel !== null
+                  ? { min_level_cost: preparePeriod(minLevel, maxLevel) }
+                  : {}),
+                ...(minCost !== null && maxCost !== null ? { coins_cost: preparePeriod(minCost, maxCost) } : {}),
+              })
+            }
+          >
+            Показать
+          </Button>
+        </div>
+      </div>
+    </FiltersSidebar>
   );
 };
