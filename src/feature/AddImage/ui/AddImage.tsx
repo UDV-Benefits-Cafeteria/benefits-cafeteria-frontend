@@ -36,6 +36,7 @@ export const AddImage: FC<TAddImage> = props => {
       <Image
         className={styles.image}
         srs={imageView || BENEFIT_PLACEHOLDER}
+        onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
       />
 
       <InputField

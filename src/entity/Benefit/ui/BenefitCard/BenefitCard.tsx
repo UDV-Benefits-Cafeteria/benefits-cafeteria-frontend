@@ -28,7 +28,8 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
       >
         <Image
           className={styles.image}
-          srs={benefit.primary_image_url || BENEFIT_PLACEHOLDER}
+          src={benefit.primary_image_url || BENEFIT_PLACEHOLDER}
+          onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
         />
 
         <div className={styles.price}>

@@ -55,6 +55,7 @@ export const PurchaseHistoryTable: FC = () => {
               <Image
                 type={"avatar"}
                 srs={el.benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
+                onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
               />
               {el.benefit.name}
             </span>

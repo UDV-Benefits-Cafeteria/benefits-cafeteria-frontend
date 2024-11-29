@@ -49,6 +49,7 @@ export const ViewBenefits: FC = () => {
             <Image
               type={"avatar"}
               srs={el.primary_image_url || BENEFIT_PLACEHOLDER}
+              onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
             />
             {el.name}
           </span>

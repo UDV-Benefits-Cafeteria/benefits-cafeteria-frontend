@@ -85,6 +85,7 @@ const SideBar: FC = () => {
         <Image
           srs={user.image_url || USER_PLACEHOLDER}
           className={styles.user__image}
+          onError={(e) => (e.target.src = USER_PLACEHOLDER)}
         />
 
         <div className={styles.user__info}>

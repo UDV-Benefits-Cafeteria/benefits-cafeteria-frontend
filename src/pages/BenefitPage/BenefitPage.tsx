@@ -64,6 +64,7 @@ export const BenefitPage: FC = () => {
             <Image
               srs={benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
               className={styles.image}
+              onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
             />
 
             <div className={styles.data_container}>

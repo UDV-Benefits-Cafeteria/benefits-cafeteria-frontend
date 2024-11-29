@@ -45,6 +45,7 @@ export const ViewEmployees: FC = () => {
             <Image
               type={"avatar"}
               srs={el.image_url || USER_PLACEHOLDER}
+              onError={(e) => (e.target.src = USER_PLACEHOLDER)}
             />
             {el.firstname} {el.middlename} {el.lastname}
           </span>

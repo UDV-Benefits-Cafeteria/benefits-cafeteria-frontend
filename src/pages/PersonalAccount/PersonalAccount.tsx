@@ -40,6 +40,7 @@ export const PersonalAccount: FC = () => {
             <Image
               className={styles.image}
               srs={user.image_url || USER_PLACEHOLDER}
+              onError={(e) => (e.target.src = USER_PLACEHOLDER)}
             />
 
             <div className={styles.data_container}>
