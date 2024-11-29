@@ -33,18 +33,18 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
         />
 
         <div className={styles.price}>
-          <Text>{benefit.coins_cost}</Text>
+          <Text boldness={"medium"}>{benefit.coins_cost}</Text>
 
           <div className={styles.coin} />
         </div>
 
-        <Text>C {benefit.min_level_cost} уровня</Text>
+        <Text boldness={"medium"}>C {benefit.min_level_cost} уровня</Text>
 
-        <Text className={styles.amount}>
+        <Text boldness={"medium"} className={styles.amount}>
           {benefit.amount > 0 ? <>Осталось {benefit.amount} шт.</> : "Бенефит закончился!"}
         </Text>
 
-        <Text> {benefit.name}</Text>
+        <Text boldness={"medium"} className={styles.name}>{benefit.name}</Text>
       </div>
 
       <Button
