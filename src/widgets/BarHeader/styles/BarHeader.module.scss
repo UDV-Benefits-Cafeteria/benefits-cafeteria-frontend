@@ -3,8 +3,8 @@
 @import "@shared/styles/mixins";
 
 .logo {
-  width: 226px;
-  height: 45px;
+  width: 217px;
+  height: 60px;
   background-image: icons.$logo;
   background-position: center center;
   background-size: contain;
@@ -27,7 +27,7 @@
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    height: 120px;
+    height: 100px;
     max-width: 1200px;
   }
 
@@ -43,17 +43,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 5px;
 
     .icon {
       background-color: var(--main_text);
+      weight: 38px;
+      height: 38px;
     }
 
     .top_text {
       font-size: 32px;
+      font-weight: 500;
     }
 
     .text {
       @include smallText;
+      font-size: 15px !important;
+      font-weight: 500;
     }
   }
 }

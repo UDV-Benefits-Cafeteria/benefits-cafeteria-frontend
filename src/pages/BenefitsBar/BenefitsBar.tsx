@@ -132,11 +132,11 @@ export const BenefitsBar: FC = () => {
   }, [categories.data]);
 
   return (
-    <>
+    <div className={styles.container}>
       <BarHeader />
 
       <div className={styles.top}>
-        <Title type={"page"}>Бар бенефитов</Title>
+        <Title className={styles.title} type={"page"}>Бар бенефитов</Title>
 
         <div className={styles.top__filters}>
           <Button
@@ -187,7 +187,7 @@ export const BenefitsBar: FC = () => {
       </div>
 
       {benefits && <BenefitBarView benefits={benefits} />}
-    </>
+    </div>
   );
 };
 

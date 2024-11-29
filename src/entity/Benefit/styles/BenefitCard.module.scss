@@ -13,12 +13,24 @@
     width: 270px;
     height: 320px;
     object-fit: cover;
+    margin-bottom: 10px;
   }
 
   .name {
     font-size: 20px;
     margin-top: 5px;
   }
+
+  .btn {
+    font-size: 16px;
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    &:hover {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
 }
 
 .price {

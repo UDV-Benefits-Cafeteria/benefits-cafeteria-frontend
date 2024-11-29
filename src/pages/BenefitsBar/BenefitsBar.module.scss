@@ -11,6 +11,15 @@
     display: flex;
     gap: 16px;
   }
+
+  .title {
+    font-weight: 500;
+    font-size: 32px
+  }
+}
+
+.container {
+  margin-bottom: 100px;
 }
 
 .filters {

@@ -54,9 +54,9 @@ export const BenefitPage: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "220px" }}>
+      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
         <Title type={"page"}>
-          <Link route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
+          <Link className={styles.link} route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>
 
         <div className={styles.container}>
@@ -68,19 +68,20 @@ export const BenefitPage: FC = () => {
             />
 
             <div className={styles.data_container}>
-              <Title type={"block"}>{benefit.name}</Title>
+              <Title boldness={"medium"} className={styles.title} type={"block"}>{benefit.name}</Title>
 
               <Title
                 type={"block"}
                 className={styles.price}
+                boldness={"medium"}
               >
                 {benefit.coins_cost}
                 <div className={styles.coin} />
               </Title>
 
-              <Text>C {benefit.min_level_cost} уровня</Text>
+              <Text type={"block"} boldness={"medium"} className={styles.level}>C {benefit.min_level_cost} уровня</Text>
 
-              <Text className={styles.count}>
+              <Text type={"block"} boldness={"medium"} className={styles.count}>
                 {benefit.amount > 0 ? <>Осталось {benefit.amount} шт.</> : "Бенефит закончился!"}
               </Text>
 
@@ -97,31 +98,31 @@ export const BenefitPage: FC = () => {
           </div>
         </div>
 
-        <div className={styles.data_container}>
-          <Title type={"element"}>Описание</Title>
+        <div className={styles.desc_container}>
+          <Title className={styles.title} type={"element"}>Описание</Title>
 
-          <Text>{benefit.description}</Text>
+          <Text className={styles.desc}>{benefit.description}</Text>
         </div>
 
-        <div className={styles.data_container}>
-          <Title type={"element"}>Характеристики</Title>
+        <div className={styles.char_container}>
+          <Title className={styles.title} type={"element"}>Характеристики</Title>
 
           <div className={styles.characteristic}>
-            <Text>
+            <Text className={styles.text}>
               Категория: <span className={styles.count}>{benefit.category?.name || "категория отсутствует"}</span>
             </Text>
 
-            <Text>
+            <Text className={styles.text}>
               Сколько раз можно использовать:{" "}
               <span className={styles.count}>{benefit.usage_limit || "неограниченное количество"}</span>
             </Text>
 
-            <Text>
+            <Text className={styles.text}>
               Адаптационный период:{" "}
               <span className={styles.count}>{benefit.adaptation_required ? "пройден" : "не пройден"}</span>
             </Text>
 
-            <Text>
+            <Text className={styles.text}>
               Период сброса использований:{" "}
               <span className={styles.count}>
                 {benefit.is_fixed_period ? "не обновляется" : benefit.usage_period_days || "не обновляется"}
