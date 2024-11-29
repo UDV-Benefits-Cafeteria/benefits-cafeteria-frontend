@@ -94,7 +94,9 @@ export const ViewBenefits: FC = () => {
 
   const [filters, setFilters] = useState<Partial<TFilterParams>>({});
 
-  const { data: benefits } = useGetAllBenefitQuery({ filters: filters, sort: sort });
+  const [search, setSearch] = useState<string>("");
+
+  const { data: benefits } = useGetAllBenefitQuery({ filters: filters, sort: sort, search: search });
 
   const data = benefits
     ? benefits.map(el => ({
@@ -104,7 +106,7 @@ export const ViewBenefits: FC = () => {
             <Image
               type={"avatar"}
               srs={el.primary_image_url || BENEFIT_PLACEHOLDER}
-              onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
+              onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
             />
             {el.name}
           </span>
@@ -120,7 +122,12 @@ export const ViewBenefits: FC = () => {
     <ViewInfoContainer>
       <ViewHeader
         title={"Бенефиты"}
-        searchBar={<SearchBar />}
+        searchBar={
+          <SearchBar
+            setValue={setSearch}
+            value={search}
+          />
+        }
       >
         <div style={{ display: "flex", width: 500, gap: 32 }}>
           <Button onClick={() => navigate(CREATE_BENEFITS)}>Добавить бенефит</Button>
