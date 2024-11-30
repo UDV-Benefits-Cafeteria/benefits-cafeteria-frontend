@@ -140,7 +140,7 @@ export const ApplicationsView: FC = () => {
           ),
           fullname: (
             <span>
-              {el.user.firstname} {el.user.middlename} {el.user.lastname}
+              {el.user.lastname} {el.user.firstname} {el.user.middlename}
             </span>
           ),
           email: (

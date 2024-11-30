@@ -47,7 +47,7 @@ export const ViewEmployees: FC = () => {
               srs={el.image_url || USER_PLACEHOLDER}
               onError={(e) => (e.target.src = USER_PLACEHOLDER)}
             />
-            {el.firstname} {el.middlename} {el.lastname}
+              {el.lastname} {el.firstname} {el.middlename}
           </span>
         ),
         coins: el.coins,

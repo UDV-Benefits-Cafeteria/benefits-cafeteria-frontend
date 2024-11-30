@@ -46,14 +46,14 @@ export const PersonalAccount: FC = () => {
             <div className={styles.data_container}>
             <div>
               <Text className={styles.user_name}>
-                {user.firstname} {user.middlename} {user.lastname}
+                {user.lastname} {user.firstname} {user.middlename}
               </Text>
 
               <Text
                 type={"description"}
                 className={styles.user_entity}
               >
-                {user.position?.name} {user.legal_entity?.name ? ", юридическое лицо" : ""} {user.legal_entity?.name}
+                {user.position?.name}{user.legal_entity?.name ? ", юридическое лицо" : ""} {user.legal_entity?.name}
               </Text>
 
               <Text className={styles.user_other_info}>{user.email}</Text>
