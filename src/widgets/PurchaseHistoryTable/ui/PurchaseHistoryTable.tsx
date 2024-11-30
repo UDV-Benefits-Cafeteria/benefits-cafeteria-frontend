@@ -108,30 +108,35 @@ export const RequestTabulator: FC<{
       <Text
         className={classNames(styles.text, filter === "all" ? styles.active : null)}
         onClick={() => setFilter("all")}
+        boldness={"bold"}
       >
         Все заявки
       </Text>
       <Text
         className={classNames(styles.text, filter === "pending" ? styles.active : null)}
         onClick={() => setFilter("pending")}
+        boldness={"bold"}
       >
         Оформлена
       </Text>
       <Text
         className={classNames(styles.text, filter === "processing" ? styles.active : null)}
         onClick={() => setFilter("processing")}
+        boldness={"bold"}
       >
         В работе
       </Text>
       <Text
         className={classNames(styles.text, filter === "approved" ? styles.active : null)}
         onClick={() => setFilter("approved")}
+        boldness={"bold"}
       >
         Подтвержденные
       </Text>
       <Text
         className={classNames(styles.text, filter === "declined" ? styles.active : null)}
         onClick={() => setFilter("declined")}
+        boldness={"bold"}
       >
         Отменённые
       </Text>

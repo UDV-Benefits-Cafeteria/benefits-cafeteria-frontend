@@ -7,13 +7,15 @@ import { PurchaseHistoryTable } from "@widgets/PurchaseHistoryTable/ui/PurchaseH
 
 import { BENEFITS_BAR } from "@app/providers/AppRouter/AppRouter.config";
 
+import styles from "./PurchaseHistory.module.scss";
+
 export const PurchaseHistory: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "220px" }}>
+      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "170px", marginBottom: "100px" }}>
         <Title type={"page"}>
-          <Link route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
+          <Link className={styles.link} route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>
 
         <PurchaseHistoryTable />
