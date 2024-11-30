@@ -6,19 +6,21 @@
   margin-top: 40px;
 }
 
+.progressBar {
+  height: 100%;
+  background-color: #00C08B;
+  border-radius: 10px 0 0 10px;
+  transition: width 0.3s ease-in-out;
+}
+
 .progressContainer {
   width: 300px;
   height: 30px;
   background-color: #E8E9F1;
   border-radius: 10px;
   margin-bottom: 10px;
-}
-
-.progressBar {
-  height: 100%;
-  background-color: #00C08B;
-  border-radius: 10px;
-  transition: width 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden; /* Убираем скругление у правой стороны */
 }
 
 .link {
