@@ -15,6 +15,7 @@
 .filter {
   display: flex;
   gap: 24px;
+  cursor: pointer;
 
   .text {
     @include largeText;

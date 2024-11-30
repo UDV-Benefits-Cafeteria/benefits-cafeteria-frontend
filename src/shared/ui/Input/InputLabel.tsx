@@ -15,7 +15,7 @@ export const InputLabel: FC<TInputLabelProps> = props => {
   return (
     <label className={classNames(className)}>
       <Text
-        boldness={"medium"}
+        boldness={"bold"}
         className={styles.label}
       >
         {children}
