@@ -41,7 +41,13 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
         <Text boldness={"medium"}>C {benefit.min_level_cost} уровня</Text>
 
         <Text boldness={"medium"} className={styles.amount}>
-          {benefit.amount > 0 ? <>Осталось {benefit.amount} шт.</> : "Бенефит закончился!"}
+            {
+                benefit.amount === null
+                    ? "Неограниченное количество"
+                    : benefit.amount > 0
+                        ? `Осталось ${benefit.amount} шт.`
+                        : "Бенефит закончился!"
+            }
         </Text>
 
         <Text boldness={"medium"} className={styles.name}>{benefit.name}</Text>

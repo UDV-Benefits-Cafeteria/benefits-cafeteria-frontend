@@ -6,7 +6,7 @@ export type TBenefit = {
   is_active: boolean;
   description: string;
   real_currency_cost: number;
-  amount: number;
+  amount?: number;
   is_fixed_period: boolean;
   usage_limit: number;
   usage_period_days?: number;
@@ -30,7 +30,7 @@ export type TBenefitData = {
   name: string;
   coins_cost: number;
   min_level_cost: number;
-  amount: number;
+  amount?: number;
   primary_image_url: string;
   real_currency_cost: number;
   images: benefitImages[];

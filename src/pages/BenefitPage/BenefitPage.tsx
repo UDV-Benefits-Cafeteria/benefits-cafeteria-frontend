@@ -82,7 +82,13 @@ export const BenefitPage: FC = () => {
               <Text type={"block"} boldness={"medium"} className={styles.level}>C {benefit.min_level_cost} уровня</Text>
 
               <Text type={"block"} boldness={"medium"} className={styles.count}>
-                {benefit.amount > 0 ? <>Осталось {benefit.amount} шт.</> : "Бенефит закончился!"}
+                {
+                  benefit.amount === null
+                      ? "Неограниченное количество"
+                      : benefit.amount > 0
+                          ? `Осталось ${benefit.amount} шт.`
+                          : "Бенефит закончился"
+                }
               </Text>
 
               <Button

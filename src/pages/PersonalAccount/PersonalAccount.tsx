@@ -59,7 +59,14 @@ export const PersonalAccount: FC = () => {
               <Text className={styles.user_other_info}>{user.email}</Text>
               </div>
                <div>
-              {/* <Text>{user.experience}</Text>*/}
+                 <div className={styles.progressContainer}>
+                   <div
+                       className={styles.progressBar}
+                       style={{
+                         width: `${(user.experience % 30) / 30 * 100}%`,
+                       }}
+                   ></div>
+                 </div>
 
               <Text className={styles.user_other_info}>{user.level} уровень</Text>
               </div>
