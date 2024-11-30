@@ -21,13 +21,13 @@
   width: 100%;
   box-shadow: 0 4px 51.4px 2px #00000040;
   background-color: white;
+  height: 120px;
+  align-items: center;
 
   .content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin: 0 auto;
-    height: 100px;
+    margin: 40px auto 20px;
     max-width: 1200px;
   }
 
@@ -37,6 +37,13 @@
 
   .input {
     width: 30%;
+  }
+
+  .inputSearch {
+    height: 38px;
+    border-radius: 24px;
+    background-color: #F8F9FE;
+    border-color: #8C8C8C;
   }
 
   .item {

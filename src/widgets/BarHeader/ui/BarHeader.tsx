@@ -30,7 +30,7 @@ export const BarHeader: FC = () => {
         />
 
         <InputContainer className={styles.search}>
-          <InputField icon={"loupe"} />
+          <InputField className={styles.inputSearch} icon={"loupe"} placeholder={"Поиск"}/>
         </InputContainer>
 
         <div className={styles.item}>

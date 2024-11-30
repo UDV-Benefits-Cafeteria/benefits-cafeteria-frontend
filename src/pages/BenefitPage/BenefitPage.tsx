@@ -54,7 +54,7 @@ export const BenefitPage: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "170px", marginBottom: "100px" }}>
+      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
         <Title type={"page"}>
           <Link className={styles.link} route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
         </Title>
