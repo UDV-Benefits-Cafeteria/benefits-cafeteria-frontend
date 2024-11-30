@@ -7,9 +7,11 @@ import "@shared/styles/index.scss";
 import { AuthProvider } from "./providers/AuthProvider/AuthProvider";
 import { StoreProvider } from "./providers/StoreProvider";
 
+import Loader from "@shared/ui/Loader";
+
 const App: FC = () => {
   return (
-    <Suspense fallback={""}>
+    <Suspense fallback={<Loader />}>
       <StoreProvider>
         <AuthProvider>
           <AppRouter />

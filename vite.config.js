@@ -28,9 +28,12 @@ export default ({ mode }) => {
     server: {
       host: true,
       port: 5000,
+      hmr: true,
+      open: true,
       watch: {
         usePolling: true,
       },
+      historyApiFallback: true
     },
     resolve: {
       alias: {
