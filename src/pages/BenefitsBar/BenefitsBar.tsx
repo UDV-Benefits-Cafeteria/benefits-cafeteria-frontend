@@ -67,9 +67,9 @@ export const SORT_PARAMS: TSortParam[] = [
 
 export const toQuery = (sort: string, order: string): string => `sort_by=${sort}&sort_order=${order}`;
 
-const preparePeriod = (min: number, max: number) => `gte:${min},lte:${max}`;
+export const preparePeriod = (min: number, max: number) => `gte:${min},lte:${max}`;
 
-const getActiveCategory = (
+export const getActiveCategory = (
   categoriesCheckbox: Record<
     string,
     {
@@ -136,7 +136,12 @@ export const BenefitsBar: FC = () => {
       <BarHeader />
 
       <div className={styles.top}>
-        <Title className={styles.title} type={"page"}>Бар бенефитов</Title>
+        <Title
+          className={styles.title}
+          type={"page"}
+        >
+          Бар бенефитов
+        </Title>
 
         <div className={styles.top__filters}>
           <Button

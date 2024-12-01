@@ -1,1 +1,1 @@
-export { SearchBarAsync as SearchBar } from "./ui/SearchBar.async";
+export { SearchBar } from "./ui/SearchBar";
