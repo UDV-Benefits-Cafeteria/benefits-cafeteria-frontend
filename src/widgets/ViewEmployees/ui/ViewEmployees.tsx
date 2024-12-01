@@ -218,6 +218,7 @@ export const ViewEmployees: FC = () => {
         >
           <div className={styles.filter_container}>
             {user.data?.role === "admin" ? (
+              <>
                 <div className={styles.filter_block}>
                   <Title type={"element"}>Роль</Title>
 
@@ -243,28 +244,29 @@ export const ViewEmployees: FC = () => {
                   />
                 </div>
 
-              <div className={styles.filter_block}>
-                <Title type={"element"}>Юридические лица</Title>
+                <div className={styles.filter_block}>
+                  <Title type={"element"}>Юридические лица</Title>
 
-                {legalEntityCheckbox && (
-                  <div className={styles.checkbox_container}>
-                    {Object.keys(legalEntityCheckbox).map(el => (
-                      <Checkbox
-                        key={el}
-                        className={styles.element}
-                        value={legalEntityCheckbox[el].active}
-                        label={el}
-                        onChange={() =>
-                          setLegalEntityCheckbox(prev => ({
-                            ...prev,
-                            [el]: {active: !prev![el].active, id: prev![el].id},
-                          }))
-                        }
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
+                  {legalEntityCheckbox && (
+                    <div className={styles.checkbox_container}>
+                      {Object.keys(legalEntityCheckbox).map(el => (
+                        <Checkbox
+                          key={el}
+                          className={styles.element}
+                          value={legalEntityCheckbox[el].active}
+                          label={el}
+                          onChange={() =>
+                            setLegalEntityCheckbox(prev => ({
+                              ...prev,
+                              [el]: { active: !prev![el].active, id: prev![el].id },
+                            }))
+                          }
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
             ) : null}
 
             <div className={styles.filter_block}>
