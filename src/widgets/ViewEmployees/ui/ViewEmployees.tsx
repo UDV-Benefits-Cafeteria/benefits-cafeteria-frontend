@@ -1,11 +1,12 @@
 import { type FC, useEffect, useState } from "react";
 
 import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
-import { useGetAllUserQuery, useGetCurrentUserQuery } from "@entity/User";
+import { useGetAllUserQuery } from "@entity/User";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { getActiveCategory, preparePeriod, toQuery } from "@pages/BenefitsBar/BenefitsBar";
 import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
+import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Checkbox } from "@shared/ui/Checkbox";
 import { FiltersSidebar } from "@shared/ui/FiltersSidebar/FiltersSidebar";
@@ -78,12 +79,12 @@ type TEmployeesFilter = {
   is_adapted: boolean;
   is_verified: boolean;
   role: string;
-  legal_entity_id: string;
+  legal_entities: string;
 };
 
 export const ViewEmployees: FC = () => {
-  const [search, setSearch] = useState(null);
-  const location = useLocation().search;
+  const [search, setSearch] = useState("");
+  const filter = useLocation().search.split("legal_entity=")?.[1];
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filters, setFilters] = useState<Partial<TEmployeesFilter>>({});
 
@@ -118,21 +119,23 @@ export const ViewEmployees: FC = () => {
   };
 
   useEffect(() => {
-    if (legalEntity.data)
+    if (legalEntity.data) {
       setLegalEntityCheckbox(
         Object.fromEntries(
           legalEntity.data.map(el => [
             el.name,
             {
-              active: false,
+              active: filter !== undefined ? Number(filter) === el.id : false,
               id: el.id,
             },
           ])
         )
       );
+
+      if (filter) setFilters({ legal_entities: `legal_entities=${filter}` });
+    }
   }, [legalEntity.data]);
 
-  console.log(location);
   const users = useGetAllUserQuery({ search: search, sort: sort, filters: filters });
   const navigate = useNavigate();
 
@@ -160,7 +163,7 @@ export const ViewEmployees: FC = () => {
     else setRoles(prev => [...prev, value]);
   };
 
-  const user = useGetCurrentUserQuery(null);
+  const userRole = useAppSelector(state => state.user.data?.role);
 
   return (
     <ViewInfoContainer>
@@ -217,7 +220,7 @@ export const ViewEmployees: FC = () => {
           onClose={() => setSidebarOpen(false)}
         >
           <div className={styles.filter_container}>
-            {user.data?.role === "admin" ? (
+            {userRole === "admin" ? (
               <>
                 <div className={styles.filter_block}>
                   <Title type={"element"}>Роль</Title>
@@ -381,9 +384,9 @@ export const ViewEmployees: FC = () => {
                   setFilters({
                     ...(getActiveCategory(legalEntityCheckbox).length
                       ? {
-                          legal_entity_id: getActiveCategory(legalEntityCheckbox).reduce((acc, el, index) => {
+                          legal_entities: getActiveCategory(legalEntityCheckbox).reduce((acc, el, index) => {
                             acc +=
-                              `categories=${legalEntityCheckbox[el].id}` +
+                              `legal_entities=${legalEntityCheckbox[el].id}` +
                               `${index === getActiveCategory(legalEntityCheckbox).length - 1 ? "" : "&"}`;
 
                             return acc;

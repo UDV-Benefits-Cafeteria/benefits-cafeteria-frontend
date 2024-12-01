@@ -9,7 +9,7 @@ import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
 import { Link, useLocation } from "react-router-dom";
 
-import { APPLICATION, BENEFITS, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { APPLICATION, BENEFITS, EMPLOYEES, LEGAL_ENTITY } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./RegisteredLayout.module.scss";
 
@@ -25,7 +25,7 @@ type TNavbarContent = {
   icon: TNavBarIcons;
 };
 
-const NAVBAR_CONTENT: TNavbarContent[] = [
+const NAVBAR_CONTENT_HR: TNavbarContent[] = [
   {
     title: "Бенефиты",
     icon: "benefits",
@@ -43,6 +43,24 @@ const NAVBAR_CONTENT: TNavbarContent[] = [
   },
 ];
 
+const NAVBAR_CONTENT_ADMIN: TNavbarContent[] = [
+  {
+    title: "Бенефиты",
+    icon: "benefits",
+    link: BENEFITS,
+  },
+  {
+    title: "Пользователи",
+    icon: "employees",
+    link: EMPLOYEES,
+  },
+  {
+    title: "Юридические лица",
+    icon: "applications",
+    link: LEGAL_ENTITY,
+  },
+];
+
 const SideBar: FC = () => {
   const location = useLocation();
   const user = useAppSelector(state => state.user.data!);
@@ -50,6 +68,8 @@ const SideBar: FC = () => {
   useEffect(() => {
     localStorage.setItem(PATH, "admin");
   }, []);
+
+  const navbarContent = user.role === "admin" ? NAVBAR_CONTENT_ADMIN : NAVBAR_CONTENT_HR;
 
   return (
     <div className={styles.sidebar}>
@@ -64,7 +84,7 @@ const SideBar: FC = () => {
         </Text>
 
         <nav className={styles.navbar}>
-          {NAVBAR_CONTENT.map(el => {
+          {navbarContent.map(el => {
             const isActive = location.pathname.includes(el.link) ? styles.active : null;
 
             return (
@@ -90,7 +110,7 @@ const SideBar: FC = () => {
         <Image
           srs={user.image_url || USER_PLACEHOLDER}
           className={styles.user__image}
-          onError={(e) => (e.target.src = USER_PLACEHOLDER)}
+          onError={e => (e.target.src = USER_PLACEHOLDER)}
         />
 
         <div className={styles.user__info}>

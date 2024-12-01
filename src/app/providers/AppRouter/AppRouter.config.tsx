@@ -8,6 +8,7 @@ import { CreateBenefit } from "@pages/CreateBenefit";
 import { CreateEmployee } from "@pages/CreateEmployee";
 import { EmployeeEdit } from "@pages/EmployeeEdit";
 import { Employees } from "@pages/Employees";
+import { LegalEntitiesAsync } from "@pages/LegalEntities/LegalEntities.async";
 import { NotFoundPage } from "@pages/NotFoundPage";
 import { PersonalAccount } from "@pages/PersonalAccount/PersonalAccount";
 import { PreLanding } from "@pages/PreLanding";
@@ -35,6 +36,7 @@ export const CURRENT_EMPLOYEE = EMPLOYEES + "/:id";
 export const EMPLOYEES_EDIT = CURRENT_EMPLOYEE + "/edit";
 export const PURCHASE_HISTORY = MAIN + "/history";
 export const PERSONAL_ACCOUNT = MAIN + "/account";
+export const LEGAL_ENTITY = MAIN + "/legal_entity";
 
 const lastVisit = localStorage.getItem(PATH);
 
@@ -161,6 +163,12 @@ export const ROUTS: TRoute[] = [
     path: CURRENT_EMPLOYEE,
     element: <div>текущий пользователь</div>,
     role: ["admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: LEGAL_ENTITY,
+    element: <LegalEntitiesAsync />,
+    role: ["admin"],
     needAuth: true,
   },
   {
