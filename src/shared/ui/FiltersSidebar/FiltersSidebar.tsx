@@ -10,14 +10,15 @@ type filtersSidebarProps = {
   className?: string;
   title: string;
   isOpen: boolean;
+  type?: "admin" | "user";
   onClose(): void;
 } & PropsWithChildren;
 
 export const FiltersSidebar: FC<filtersSidebarProps> = props => {
-  const { className, title, children, onClose, isOpen } = props;
+  const { className, title, children, onClose, isOpen, type = "user" } = props;
 
   return (
-    <div className={classNames(styles.sidebar, isOpen ? styles.open : styles.close, className)}>
+    <div className={classNames(styles.sidebar, isOpen ? styles.open : styles.close, styles[type], className)}>
       <div className={styles.top}>
         <Title type={"block"}>{title}</Title>
 
