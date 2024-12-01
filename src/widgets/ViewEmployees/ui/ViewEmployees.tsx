@@ -1,11 +1,12 @@
 import { type FC, useEffect, useState } from "react";
 
 import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
-import { useGetAllUserQuery } from "@entity/User";
+import { useEditUserMutation, useGetAllUserQuery } from "@entity/User";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { getActiveCategory, preparePeriod, toQuery } from "@pages/BenefitsBar/BenefitsBar";
 import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
+import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Checkbox } from "@shared/ui/Checkbox";
@@ -15,14 +16,16 @@ import { Image } from "@shared/ui/Image/Image";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
 import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
+import { Modal } from "@shared/ui/Modal";
 import { Selector } from "@shared/ui/Selector";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
+import { Popover } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { BENEFITS_BAR, CREATE_EMPLOYEES, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { CREATE_EMPLOYEES, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
 import { TUserRole } from "@entity/User/model/types/User.types";
 
@@ -44,6 +47,10 @@ const tableHeader = [
   {
     text: "Баланс, UDV-coins",
     data: "coins",
+  },
+  {
+    text: "",
+    data: "points",
   },
 ];
 
@@ -135,6 +142,8 @@ export const ViewEmployees: FC = () => {
       if (filter) setFilters({ legal_entities: `legal_entities=${filter}` });
     }
   }, [legalEntity.data]);
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState();
 
   const users = useGetAllUserQuery({ search: search, sort: sort, filters: filters });
   const navigate = useNavigate();
@@ -155,6 +164,40 @@ export const ViewEmployees: FC = () => {
         coins: el.coins,
         level: el.level,
         position: el.position?.name || "-",
+        points: (
+          <Popover
+            className={styles.points}
+            arrow={false}
+            trigger={"click"}
+            content={
+              <div className={styles.actions}>
+                <Text
+                  className={styles.element}
+                  onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
+                >
+                  Посмотреть профиль
+                </Text>
+                <Text
+                  className={styles.element}
+                  onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
+                >
+                  Редактировать профиль
+                </Text>
+                <Text
+                  className={classNames(styles.warning, styles.element)}
+                  onClick={() => {
+                    setId(el.id);
+                    setOpen(true);
+                  }}
+                >
+                  Отключить профиль
+                </Text>
+              </div>
+            }
+          >
+            ...
+          </Popover>
+        ),
       }))
     : [];
 
@@ -400,10 +443,84 @@ export const ViewEmployees: FC = () => {
       </div>
 
       <DataTable
-        redirectTo={id => `${EMPLOYEES}/${id}/edit`}
         headers={tableHeader}
         data={data}
       />
+
+      <DisableModal
+        open={open}
+        onClose={() => setOpen(false)}
+        id={id}
+      />
     </ViewInfoContainer>
+  );
+};
+
+const DisableModal = ({ open, onClose, id }) => {
+  const [edit] = useEditUserMutation();
+  const [step, setStep] = useState(0);
+
+  return (
+    <Modal
+      isOpen={open}
+      onClose={() => {
+        onClose();
+        setStep(0);
+      }}
+    >
+      {step === 0 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+          >
+            Вы уверены, что хотите отключить профиль сотрудника? Сотрудник не сможет пользоваться данным сервисом.
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"secondary-red"}
+              onClick={async () => {
+                const res = await edit({ id: id, is_active: false });
+
+                setStep(1);
+              }}
+            >
+              Отключить
+            </Button>
+            <Button
+              buttonType={"secondary-black"}
+              onClick={() => {
+                onClose();
+              }}
+            >
+              Отменить
+            </Button>
+          </div>
+        </>
+      ) : null}
+      {step === 1 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+          >
+            Профиль отключен. Включить профиль сотрудника снова можно через меню таблицы.{" "}
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"primary"}
+              onClick={() => {
+                onClose();
+                setStep(0);
+              }}
+            >
+              ОК
+            </Button>
+          </div>
+        </>
+      ) : null}
+    </Modal>
   );
 };

@@ -2,12 +2,49 @@
 
 .fullname {
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
 }
 
 .filters {
   padding: 5px;
+}
+
+.text {
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .element {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  .warning {
+    color: var(--error_text);
+  }
+}
+
+.points {
+  position: relative;
+  bottom: 8px;
+  font-weight: 500;
+  font-size: 32px;
 }
 
 .top {
@@ -24,7 +61,7 @@
 
   .title {
     font-weight: 500;
-    font-size: 32px
+    font-size: 32px;
   }
 }
 

@@ -1,7 +1,7 @@
 .fullname {
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
 }
 
 .top {
@@ -33,4 +33,41 @@
 
 .filters {
   padding: 5px;
+}
+
+.text {
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 32px;
+  margin-right: auto;
+  margin-left: auto;
+  gap: 16px;
+}
+
+.points {
+  position: relative;
+  bottom: 8px;
+  font-weight: 500;
+  font-size: 32px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .element {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  .warning {
+    color: var(--error_text);
+  }
 }

@@ -80,7 +80,7 @@ export const UserApi = rtkApi.injectEndpoints({
         body: body,
       }),
     }),
-    editUser: build.mutation<TUserData, { id: number } & TUserData>({
+    editUser: build.mutation<TUserData, { id: number } & Partial<TUserData>>({
       query: (body: { id: number } & TUserData) => ({
         method: "PATCH",
         url: "/users/" + body.id,
