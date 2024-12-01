@@ -19,7 +19,7 @@ import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContaine
 import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
 
-import { BENEFITS, CREATE_BENEFITS, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS, CREATE_BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/ViewBenefits.module.scss";
 

@@ -32,10 +32,10 @@ type TRequest = {
 
 export const RequestsApi = rtkApi.injectEndpoints({
   endpoints: build => ({
-    getAllRequests: build.query<TRequest[], string>({
-      query: filter => ({
-        url: "/benefit-requests/",
-        ...(filter !== null ? { params: { status: filter } } : {}),
+    getAllRequests: build.query<TRequest[], { filter: string; sort: string }>({
+      query: params => ({
+        url: "/benefit-requests?" + params.sort,
+        ...(params.filter !== null ? { params: { status: params.filter } } : {}),
       }),
       providesTags: ["Requests"],
     }),

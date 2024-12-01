@@ -2,6 +2,7 @@ import { type FC, useEffect, useState } from "react";
 
 import { TRequestStatus, useGetAllRequestsQuery, useUpdateRequestsMutation } from "@entity/Requests/api/Requests.api";
 import { DataTable } from "@feature/DataTable";
+import { toQuery } from "@pages/BenefitsBar/BenefitsBar";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Button } from "@shared/ui/Button";
 import { Icon } from "@shared/ui/Icons/Icon";
@@ -111,6 +112,28 @@ const StatusSelector: FC<TStatusSelectorProps> = props => {
   );
 };
 
+type TBenefitSortedBy = "created_at";
+type TSortOrder = "asc" | "desc";
+
+type TSortParam = {
+  text: string;
+  sortBy: TBenefitSortedBy;
+  sortOrder: TSortOrder;
+};
+
+export const SORT_PARAMS: TSortParam[] = [
+  {
+    text: "По дате заявки ↑",
+    sortBy: "created_at",
+    sortOrder: "asc",
+  },
+  {
+    text: "По дате заявки ↓",
+    sortBy: "created_at",
+    sortOrder: "desc",
+  },
+];
+
 export const ApplicationsView: FC = () => {
   const [filter, setFilter] = useState<TRequestStatus | null>("pending");
   const navigate = useNavigate();
@@ -122,8 +145,9 @@ export const ApplicationsView: FC = () => {
 
     if (filter === "pending") setPossibleStatus(newState);
   }, [filter]);
+  const [sort, setSort] = useState<string>(toQuery(SORT_PARAMS[0].sortBy, SORT_PARAMS[0].sortOrder));
 
-  const requests = useGetAllRequestsQuery(filter);
+  const requests = useGetAllRequestsQuery({ filter: filter, sort: sort });
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [isDeniedModalOpen, setIsDeniedModalOpen] = useState<boolean>(false);
@@ -247,6 +271,16 @@ export const ApplicationsView: FC = () => {
             Все заявки
           </Text>
         </div>
+
+        <Selector
+          currentValue={sort}
+          setCurrentValue={setSort}
+          className={styles.filters}
+          values={SORT_PARAMS.map(el => ({
+            data: toQuery(el.sortBy, el.sortOrder),
+            text: el.text,
+          }))}
+        />
 
         <DataTable
           needRedirect={false}
