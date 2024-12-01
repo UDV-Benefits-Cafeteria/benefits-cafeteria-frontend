@@ -27,7 +27,7 @@ import styles from "../styles/CreateEmployeeForm.module.scss";
 
 import { CreateEmployeeFormActions } from "../model/slice/CreateEmployeeForm.slice";
 
-const useGetInputs = (addButtonEvent: () => void, addButtonEvent1: () => void) => {
+const useGetInputs = (addButtonEvent: () => void) => {
   const positions = useAppSelector(state => state.positions.positions);
   const legalEntities = useAppSelector(state => state.legalEntities.legalEntities);
   const userRole = useAppSelector(state => state.user.data!.role);
@@ -95,7 +95,6 @@ const useGetInputs = (addButtonEvent: () => void, addButtonEvent1: () => void) =
       type: "select",
       label: "Юридическое лицо",
       selectOptions: legalEntities.map(el => ({ data: el.id.toString(), text: el.name })),
-      addButton: { text: "Добавить юр.лицо", event: addButtonEvent1 },
       fieldName: "legal_entity_id",
       isRequired: true,
     },
@@ -125,16 +124,12 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
 
   const dispatch = useAppDispatch();
   const [isAddPositionOpen, setIsAddPositionOpen] = useState(false);
-  const [isAddPositionOpen1, setIsAddPositionOpen1] = useState(false);
   const [image, setImage] = useState<File>();
 
   const navigate = useNavigate();
 
   const userForm = useAppSelector(state => state.createEmployeeForm);
-  const inputs = useGetInputs(
-    () => setIsAddPositionOpen(true),
-    () => setIsAddPositionOpen1(true)
-  );
+  const inputs = useGetInputs(() => setIsAddPositionOpen(true));
   const { data: positionsData } = useGetPositionQuery(null);
   const { data: legalEntityData } = useGetLegalEntitiesQuery(null);
   const [addImage] = useAddImageMutation();
@@ -227,10 +222,6 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
         isOpen={isAddPositionOpen}
         onClose={() => setIsAddPositionOpen(false)}
       />
-      <ModalCreatePosition1
-        isOpen={isAddPositionOpen1}
-        onClose={() => setIsAddPositionOpen1(false)}
-      />
     </>
   );
 };
@@ -256,49 +247,6 @@ const ModalCreatePosition: FC<{ isOpen: boolean; onClose: () => void }> = props 
         type={"block"}
       >
         Добавление должности
-      </Title>
-
-      <InputContainer>
-        <InputLabel>Название*</InputLabel>
-
-        <InputField onChange={e => setPositionName(e.currentTarget.value)} />
-      </InputContainer>
-
-      <div className={styles.buttons}>
-        <Button onClick={handleAddPosition}>Добавить</Button>
-
-        <Button
-          onClick={onClose}
-          buttonType={"secondary"}
-        >
-          Отмена
-        </Button>
-      </div>
-    </Modal>
-  );
-};
-
-const ModalCreatePosition1: FC<{ isOpen: boolean; onClose: () => void }> = props => {
-  const { isOpen, onClose } = props;
-  const [positionName, setPositionName] = useState("");
-  const [createPosition] = useCreateLegalEntitiesMutation();
-
-  const handleAddPosition = async () => {
-    const res = await createPosition(positionName);
-
-    if (res.data) onClose();
-  };
-
-  return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => onClose()}
-    >
-      <Title
-        boldness={"medium"}
-        type={"block"}
-      >
-        Добавление юр.лица
       </Title>
 
       <InputContainer>

@@ -15,7 +15,7 @@ import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
 import { useNavigate } from "react-router-dom";
 
-import { BENEFITS, BENEFITS_BAR, CREATE_BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS, CREATE_BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/ViewBenefits.module.scss";
 
@@ -129,15 +129,8 @@ export const ViewBenefits: FC = () => {
           />
         }
       >
-        <div style={{ display: "flex", width: 500, gap: 32 }}>
+        <div style={{ display: "flex", width: 200, gap: 32 }}>
           <Button onClick={() => navigate(CREATE_BENEFITS)}>Добавить бенефит</Button>
-
-          <Button
-            onClick={() => navigate(BENEFITS_BAR)}
-            buttonType="secondary"
-          >
-            Режим пользователя
-          </Button>
         </div>
       </ViewHeader>
 

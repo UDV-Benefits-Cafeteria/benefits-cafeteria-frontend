@@ -176,15 +176,8 @@ export const ViewEmployees: FC = () => {
           />
         }
       >
-        <div style={{ display: "flex", width: 500, gap: 32 }}>
+        <div style={{ display: "flex", width: 200, gap: 32 }}>
           <Button onClick={() => navigate(CREATE_EMPLOYEES)}>Добавить сотрудника</Button>
-
-          <Button
-            onClick={() => navigate(BENEFITS_BAR)}
-            buttonType="secondary"
-          >
-            Режим пользователя
-          </Button>
         </div>
       </ViewHeader>
 
