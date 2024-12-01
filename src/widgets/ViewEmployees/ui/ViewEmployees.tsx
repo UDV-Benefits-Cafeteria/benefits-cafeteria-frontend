@@ -1,7 +1,7 @@
 import { type FC, useEffect, useState } from "react";
 
 import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
-import { useGetAllUserQuery } from "@entity/User";
+import { useGetAllUserQuery, useGetCurrentUserQuery } from "@entity/User";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { getActiveCategory, preparePeriod, toQuery } from "@pages/BenefitsBar/BenefitsBar";
@@ -160,6 +160,8 @@ export const ViewEmployees: FC = () => {
     else setRoles(prev => [...prev, value]);
   };
 
+  const user = useGetCurrentUserQuery(null);
+
   return (
     <ViewInfoContainer>
       <ViewHeader
@@ -215,30 +217,55 @@ export const ViewEmployees: FC = () => {
           onClose={() => setSidebarOpen(false)}
         >
           <div className={styles.filter_container}>
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Роль</Title>
+            {user.data?.role === "admin" ? (
+                <div className={styles.filter_block}>
+                  <Title type={"element"}>Роль</Title>
 
-              <Checkbox
-                className={styles.radio}
-                onChange={() => handelClickRoleCheckBox("employee")}
-                label={"Сотрудник"}
-                value={roles.includes("employee")}
-              />
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => handelClickRoleCheckBox("employee")}
+                    label={"Сотрудник"}
+                    value={roles.includes("employee")}
+                  />
 
-              <Checkbox
-                className={styles.radio}
-                onChange={() => handelClickRoleCheckBox("hr")}
-                label={"HR"}
-                value={roles.includes("hr")}
-              />
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => handelClickRoleCheckBox("hr")}
+                    label={"HR"}
+                    value={roles.includes("hr")}
+                  />
 
-              <Checkbox
-                className={styles.radio}
-                onChange={() => handelClickRoleCheckBox("admin")}
-                label={"Админ"}
-                value={roles.includes("admin")}
-              />
-            </div>
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => handelClickRoleCheckBox("admin")}
+                    label={"Админ"}
+                    value={roles.includes("admin")}
+                  />
+                </div>
+
+              <div className={styles.filter_block}>
+                <Title type={"element"}>Юридические лица</Title>
+
+                {legalEntityCheckbox && (
+                  <div className={styles.checkbox_container}>
+                    {Object.keys(legalEntityCheckbox).map(el => (
+                      <Checkbox
+                        key={el}
+                        className={styles.element}
+                        value={legalEntityCheckbox[el].active}
+                        label={el}
+                        onChange={() =>
+                          setLegalEntityCheckbox(prev => ({
+                            ...prev,
+                            [el]: {active: !prev![el].active, id: prev![el].id},
+                          }))
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : null}
 
             <div className={styles.filter_block}>
               <Title type={"element"}>Статус пользователя</Title>
@@ -258,29 +285,6 @@ export const ViewEmployees: FC = () => {
                   value={isActive !== null ? !isActive : false}
                 />
               </div>
-            </div>
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Юридические лица</Title>
-
-              {legalEntityCheckbox && (
-                <div className={styles.checkbox_container}>
-                  {Object.keys(legalEntityCheckbox).map(el => (
-                    <Checkbox
-                      key={el}
-                      className={styles.element}
-                      value={legalEntityCheckbox[el].active}
-                      label={el}
-                      onChange={() =>
-                        setLegalEntityCheckbox(prev => ({
-                          ...prev,
-                          [el]: { active: !prev![el].active, id: prev![el].id },
-                        }))
-                      }
-                    />
-                  ))}
-                </div>
-              )}
             </div>
 
             <div className={styles.filter_block}>
