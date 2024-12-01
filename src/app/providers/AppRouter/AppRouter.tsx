@@ -1,6 +1,7 @@
-import { type FC } from "react";
+import { type FC, Suspense } from "react";
 
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
+import Loader from "@shared/ui/Loader";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { ROUTS } from "./AppRouter.config";
@@ -16,6 +17,8 @@ export const AppRouter: FC = () => {
     if (el.needAuth && !isUserAuth) return acc;
 
     if (isUserAuth && !el?.role?.includes(user.data!.role)) return acc;
+
+    el.element = <Suspense fallback={<Loader />}>{el.element}</Suspense>;
 
     acc.push(el);
 
