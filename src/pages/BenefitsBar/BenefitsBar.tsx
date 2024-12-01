@@ -15,6 +15,7 @@ import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { BarHeader } from "@widgets/BarHeader/ui/BarHeader";
 import { BenefitBarView } from "@widgets/BenefitBarView/ui/BenefitBarView";
+import { useLocation } from "react-router-dom";
 
 import styles from "./BenefitsBar.module.scss";
 
@@ -81,6 +82,8 @@ export const getActiveCategory = (
 
 export const BenefitsBar: FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const search = useLocation().search.split("benefit=")?.[1];
+
   const [sort, setSort] = useState<string>(toQuery(SORT_PARAMS[0].sortBy, SORT_PARAMS[0].sortOrder));
   const categories = useGetCategoryQuery(null);
   const [active, setActive] = useState<boolean | null>(null);
@@ -114,7 +117,7 @@ export const BenefitsBar: FC = () => {
 
   const [filters, setFilters] = useState<Partial<TFilterParams>>({});
 
-  const { data: benefits } = useGetAllBenefitQuery({ filters: filters, sort: sort });
+  const { data: benefits } = useGetAllBenefitQuery({ filters: filters, sort: sort, search: search });
 
   useEffect(() => {
     if (categories.data)

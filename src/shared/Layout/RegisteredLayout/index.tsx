@@ -1,5 +1,6 @@
 import { type FC, type PropsWithChildren, useEffect } from "react";
 
+import { useLogoutMutation } from "@entity/User";
 import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { PATH } from "@shared/consts/localStorage";
 import { classNames } from "@shared/lib/classNames/classNames";
@@ -7,9 +8,17 @@ import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector"
 import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
-import { Link, useLocation } from "react-router-dom";
+import { Popover } from "antd";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { APPLICATION, BENEFITS, EMPLOYEES, LEGAL_ENTITY } from "@app/providers/AppRouter/AppRouter.config";
+import {
+  APPLICATION,
+  BENEFITS,
+  BENEFITS_BAR,
+  EMPLOYEES,
+  LEGAL_ENTITY,
+  PERSONAL_ACCOUNT,
+} from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./RegisteredLayout.module.scss";
 
@@ -63,6 +72,7 @@ const NAVBAR_CONTENT_ADMIN: TNavbarContent[] = [
 
 const SideBar: FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const user = useAppSelector(state => state.user.data!);
 
   useEffect(() => {
@@ -70,6 +80,12 @@ const SideBar: FC = () => {
   }, []);
 
   const navbarContent = user.role === "admin" ? NAVBAR_CONTENT_ADMIN : NAVBAR_CONTENT_HR;
+  const [logout] = useLogoutMutation();
+
+  const handleLogout = () => {
+    logout(null);
+    localStorage.setItem(PATH, "");
+  };
 
   return (
     <div className={styles.sidebar}>
@@ -106,21 +122,58 @@ const SideBar: FC = () => {
         </nav>
       </div>
 
-      <div className={styles.user}>
-        <Image
-          srs={user.image_url || USER_PLACEHOLDER}
-          className={styles.user__image}
-          onError={e => (e.target.src = USER_PLACEHOLDER)}
-        />
+      <Popover
+        arrow={false}
+        trigger={"click"}
+        color={"white"}
+        content={
+          <div className={styles.menu}>
+            <div className={styles.menu__top}>
+              <Text
+                onClick={() => navigate(PERSONAL_ACCOUNT)}
+                className={styles.menu__el}
+              >
+                Личный кабинет
+              </Text>
+              <Text
+                onClick={() => navigate(BENEFITS_BAR)}
+                className={styles.menu__el}
+              >
+                Режим пользователя
+              </Text>
+              <Text
+                onClick={() => navigate("help.internal.vstrechya.space")}
+                className={styles.menu__el}
+              >
+                Помощь
+              </Text>
+            </div>
+            <div>
+              <Text
+                onClick={handleLogout}
+                className={styles.menu__el}
+              >
+                Выйти
+              </Text>
+            </div>
+          </div>
+        }
+      >
+        <div className={styles.user}>
+          <Image
+            srs={user.image_url || USER_PLACEHOLDER}
+            className={styles.user__image}
+            onError={e => (e.target.src = USER_PLACEHOLDER)}
+          />
+          <div className={styles.user__info}>
+            <Text>
+              {user.firstname} {user.lastname}
+            </Text>
 
-        <div className={styles.user__info}>
-          <Text>
-            {user.firstname} {user.lastname}
-          </Text>
-
-          <Text type={"description"}>{user.position?.name}</Text>
+            <Text type={"description"}>{user.position?.name}</Text>
+          </div>
         </div>
-      </div>
+      </Popover>
     </div>
   );
 };

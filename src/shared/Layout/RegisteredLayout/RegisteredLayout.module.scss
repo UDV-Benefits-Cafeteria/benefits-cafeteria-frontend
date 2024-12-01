@@ -33,6 +33,31 @@
   }
 }
 
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  color: var(--main_text);
+  background-color: white;
+  gap: 10px;
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--sidebar_border);
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+
+  &__el {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+}
+
 .logo {
   width: 246px;
   height: 65px;
