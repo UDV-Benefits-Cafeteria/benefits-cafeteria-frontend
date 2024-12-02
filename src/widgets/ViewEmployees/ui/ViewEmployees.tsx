@@ -219,8 +219,59 @@ export const ViewEmployees: FC = () => {
           />
         }
       >
-        <div style={{ display: "flex", width: 200, gap: 32 }}>
+        <div style={{ display: "flex", width: 300, gap: 16 }}>
           <Button onClick={() => navigate(CREATE_EMPLOYEES)}>Добавить сотрудника</Button>
+
+          <Popover
+            trigger={"click"}
+            arrow={false}
+            content={
+              <div className={styles.menu}>
+                <div className={styles.menu__top}>
+                  <Text className={styles.menu__el}>
+                    <Icon
+                      icon={"upload"}
+                      className={styles.filter_button__icon}
+                      size={"s"}
+                    />
+                    Импорт списка пользователей Excel
+                  </Text>
+                  <Text className={styles.menu__el}>
+                    <Icon
+                      icon={"download"}
+                      className={styles.filter_button__icon}
+                      size={"s"}
+                    />
+                    Скачать шаблон импорта Excel
+                  </Text>
+                </div>
+                <Text className={styles.menu__el}>
+                  <Icon
+                    icon={"download"}
+                    className={styles.filter_button__icon}
+                    size={"s"}
+                  />
+                  Экспорт списка пользователей Excel
+                </Text>
+                <Text className={styles.menu__el}>
+                  <Icon
+                    icon={"download"}
+                    className={styles.filter_button__icon}
+                    size={"s"}
+                  />
+                  Экспорт списка пользователей Excel
+                </Text>
+              </div>
+            }
+          >
+            <div className={styles.import}>
+              <Icon
+                icon={"import"}
+                size={"m"}
+                className={styles.import_icon}
+              />
+            </div>
+          </Popover>
         </div>
       </ViewHeader>
 

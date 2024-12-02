@@ -14,6 +14,20 @@
   text-align: center;
 }
 
+.import {
+  display: flex;
+  place-items: center center;
+  justify-content: center;
+  border: 1px solid var(--primary);
+  border-radius: 15px;
+  height: 40px;
+  min-width: 40px;
+}
+
+.import_icon {
+  background-color: var(--primary);
+}
+
 .buttons {
   display: flex;
   gap: 16px;
@@ -37,6 +51,34 @@
 
   .warning {
     color: var(--error_text);
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  color: var(--main_text);
+  background-color: white;
+  gap: 10px;
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--sidebar_border);
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+
+  &__el {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &:hover {
+      color: var(--primary);
+    }
   }
 }
 
