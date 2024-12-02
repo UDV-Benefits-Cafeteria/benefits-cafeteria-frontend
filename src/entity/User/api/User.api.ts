@@ -31,7 +31,7 @@ export const UserApi = rtkApi.injectEndpoints({
     }),
     getAllUser: build.query<TUserData[], { filters?: object; sort?: string; search?: string }>({
       query: params => ({
-        url: "/users?" + params.sort,
+        url: "/users/?" + params.sort,
         params: { ...params.filters, legal_entity_id: undefined, ...(params.search ? { query: params.search } : {}) },
       }),
       providesTags: ["User"],
