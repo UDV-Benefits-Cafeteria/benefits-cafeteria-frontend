@@ -44,6 +44,12 @@
   }
 
   &.secondary-black {
+    border: solid 1px var(--main_text);
+    color: var(--main_text);
+    background-color: white;
+  }
+
+  &.secondary-grey {
     border: solid 1px #8C8C8C;
     color: #8C8C8C;
     background-color: white;

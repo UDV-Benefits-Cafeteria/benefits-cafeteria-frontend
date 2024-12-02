@@ -541,7 +541,7 @@ const DisableModal = ({ open, onClose, id }) => {
               Отключить
             </Button>
             <Button
-              buttonType={"secondary-black"}
+              buttonType={"secondary-grey"}
               onClick={() => {
                 onClose();
               }}
