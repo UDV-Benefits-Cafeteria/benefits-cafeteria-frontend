@@ -119,19 +119,19 @@ export const BenefitPage: FC = () => {
             </Text>
 
             <Text className={styles.text}>
-              Сколько раз можно использовать:{" "}
+              Адаптационный период:{" "}
+              <span className={styles.count}>{benefit.adaptation_required ? "должен быть пройден" : "не обязателен"}</span>
+            </Text>
+
+            <Text className={styles.text}>
+              Сколько раз можно активировать бенефит:{" "}
               <span className={styles.count}>{benefit.usage_limit || "неограниченное количество"}</span>
             </Text>
 
             <Text className={styles.text}>
-              Адаптационный период:{" "}
-              <span className={styles.count}>{benefit.adaptation_required ? "пройден" : "не пройден"}</span>
-            </Text>
-
-            <Text className={styles.text}>
-              Период сброса использований:{" "}
+              Период обновления:{" "}
               <span className={styles.count}>
-                {benefit.is_fixed_period ? "не обновляется" : benefit.usage_period_days || "не обновляется"}
+                {benefit.is_fixed_period ? "отсутствует" : benefit.usage_period_days || "отсутствует"}
               </span>
             </Text>
           </div>
