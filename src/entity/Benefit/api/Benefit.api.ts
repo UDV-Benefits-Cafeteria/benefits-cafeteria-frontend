@@ -31,12 +31,15 @@ export const BenefitApi = rtkApi.injectEndpoints({
       { filters?: Partial<TFilterParams>; sort?: string; search?: string; limit?: number }
     >({
       query: params => ({
-        url: "/benefits/?" + params.sort + "&" + (params.filters?.categories ?? ""),
+        url:
+          "/benefits/?" +
+          params.sort +
+          (params.filters?.categories ? "&" + params.filters?.categories : "") +
+          `${params.search ? "&query=" + params.search : ""}`,
         params: {
           ...params.filters,
           limit: params.limit,
           categories: undefined,
-          ...(params.search ? { query: params.search } : {}),
         },
       }),
       providesTags: ["Benefits"],
