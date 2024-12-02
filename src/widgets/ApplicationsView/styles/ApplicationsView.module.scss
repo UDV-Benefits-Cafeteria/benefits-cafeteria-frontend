@@ -5,6 +5,31 @@
   gap: 16px;
 }
 
+.el {
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.copy {
+  background-color: var(--main_text);
+
+  &.active {
+    background-color: var(--primary);
+  }
+}
+
+.filters {
+  padding: 5px;
+  width: 200px;
+}
+
+.warning {
+  color: var(--error_text);
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -14,8 +39,8 @@
 
 .filter {
   display: flex;
-  gap: 24px;
   cursor: pointer;
+  gap: 24px;
 
   .text {
     @include largeText;
@@ -43,5 +68,5 @@
 }
 
 .declined {
-  color: #FF4040;
+  color: #ff4040;
 }

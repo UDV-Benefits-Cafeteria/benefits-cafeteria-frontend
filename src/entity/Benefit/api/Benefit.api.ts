@@ -26,10 +26,18 @@ export const BenefitApi = rtkApi.injectEndpoints({
       }),
       providesTags: ["Benefits"],
     }),
-    getAllBenefit: build.query<TBenefitData[], { filters?: Partial<TFilterParams>; sort?: string; search?: string }>({
+    getAllBenefit: build.query<
+      TBenefitData[],
+      { filters?: Partial<TFilterParams>; sort?: string; search?: string; limit?: number }
+    >({
       query: params => ({
         url: "/benefits/?" + params.sort + "&" + (params.filters?.categories ?? ""),
-        params: { ...params.filters, categories: undefined, ...(params.search ? { query: params.search } : {}) },
+        params: {
+          ...params.filters,
+          limit: params.limit,
+          categories: undefined,
+          ...(params.search ? { query: params.search } : {}),
+        },
       }),
       providesTags: ["Benefits"],
     }),
@@ -71,6 +79,7 @@ export const BenefitApi = rtkApi.injectEndpoints({
 export const {
   useCreateBenefitMutation,
   useGetAllBenefitQuery,
+  useLazyGetAllBenefitQuery,
   useGetBenefitQuery,
   useDeleteBenefitImageMutation,
   useAddBenefitImageMutation,

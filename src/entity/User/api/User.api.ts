@@ -31,8 +31,8 @@ export const UserApi = rtkApi.injectEndpoints({
     }),
     getAllUser: build.query<TUserData[], { filters?: object; sort?: string; search?: string }>({
       query: params => ({
-        url: "/users/?" + params.sort,
-        params: { ...params.filters, legal_entity_id: undefined, ...(params.search ? { query: params.search } : {}) },
+        url: "/users/?" + params.sort + "&" + params.filters?.legal_entities,
+        params: { ...params.filters, legal_entities: undefined, ...(params.search ? { query: params.search } : {}) },
       }),
       providesTags: ["User"],
     }),
@@ -80,7 +80,7 @@ export const UserApi = rtkApi.injectEndpoints({
         body: body,
       }),
     }),
-    editUser: build.mutation<TUserData, { id: number } & TUserData>({
+    editUser: build.mutation<TUserData, { id: number } & Partial<TUserData>>({
       query: (body: { id: number } & TUserData) => ({
         method: "PATCH",
         url: "/users/" + body.id,

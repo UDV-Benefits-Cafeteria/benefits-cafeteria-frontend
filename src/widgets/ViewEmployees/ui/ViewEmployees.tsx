@@ -1,11 +1,13 @@
 import { type FC, useEffect, useState } from "react";
 
 import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
-import { useGetAllUserQuery, useGetCurrentUserQuery } from "@entity/User";
+import { useEditUserMutation, useGetAllUserQuery } from "@entity/User";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { getActiveCategory, preparePeriod, toQuery } from "@pages/BenefitsBar/BenefitsBar";
 import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
+import { classNames } from "@shared/lib/classNames/classNames";
+import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Checkbox } from "@shared/ui/Checkbox";
 import { FiltersSidebar } from "@shared/ui/FiltersSidebar/FiltersSidebar";
@@ -14,14 +16,16 @@ import { Image } from "@shared/ui/Image/Image";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
 import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
+import { Modal } from "@shared/ui/Modal";
 import { Selector } from "@shared/ui/Selector";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
+import { Popover } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { BENEFITS_BAR, CREATE_EMPLOYEES, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { CREATE_EMPLOYEES, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
 import { TUserRole } from "@entity/User/model/types/User.types";
 
@@ -43,6 +47,10 @@ const tableHeader = [
   {
     text: "Баланс, UDV-coins",
     data: "coins",
+  },
+  {
+    text: "",
+    data: "points",
   },
 ];
 
@@ -78,12 +86,12 @@ type TEmployeesFilter = {
   is_adapted: boolean;
   is_verified: boolean;
   role: string;
-  legal_entity_id: string;
+  legal_entities: string;
 };
 
 export const ViewEmployees: FC = () => {
-  const [search, setSearch] = useState(null);
-  const location = useLocation().search;
+  const [search, setSearch] = useState("");
+  const filter = useLocation().search.split("legal_entity=")?.[1];
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filters, setFilters] = useState<Partial<TEmployeesFilter>>({});
 
@@ -118,21 +126,25 @@ export const ViewEmployees: FC = () => {
   };
 
   useEffect(() => {
-    if (legalEntity.data)
+    if (legalEntity.data) {
       setLegalEntityCheckbox(
         Object.fromEntries(
           legalEntity.data.map(el => [
             el.name,
             {
-              active: false,
+              active: filter !== undefined ? Number(filter) === el.id : false,
               id: el.id,
             },
           ])
         )
       );
-  }, [legalEntity.data]);
 
-  console.log(location);
+      if (filter) setFilters({ legal_entities: `legal_entities=${filter}` });
+    }
+  }, [legalEntity.data]);
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState();
+
   const users = useGetAllUserQuery({ search: search, sort: sort, filters: filters });
   const navigate = useNavigate();
 
@@ -152,6 +164,40 @@ export const ViewEmployees: FC = () => {
         coins: el.coins,
         level: el.level,
         position: el.position?.name || "-",
+        points: (
+          <Popover
+            className={styles.points}
+            arrow={false}
+            trigger={"click"}
+            content={
+              <div className={styles.actions}>
+                <Text
+                  className={styles.element}
+                  onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
+                >
+                  Посмотреть профиль
+                </Text>
+                <Text
+                  className={styles.element}
+                  onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
+                >
+                  Редактировать профиль
+                </Text>
+                <Text
+                  className={classNames(styles.warning, styles.element)}
+                  onClick={() => {
+                    setId(el.id);
+                    setOpen(true);
+                  }}
+                >
+                  Отключить профиль
+                </Text>
+              </div>
+            }
+          >
+            ...
+          </Popover>
+        ),
       }))
     : [];
 
@@ -160,7 +206,7 @@ export const ViewEmployees: FC = () => {
     else setRoles(prev => [...prev, value]);
   };
 
-  const user = useGetCurrentUserQuery(null);
+  const userRole = useAppSelector(state => state.user.data?.role);
 
   return (
     <ViewInfoContainer>
@@ -173,15 +219,8 @@ export const ViewEmployees: FC = () => {
           />
         }
       >
-        <div style={{ display: "flex", width: 500, gap: 32 }}>
+        <div style={{ display: "flex", width: 200, gap: 32 }}>
           <Button onClick={() => navigate(CREATE_EMPLOYEES)}>Добавить сотрудника</Button>
-
-          <Button
-            onClick={() => navigate(BENEFITS_BAR)}
-            buttonType="secondary"
-          >
-            Режим пользователя
-          </Button>
         </div>
       </ViewHeader>
 
@@ -217,7 +256,7 @@ export const ViewEmployees: FC = () => {
           onClose={() => setSidebarOpen(false)}
         >
           <div className={styles.filter_container}>
-            {user.data?.role === "admin" ? (
+            {userRole === "admin" ? (
               <>
                 <div className={styles.filter_block}>
                   <Title type={"element"}>Роль</Title>
@@ -381,9 +420,9 @@ export const ViewEmployees: FC = () => {
                   setFilters({
                     ...(getActiveCategory(legalEntityCheckbox).length
                       ? {
-                          legal_entity_id: getActiveCategory(legalEntityCheckbox).reduce((acc, el, index) => {
+                          legal_entities: getActiveCategory(legalEntityCheckbox).reduce((acc, el, index) => {
                             acc +=
-                              `categories=${legalEntityCheckbox[el].id}` +
+                              `legal_entities=${legalEntityCheckbox[el].id}` +
                               `${index === getActiveCategory(legalEntityCheckbox).length - 1 ? "" : "&"}`;
 
                             return acc;
@@ -404,10 +443,84 @@ export const ViewEmployees: FC = () => {
       </div>
 
       <DataTable
-        redirectTo={id => `${EMPLOYEES}/${id}/edit`}
         headers={tableHeader}
         data={data}
       />
+
+      <DisableModal
+        open={open}
+        onClose={() => setOpen(false)}
+        id={id}
+      />
     </ViewInfoContainer>
+  );
+};
+
+const DisableModal = ({ open, onClose, id }) => {
+  const [edit] = useEditUserMutation();
+  const [step, setStep] = useState(0);
+
+  return (
+    <Modal
+      isOpen={open}
+      onClose={() => {
+        onClose();
+        setStep(0);
+      }}
+    >
+      {step === 0 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+          >
+            Вы уверены, что хотите отключить профиль сотрудника? Сотрудник не сможет пользоваться данным сервисом.
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"secondary-red"}
+              onClick={async () => {
+                const res = await edit({ id: id, is_active: false });
+
+                setStep(1);
+              }}
+            >
+              Отключить
+            </Button>
+            <Button
+              buttonType={"secondary-black"}
+              onClick={() => {
+                onClose();
+              }}
+            >
+              Отменить
+            </Button>
+          </div>
+        </>
+      ) : null}
+      {step === 1 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+          >
+            Профиль отключен. Включить профиль сотрудника снова можно через меню таблицы.{" "}
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"primary"}
+              onClick={() => {
+                onClose();
+                setStep(0);
+              }}
+            >
+              ОК
+            </Button>
+          </div>
+        </>
+      ) : null}
+    </Modal>
   );
 };

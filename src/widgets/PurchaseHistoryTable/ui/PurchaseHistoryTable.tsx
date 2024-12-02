@@ -8,6 +8,10 @@ import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+
+import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/PurchaseHistoryTable.module.scss";
 
@@ -40,8 +44,8 @@ const status = {
 export const PurchaseHistoryTable: FC = () => {
   const [activeFilter, setActiveFilter] = useState<"all" | TRequestStatus>("all");
   const requests = useGetUserRequestsQuery(null);
+  const navigate = useNavigate();
   const [updateRequest] = useUpdateRequestsMutation();
-  // TODO сделать обьект для этого
 
   const data = requests?.data
     ? requests.data.reduce((acc: any[], el) => {
@@ -49,13 +53,16 @@ export const PurchaseHistoryTable: FC = () => {
 
         acc.push({
           id: el.benefit.id,
-          date: el.created_at,
+          date: dayjs(el.created_at).format("DD.MM.YYYY"),
           name: (
-            <span className={styles.fullname}>
+            <span
+              className={styles.fullname}
+              onClick={() => navigate(BENEFITS + "/" + el.benefit.id)}
+            >
               <Image
                 type={"avatar"}
                 srs={el.benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
-                onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
+                onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
               />
               {el.benefit.name}
             </span>

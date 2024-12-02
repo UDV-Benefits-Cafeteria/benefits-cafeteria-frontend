@@ -1,21 +1,25 @@
 import { type FC, useEffect, useState } from "react";
 
-import { TFilterParams, useGetAllBenefitQuery } from "@entity/Benefit/api/Benefit.api";
+import { TFilterParams, useEditBenefitMutation, useGetAllBenefitQuery } from "@entity/Benefit/api/Benefit.api";
 import { useGetCategoryQuery } from "@entity/Category/api/Category.api";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { BenefitFilter, SORT_PARAMS, toQuery } from "@pages/BenefitsBar/BenefitsBar";
 import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
+import { classNames } from "@shared/lib/classNames/classNames";
 import { Button } from "@shared/ui/Button";
 import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
+import { Modal } from "@shared/ui/Modal";
 import { Selector } from "@shared/ui/Selector";
 import { Text } from "@shared/ui/Text";
+import { Title } from "@shared/ui/Title";
 import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
+import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
 
-import { BENEFITS, BENEFITS_BAR, CREATE_BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS, CREATE_BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/ViewBenefits.module.scss";
 
@@ -39,6 +43,10 @@ const tableHeader = [
   {
     text: "Цена, руб.",
     data: "price",
+  },
+  {
+    text: "",
+    data: "points",
   },
 ];
 
@@ -95,8 +103,10 @@ export const ViewBenefits: FC = () => {
   const [filters, setFilters] = useState<Partial<TFilterParams>>({});
 
   const [search, setSearch] = useState<string>("");
+  const [id, setId] = useState();
 
   const { data: benefits } = useGetAllBenefitQuery({ filters: filters, sort: sort, search: search });
+  const [open, setOpen] = useState(false);
 
   const data = benefits
     ? benefits.map(el => ({
@@ -115,6 +125,40 @@ export const ViewBenefits: FC = () => {
         level: el.min_level_cost,
         coins: el.coins_cost || "бесплатно",
         price: el.real_currency_cost || "бесплатно",
+        points: (
+          <Popover
+            className={styles.points}
+            arrow={false}
+            trigger={"click"}
+            content={
+              <div className={styles.actions}>
+                <Text
+                  className={styles.element}
+                  onClick={() => navigate(BENEFITS + "/" + el.id)}
+                >
+                  Посмотреть бенефит
+                </Text>
+                <Text
+                  className={styles.element}
+                  onClick={() => navigate(BENEFITS + "/" + el.id + "/edit")}
+                >
+                  Редактировать бенефит
+                </Text>
+                <Text
+                  className={classNames(styles.warning, styles.element)}
+                  onClick={() => {
+                    setId(el.id);
+                    setOpen(true);
+                  }}
+                >
+                  Отключить бенефит
+                </Text>
+              </div>
+            }
+          >
+            ...
+          </Popover>
+        ),
       }))
     : [];
 
@@ -129,15 +173,8 @@ export const ViewBenefits: FC = () => {
           />
         }
       >
-        <div style={{ display: "flex", width: 500, gap: 32 }}>
+        <div style={{ display: "flex", width: 200, gap: 32 }}>
           <Button onClick={() => navigate(CREATE_BENEFITS)}>Добавить бенефит</Button>
-
-          <Button
-            onClick={() => navigate(BENEFITS_BAR)}
-            buttonType="secondary"
-          >
-            Режим пользователя
-          </Button>
         </div>
       </ViewHeader>
 
@@ -189,10 +226,84 @@ export const ViewBenefits: FC = () => {
       </div>
 
       <DataTable
-        redirectTo={id => `${BENEFITS}/${id}/edit`}
         headers={tableHeader}
         data={data}
       />
+
+      <DisableModal
+        open={open}
+        onClose={() => setOpen(false)}
+        id={id}
+      />
     </ViewInfoContainer>
+  );
+};
+
+const DisableModal = ({ open, onClose, id }) => {
+  const [edit] = useEditBenefitMutation();
+  const [step, setStep] = useState(0);
+
+  return (
+    <Modal
+      isOpen={open}
+      onClose={() => {
+        onClose();
+        setStep(0);
+      }}
+    >
+      {step === 0 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+          >
+            Вы уверены, что хотите отключить бенефит? Сотрудники не смогут видеть его в баре бенефитов.
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"secondary-red"}
+              onClick={async () => {
+                const res = await edit({ id: id, is_active: false });
+
+                setStep(1);
+              }}
+            >
+              Отключить
+            </Button>
+            <Button
+              buttonType={"secondary-black"}
+              onClick={() => {
+                onClose();
+              }}
+            >
+              Отменить
+            </Button>
+          </div>
+        </>
+      ) : null}
+      {step === 1 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+          >
+            Бенефит отключен. Включить бенефит снова можно через меню таблицы.
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"primary"}
+              onClick={() => {
+                onClose();
+                setStep(0);
+              }}
+            >
+              ОК
+            </Button>
+          </div>
+        </>
+      ) : null}
+    </Modal>
   );
 };

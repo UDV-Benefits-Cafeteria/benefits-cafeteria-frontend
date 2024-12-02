@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
+    "antd": "^5.22.2",
     "babel-plugin-react-compiler": "^19.0.0-beta-8a03594-20241020",
     "babel-preset-react": "^6.24.1",
     "dayjs": "^1.11.13",
