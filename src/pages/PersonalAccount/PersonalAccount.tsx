@@ -14,11 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { BENEFITS_BAR, EMPLOYEES, LOGIN } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./PersonalAccount.module.scss";
+import {useNotification} from "@app/providers/NotificationProvider/NotificationProvider";
 
 export const PersonalAccount: FC = () => {
   const [logout] = useLogoutMutation();
   const user = useAppSelector(state => state.user.data!);
   const navigate = useNavigate();
+
+  const { showMessage } = useNotification();
+  const key = "logoutProcess";
 
   return (
     <>
@@ -99,6 +103,7 @@ export const PersonalAccount: FC = () => {
             onClick={async () => {
               navigate(LOGIN);
               await logout(null);
+              showMessage("Вы вышли из аккаунта.", "info", key);
             }}
           >
             Выйти из аккаунта

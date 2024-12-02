@@ -30,6 +30,8 @@ import type { TBenefit, TBenefitData } from "@entity/Benefit/model/types/Benefit
 
 import styles from "../styles/CreateBenefitForm.module.scss";
 
+import { useNotification } from "@app/providers/NotificationProvider/NotificationProvider";
+
 const useGetInputs = (addButtonEvent: () => void) => {
   const isFixedPeriod = useAppSelector(state => state.createBenefitForm.is_fixed_period);
   const categories = useAppSelector(state => state.category.category);
@@ -108,7 +110,6 @@ const useGetInputs = (addButtonEvent: () => void) => {
 
 export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
   const { benefit } = props;
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
@@ -121,6 +122,32 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
   const { data: categoryData } = useGetCategoryQuery(null);
   const [trigger, setTrigger] = useState(false);
   const [image, setImage] = useState<File>();
+
+  const { showMessage, destroyMessage } = useNotification();
+  const key = "benefitProcess";
+  interface ErrorDetail {
+    type: string;
+    loc: string[];
+    msg: string;
+    input: string;
+    ctx?: {
+      min_length?: number;
+      max_length?: number;
+      error?: object;
+    };
+  }
+
+  interface ErrorResponse {
+    error: {
+      data: {
+        detail: ErrorDetail[];
+      };
+    };
+  }
+
+  const fieldTranslations: Record<string, string> = {
+    name: "Название бенефита",
+  };
 
   useEffect(() => {
     if (benefit) {
@@ -140,6 +167,8 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
   }, []);
 
   const handleAddBenefit = async () => {
+    showMessage("Добавление бенефита...", "loading", key);
+
     let res;
     let imageRes;
 
@@ -153,6 +182,35 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
       await deleteImages({ id: res?.data?.id || 0, imagesId: res?.data?.images.map(el => el.id || []) });
 
       imageRes = await addImage({ id: res?.data?.id || 0, image: image });
+    }
+
+    if (!res.error && !benefit) {
+      showMessage("Бенефит успешно добавлен!", "success", key);
+    } else if (!res.error && benefit) {
+      showMessage("Бенефит успешно обновлен!", "success", key);
+    }
+
+    if (res.error) {
+      const errors = res.error.data.detail;
+      destroyMessage(key);
+      if (errors === "Failed to create benefit") showMessage(`Ошибка: Выберите категорию бенефита`, "error");
+      errors.forEach(error => {
+        const field = error.loc[1];
+        const message = error.msg;
+
+        const fieldName = fieldTranslations[field] || field;
+        if (error.type === "string_too_short") {
+          if (error.ctx?.min_length) {
+            showMessage(`Ошибка. Поле "${fieldName}" должно содержать хотя бы ${error.ctx.min_length} символов.`, "error");
+          }
+        } else if (error.type === "string_too_long") {
+          if (error.ctx?.max_length) {
+            showMessage(`Ошибка. Поле "${fieldName}" должно содержать не более ${error.ctx.max_length} символов.`, "error");
+          }
+        } else {
+          showMessage(`Что-то пошло не так :(`, "error");
+        }
+      });
     }
 
     if (res.data && ((image && imageRes?.data) || (!image && !imageRes?.data))) {

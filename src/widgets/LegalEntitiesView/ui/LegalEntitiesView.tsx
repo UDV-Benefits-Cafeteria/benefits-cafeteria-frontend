@@ -14,6 +14,7 @@ import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContaine
 import { EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "@widgets/CreateEmployeeForm/styles/CreateEmployeeForm.module.scss";
+import {useNotification} from "@app/providers/NotificationProvider/NotificationProvider";
 
 const tableHeader = [
   {
@@ -76,10 +77,24 @@ const ModalCreateLegalEntity: FC<{ isOpen: boolean; onClose: () => void }> = pro
   const [positionName, setPositionName] = useState("");
   const [createPosition] = useCreateLegalEntitiesMutation();
 
+  const { showMessage } = useNotification();
+  const key = "legalEntityProcess";
+
   const handleAddPosition = async () => {
     const res = await createPosition(positionName);
+    showMessage("Добавление юр. лица...", "loading", key);
 
-    if (res.data) onClose();
+    if (res.data) {
+      showMessage("Юр. лицо успешно добавлено!", "success", key);
+      onClose();
+    }
+
+    if (res.error) {
+      if (res.error.data.detail === "Failed to create legal entity") showMessage("Ошибка. Юр. лицо с таким названием уже существует.", "error", key);
+      else if (res.error.data.detail[0].type === "string_too_long") showMessage("Ошибка. Название слишком длинное.", "error", key);
+      else if (res.error.data.detail[0].type === "string_too_short") showMessage("Ошибка. Название слишком короткое.", "error", key);
+      else showMessage("Что-то пошло не так :(", "error", key);
+    }
   };
 
   return (

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/PurchaseHistoryTable.module.scss";
+import {useNotification} from "@app/providers/NotificationProvider/NotificationProvider";
 
 const tableHeader = [
   {
@@ -47,6 +48,9 @@ export const PurchaseHistoryTable: FC = () => {
   const navigate = useNavigate();
   const [updateRequest] = useUpdateRequestsMutation();
 
+  const { showMessage } = useNotification();
+  const key = "CancelRequestProcess";
+
   const data = requests?.data
     ? requests.data.reduce((acc: any[], el) => {
         if (activeFilter !== "all" && el.status !== activeFilter) return acc;
@@ -72,7 +76,10 @@ export const PurchaseHistoryTable: FC = () => {
             <>
               {el.status === "pending" ? (
                 <Button
-                  onClick={() => updateRequest({ id: el.id, status: "declined" })}
+                  onClick={() => {
+                      updateRequest({ id: el.id, status: "declined" });
+                      showMessage("Вы отменили запрос на бенефит.", "info", key);
+                  }}
                   buttonType={"secondary-red"}
                 >
                   Отменить покупку

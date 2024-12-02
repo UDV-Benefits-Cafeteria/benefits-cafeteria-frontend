@@ -27,6 +27,8 @@ import styles from "../styles/CreateEmployeeForm.module.scss";
 
 import { CreateEmployeeFormActions } from "../model/slice/CreateEmployeeForm.slice";
 
+import { useNotification } from "@app/providers/NotificationProvider/NotificationProvider";
+
 const useGetInputs = (addButtonEvent: () => void) => {
   const positions = useAppSelector(state => state.positions.positions);
   const legalEntities = useAppSelector(state => state.legalEntities.legalEntities);
@@ -136,6 +138,35 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
   const [createUser] = useCreateUserMutation();
   const [editUser] = useEditUserMutation();
 
+  const { showMessage, destroyMessage } = useNotification();
+  const key = "employeeProcess";
+  interface ErrorDetail {
+    type: string;
+    loc: string[];
+    msg: string;
+    input: string;
+    ctx?: {
+      reason?: string;
+      error?: object;
+    };
+  }
+
+  interface ErrorResponse {
+    error: {
+      data: {
+        detail: ErrorDetail[];
+      };
+    };
+  }
+
+  const fieldTranslations: Record<string, string> = {
+    email: "Почта",
+    firstname: "Имя",
+    lastname: "Фамилия",
+    middlename: "Отчество",
+    hired_at: "Дата найма"
+  };
+
   useEffect(() => {
     if (user && isEdit)
       dispatch(
@@ -162,6 +193,8 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
   }, []);
 
   const handleAddUser = async () => {
+    showMessage("Добавление пользователя...", "loading", key);
+
     let res;
     let imageRes;
 
@@ -171,6 +204,39 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
       res = await editUser({ ...userForm, id: user?.id || 0 });
     } else {
       res = await createUser(userForm);
+    }
+
+    if (!res.error && !isEdit) {
+      showMessage("Пользователь успешно добавлен!", "success", key);
+    } else if (!res.error && isEdit) {
+      showMessage("Пользователь успешно обновлен!", "success", key);
+    }
+
+    if (res.error) {
+      const errors = res.error.data.detail;
+      destroyMessage(key);
+      errors.forEach(error => {
+        const field = error.loc[1];
+        const message = error.msg;
+
+        const fieldName = fieldTranslations[field] || field;
+
+        if (field === "email") {
+          if (message.includes("not a valid email address")) {
+            showMessage(`Ошибка. Неверный формат поля "${fieldName}".`, "error");
+          }
+        } else if (field === "firstname" || field === "lastname" || field === "middlename") {
+          if (message.includes("contains characters that do not pass validation")) {
+            showMessage(`Ошибка. Поле "${fieldName}" содержит недопустимые символы.`, "error");
+          }
+        } else if (field === "hired_at") {
+          if (message.includes("Input should be a valid date or datetime")) {
+            showMessage(`Ошибка. Неверный формат поля "${fieldName}". Пожалуйста, введите корректную дату.`, "error");
+          }
+        } else {
+          showMessage("Что-то пошло не так :(", "error");
+        }
+      });
     }
 
     if (res.data && ((image && imageRes?.data) || (!image && !imageRes?.data))) {

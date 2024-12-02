@@ -11,6 +11,7 @@ import { Text } from "@shared/ui/Text";
 import type { TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 
 import styles from "../styles/BenefitBarView.module.scss";
+import {useNotification} from "@app/providers/NotificationProvider/NotificationProvider";
 
 export const BenefitBarView: FC<{ benefits: TBenefitData[] }> = ({ benefits }) => {
   const [isOpenCreateRequestModal, setIsOpenCreateRequestModal] = useState(false);
@@ -18,6 +19,9 @@ export const BenefitBarView: FC<{ benefits: TBenefitData[] }> = ({ benefits }) =
   const [addStep, setAddStep] = useState<"add" | "success">("add");
   const [currentBenefit, setCurrentBenefit] = useState(-1);
   const [createRequest] = useCreateRequestsMutation();
+
+  const { showMessage, destroyMessage } = useNotification();
+  const key = "purchaseBenefitProcess";
 
   const handleAddRequestResp = async () => {
     const res = await createRequest({
@@ -27,8 +31,11 @@ export const BenefitBarView: FC<{ benefits: TBenefitData[] }> = ({ benefits }) =
     });
 
     if (res.data) {
+      showMessage("Заявка успешно оформлена!", "success", key);
       setAddStep("success");
     }
+    
+    if (res.error) showMessage(`Ошибка. Что-то пошло не так :(".`, "error", key);
   };
 
   const handleAddRequest = (id: number) => {
