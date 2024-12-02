@@ -90,7 +90,10 @@ const SideBar: FC = () => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.top_container}>
-        <div className={styles.logo} />
+        <div
+          className={styles.logo}
+          onClick={() => navigate(BENEFITS_BAR)}
+        />
 
         <Text type={"description"}>
           Юридическое лицо:{" "}
@@ -142,7 +145,7 @@ const SideBar: FC = () => {
                 Режим пользователя
               </Text>
               <Text
-                onClick={() => navigate("help.internal.vstrechya.space")}
+                onClick={() => window.location.assign("https://help.internal.vstrechya.space")}
                 className={styles.menu__el}
               >
                 Помощь
