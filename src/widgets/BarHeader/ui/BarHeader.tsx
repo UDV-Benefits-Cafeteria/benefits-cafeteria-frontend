@@ -2,7 +2,7 @@ import { type FC, useEffect, useState } from "react";
 
 import { useLazyGetAllBenefitQuery } from "@entity/Benefit/api/Benefit.api";
 import { useLogoutMutation } from "@entity/User";
-import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
+import {BENEFIT_PLACEHOLDER, USER_PLACEHOLDER} from "@shared/assets/imageConsts";
 import { PATH } from "@shared/consts/localStorage";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
@@ -10,7 +10,7 @@ import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
 import { Link } from "@shared/ui/Link";
 import { Text } from "@shared/ui/Text";
-import { Popover, Select } from "antd";
+import { Popover, Select, ConfigProvider } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -66,6 +66,43 @@ export const BarHeader: FC = () => {
           className={styles.logo}
         />
 
+        <ConfigProvider
+            theme={{
+              components: {
+                Select: {
+                  borderRadius: 24,
+                  colorBgContainer: "#F8F9FE",
+                  colorBorder: "#8C8C8C",
+                  fontSize: 16,
+                  fontSizeSM: 16,
+                  fontFamily: "Golos",
+                  optionFontSize: 16,
+                  fontSizeIcon: 16,
+                  fontSizeAdjust: 16,
+                  fontSizeHeading1: 16,
+                  fontSizeHeading2: 16,
+                  fontSizeHeading3: 16,
+                  fontSizeHeading4: 16,
+                  fontSizeHeading5: 16,
+                  fontSizeHeading6: 16,
+                  contentFontSize: 16,
+                  descriptionFontSize: 16,
+                  handleFontSize: 16,
+                  labelFontSize: 16,
+                  cellFontSize: 16,
+                  circleTextFontSize: 16,
+                  inputFontSize: 16,
+                  subtitleFontSize: 16,
+                  textFontSize: 16,
+                  contentFontSizeSM: 16,
+                  inputFontSizeSM: 16,
+                  titleFontSizeSM: 16,
+                  itemFontSizeSM: 16,
+                  itemFontSize: 16,
+                },
+              },
+            }}
+        >
         <Select
           showSearch
           value={value}
@@ -81,7 +118,7 @@ export const BarHeader: FC = () => {
             <Icon
               className={styles.icon}
               icon={"loupe"}
-              size={"l"}
+              size={"s"}
             />
           }
           options={
@@ -92,7 +129,8 @@ export const BarHeader: FC = () => {
                     label: (
                       <div className={styles.search__el}>
                         <Image
-                          srs={d.images?.[0].image_url || BENEFIT_PLACEHOLDER}
+                          srs={d.primary_image_url || BENEFIT_PLACEHOLDER}
+                          onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
                           className={styles.search__icon}
                         />
                         <div className={styles.search__container}>
@@ -118,7 +156,7 @@ export const BarHeader: FC = () => {
                     label: (
                       <div className={styles.search__el}>
                         <Icon
-                          size={"l"}
+                          size={"s"}
                           className={styles.loupe}
                           icon={"loupe"}
                         />
@@ -137,6 +175,7 @@ export const BarHeader: FC = () => {
               : []
           }
         />
+        </ConfigProvider>
 
         <div className={styles.item}>
           <span className={styles.top_text}>{user.coins}</span>

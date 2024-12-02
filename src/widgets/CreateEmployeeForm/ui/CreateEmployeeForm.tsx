@@ -243,16 +243,16 @@ const ModalCreatePosition: FC<{ isOpen: boolean; onClose: () => void }> = props 
       onClose={() => onClose()}
     >
       <Title
-        boldness={"medium"}
         type={"block"}
+        className={styles.modalTitle}
       >
         Добавление должности
       </Title>
 
-      <InputContainer>
+      <InputContainer className={styles.inputContainerModal}>
         <InputLabel>Название*</InputLabel>
 
-        <InputField onChange={e => setPositionName(e.currentTarget.value)} />
+        <InputField placeholder={"Введите название должности"} className={styles.inputFieldModal} onChange={e => setPositionName(e.currentTarget.value)} />
       </InputContainer>
 
       <div className={styles.buttons}>

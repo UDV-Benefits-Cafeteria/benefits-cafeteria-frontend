@@ -88,16 +88,16 @@ const ModalCreateLegalEntity: FC<{ isOpen: boolean; onClose: () => void }> = pro
       onClose={() => onClose()}
     >
       <Title
-        boldness={"medium"}
         type={"block"}
+        className={styles.modalTitle}
       >
-        Добавление юр.лица
+        Добавление юридического лица
       </Title>
 
-      <InputContainer>
+      <InputContainer className={styles.inputContainerModal}>
         <InputLabel>Название*</InputLabel>
 
-        <InputField onChange={e => setPositionName(e.currentTarget.value)} />
+        <InputField placeholder={"Введите название юр.лица"} className={styles.inputFieldModal} onChange={e => setPositionName(e.currentTarget.value)} />
       </InputContainer>
 
       <div className={styles.buttons}>

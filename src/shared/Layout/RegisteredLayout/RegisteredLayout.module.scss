@@ -7,6 +7,10 @@
   height: 100dvh;
 }
 
+.popover {
+  cursor: pointer;
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -65,6 +69,7 @@
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 .navbar {

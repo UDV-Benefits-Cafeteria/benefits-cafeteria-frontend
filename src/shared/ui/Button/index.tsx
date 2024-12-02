@@ -7,7 +7,7 @@ import styles from "./Button.module.scss";
 type TButtonProps = {
   className?: string;
   disabled?: boolean;
-  buttonType?: "primary" | "secondary" | "secondary-red" | "secondary-black";
+  buttonType?: "primary" | "secondary" | "secondary-red" | "secondary-black" | "primary-red";
 } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> &
   PropsWithChildren;
 

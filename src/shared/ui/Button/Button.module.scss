@@ -8,7 +8,8 @@
   justify-content: center;
   border-radius: 25px;
   padding: 16px 0;
-  width: 100%;
+  width: 220px;
+  height: 50px;
   font-family: inherit;
   font-size: 16px;
 
@@ -46,5 +47,17 @@
     border: solid 1px var(--main_text);
     color: var(--main_text);
     background-color: white;
+  }
+
+  &.secondary-grey {
+    border: solid 1px #8C8C8C;
+    color: #8C8C8C;
+    background-color: white;
+  }
+
+  &.primary-red {
+    border: none;
+    color: white;
+    background-color: #FF4040;
   }
 }

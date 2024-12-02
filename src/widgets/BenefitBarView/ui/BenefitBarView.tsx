@@ -80,36 +80,38 @@ export const CreateRequestModal: FC<TCreateRequestModalProps> = props => {
           isOpen={isOpen}
           onClose={onClose}
         >
-          <Text>Вы уверены, что хотите отправить запрос на&nbsp;покупку бенефита?</Text>
+          <Text boldness={"medium"} className={styles.confirmText}>Вы уверены, что хотите отправить запрос на&nbsp;покупку бенефита?</Text>
 
           <div className={styles.buttons}>
-            <Button onClick={handleAddRequest}>Отправить</Button>
+            <Button onClick={handleAddRequest} className={styles.btn}>Отправить</Button>
 
             <Button
               onClick={onClose}
               buttonType={"secondary"}
+              className={styles.btn}
             >
               Отмена
             </Button>
           </div>
         </Modal>
       ) : (
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-        >
-          <Text boldness={"medium"}>
-            Запрос на покупку отправлен. Посмотреть статус заявки или отменить запрос можно в личном кабинете.
-          </Text>
-
-          <Button
-            onClick={onClose}
-            buttonType={"secondary"}
+          <Modal
+              isOpen={isOpen}
+              onClose={onClose}
           >
-            ОК
-          </Button>
-        </Modal>
-      )}
+            <Text boldness={"medium"} className={styles.confirmText}>
+              Запрос на покупку отправлен.<br/>Посмотреть статус заявки или отменить запрос можно в личном кабинете.
+            </Text>
+            <div className={styles.buttons}>
+              <Button
+                  onClick={onClose}
+                  className={styles.btn}
+              >
+                ОК
+              </Button>
+            </div>
+          </Modal>
+        )}
     </>
   );
 };

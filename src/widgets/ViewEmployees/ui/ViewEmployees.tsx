@@ -524,13 +524,14 @@ const DisableModal = ({ open, onClose, id }) => {
           <Title
             type={"element"}
             className={styles.text}
+            boldness={"medium"}
           >
-            Вы уверены, что хотите отключить профиль сотрудника? Сотрудник не сможет пользоваться данным сервисом.
+            Вы уверены, что хотите<br/>отключить профиль сотрудника?<br/>Сотрудник не сможет пользоваться<br/>данным сервисом.
           </Title>
 
           <div className={styles.buttons}>
             <Button
-              buttonType={"secondary-red"}
+              buttonType={"primary-red"}
               onClick={async () => {
                 const res = await edit({ id: id, is_active: false });
 
@@ -540,7 +541,7 @@ const DisableModal = ({ open, onClose, id }) => {
               Отключить
             </Button>
             <Button
-              buttonType={"secondary-black"}
+              buttonType={"secondary-grey"}
               onClick={() => {
                 onClose();
               }}
@@ -555,8 +556,9 @@ const DisableModal = ({ open, onClose, id }) => {
           <Title
             type={"element"}
             className={styles.text}
+            boldness={"medium"}
           >
-            Профиль отключен. Включить профиль сотрудника снова можно через меню таблицы.{" "}
+            Профиль отключен.<br/>Включить профиль сотрудника снова можно<br/>через меню таблицы.{" "}
           </Title>
 
           <div className={styles.buttons}>
