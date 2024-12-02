@@ -1,14 +1,36 @@
 .title {
   display: flex;
   flex-direction: column;
-  margin-bottom: 70px;
+  margin-bottom: 54px;
   gap: 24px;
 }
 
 .buttons {
   display: flex;
-  margin-top: 24px;
+  margin-top: 45px;
   gap: 24px;
+  justify-content: center;
+}
+
+.modalTitle {
+  text-align: center;
+  margin-bottom: 54px;
+}
+
+.inputContainerModal {
+  width: 530px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.inputFieldModal {
+  border-color: #C5C6CC;
+  background-color: white;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: inline;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form_buttons {

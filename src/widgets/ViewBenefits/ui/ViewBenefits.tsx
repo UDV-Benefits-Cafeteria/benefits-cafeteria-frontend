@@ -299,13 +299,14 @@ const DisableModal = ({ open, onClose, id }) => {
           <Title
             type={"element"}
             className={styles.text}
+            boldness={"medium"}
           >
             Вы уверены, что хотите отключить бенефит? Сотрудники не смогут видеть его в баре бенефитов.
           </Title>
 
           <div className={styles.buttons}>
             <Button
-              buttonType={"secondary-red"}
+              buttonType={"primary-red"}
               onClick={async () => {
                 const res = await edit({ id: id, is_active: false });
 
@@ -330,8 +331,9 @@ const DisableModal = ({ open, onClose, id }) => {
           <Title
             type={"element"}
             className={styles.text}
+            boldness={"medium"}
           >
-            Бенефит отключен. Включить бенефит снова можно через меню таблицы.
+            Бенефит отключен.<br/>Включить бенефит снова можно<br/>через меню таблицы.
           </Title>
 
           <div className={styles.buttons}>

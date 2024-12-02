@@ -323,7 +323,7 @@ const ModalSuccessRequest: FC<{ isOpen: boolean; onClose: () => void; id: number
         boldness={"medium"}
         type={"block"}
       >
-        Вы уверены, что хотите одобрить заявку на покупку бенефита?
+        Вы уверены, что хотите одобрить<br/>заявку на покупку бенефита?
       </Title>
 
       <div className={styles.buttons}>

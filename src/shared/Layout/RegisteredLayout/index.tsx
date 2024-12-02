@@ -126,6 +126,7 @@ const SideBar: FC = () => {
       </div>
 
       <Popover
+        className={styles.popover}
         arrow={false}
         trigger={"click"}
         color={"white"}
