@@ -32,6 +32,7 @@ export const BarHeader: FC = () => {
   const [getBenefit] = useLazyGetAllBenefitQuery();
   const [data, setData] = useState<TBenefitData[]>([]);
   const [value, setValue] = useState<string>("");
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(PATH, "user");
@@ -65,7 +66,11 @@ export const BarHeader: FC = () => {
           route={BENEFITS_BAR}
           className={styles.logo}
         />
-
+        <div className={styles.searchWrapper}
+             onFocus={() => setIsFocused(true)}
+             onBlur={() => setIsFocused(false)}
+        >
+          {isFocused && <div className={styles.overlay}></div>}
         <ConfigProvider
             theme={{
               components: {
@@ -78,27 +83,9 @@ export const BarHeader: FC = () => {
                   fontFamily: "Golos",
                   optionFontSize: 16,
                   fontSizeIcon: 16,
-                  fontSizeAdjust: 16,
-                  fontSizeHeading1: 16,
-                  fontSizeHeading2: 16,
-                  fontSizeHeading3: 16,
-                  fontSizeHeading4: 16,
-                  fontSizeHeading5: 16,
-                  fontSizeHeading6: 16,
-                  contentFontSize: 16,
-                  descriptionFontSize: 16,
-                  handleFontSize: 16,
-                  labelFontSize: 16,
-                  cellFontSize: 16,
-                  circleTextFontSize: 16,
-                  inputFontSize: 16,
-                  subtitleFontSize: 16,
-                  textFontSize: 16,
-                  contentFontSizeSM: 16,
-                  inputFontSizeSM: 16,
-                  titleFontSizeSM: 16,
-                  itemFontSizeSM: 16,
-                  itemFontSize: 16,
+                  controlOutline: "none",
+                  colorPrimary: "#8C8C8C",
+                  hoverBorderColor: "#8C8C8C"
                 },
               },
             }}
@@ -107,6 +94,9 @@ export const BarHeader: FC = () => {
           showSearch
           value={value}
           className={styles.search}
+          popupClassName={styles.searchDropdown}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           onSearch={handleSearch}
           onChange={handleChange}
           placeholder={"Поиск"}
@@ -176,6 +166,7 @@ export const BarHeader: FC = () => {
           }
         />
         </ConfigProvider>
+        </div>
 
         <div className={styles.item}>
           <span className={styles.top_text}>{user.coins}</span>

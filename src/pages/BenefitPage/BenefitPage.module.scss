@@ -25,9 +25,9 @@
 }
 
 .add_button:disabled {
-    opacity: 0.5;
+    background-color: #8C8C8C;
     &:hover {
-        opacity: 0.5;
+        background-color: #8C8C8C;
         cursor: not-allowed;
     }
 }
