@@ -80,7 +80,6 @@ export const BarHeader: FC = () => {
                   colorBorder: "#8C8C8C",
                   fontSize: 16,
                   fontSizeSM: 16,
-                  fontFamily: "Golos",
                   optionFontSize: 16,
                   fontSizeIcon: 16,
                   controlOutline: "none",
