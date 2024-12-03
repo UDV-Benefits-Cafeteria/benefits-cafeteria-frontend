@@ -24,6 +24,7 @@
 
 .filters {
   padding: 5px;
+  cursor: pointer;
 }
 
 .filter_button {
@@ -34,6 +35,7 @@
   width: 140px;
   font-size: 14px;
   gap: 5px;
+  cursor: pointer;
 
   &__icon {
     background-color: var(--main_text);

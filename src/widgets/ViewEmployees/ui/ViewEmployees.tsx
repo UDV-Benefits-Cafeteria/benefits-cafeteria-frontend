@@ -215,16 +215,18 @@ export const ViewEmployees: FC = () => {
         searchBar={
           <SearchBar
             setValue={setSearch}
+            className={styles.searchBar}
             value={search}
           />
         }
       >
-        <div style={{ display: "flex", width: 300, gap: 16 }}>
-          <Button onClick={() => navigate(CREATE_EMPLOYEES)}>Добавить сотрудника</Button>
+        <div style={{ display: "flex", gap: 16 }}>
+          <Button className={styles.AddBtn} onClick={() => navigate(CREATE_EMPLOYEES)}>Добавить сотрудника</Button>
 
           <Popover
             trigger={"click"}
             arrow={false}
+            className={styles.dots}
             content={
               <div className={styles.menu}>
                 <div className={styles.menu__top}>

@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useRef } from "react";
 
 import { useLazyGetAllBenefitQuery } from "@entity/Benefit/api/Benefit.api";
 import { useLogoutMutation } from "@entity/User";
@@ -33,6 +33,7 @@ export const BarHeader: FC = () => {
   const [data, setData] = useState<TBenefitData[]>([]);
   const [value, setValue] = useState<string>("");
   const [isFocused, setIsFocused] = useState(false);
+  const selectRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem(PATH, "user");
@@ -57,6 +58,12 @@ export const BarHeader: FC = () => {
     if (id === -1) {
       navigate(BENEFITS_BAR + "?benefit=" + value);
     } else navigate(BENEFITS + "/" + id);
+  };
+
+  const handleSearchOptionClick = () => {
+    if (selectRef.current) {
+      selectRef.current.blur();
+    }
   };
 
   return (
@@ -90,6 +97,7 @@ export const BarHeader: FC = () => {
             }}
         >
         <Select
+            ref={selectRef}
           showSearch
           value={value}
           className={styles.search}
@@ -143,7 +151,7 @@ export const BarHeader: FC = () => {
                   {
                     value: -1,
                     label: (
-                      <div className={styles.search__el}>
+                      <div className={styles.search__el} onClick={handleSearchOptionClick}>
                         <Icon
                           size={"s"}
                           className={styles.loupe}

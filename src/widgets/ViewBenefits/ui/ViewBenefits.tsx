@@ -173,11 +173,12 @@ export const ViewBenefits: FC = () => {
           />
         }
       >
-        <div style={{ display: "flex", width: 300, gap: 16 }}>
-          <Button onClick={() => navigate(CREATE_BENEFITS)}>Добавить бенефит</Button>
+        <div style={{ display: "flex", gap: 16 }}>
+          <Button className={styles.AddBtn} onClick={() => navigate(CREATE_BENEFITS)}>Добавить бенефит</Button>
 
           <Popover
             trigger={"click"}
+            className={styles.dots}
             arrow={false}
             content={
               <div className={styles.menu}>
