@@ -34,14 +34,14 @@ export const RequestsApi = rtkApi.injectEndpoints({
   endpoints: build => ({
     getAllRequests: build.query<TRequest[], { filter: string; sort: string }>({
       query: params => ({
-        url: "/benefit-requests?" + params.sort,
+        url: "/benefit-requests/?" + params.sort,
         ...(params.filter !== null ? { params: { status: params.filter, limit: 100 } } : { limit: 100 }),
       }),
       providesTags: ["Requests"],
     }),
     createRequests: build.mutation<TRequest, TRequestData>({
       query: (body: TRequestData) => ({
-        url: "/benefit-requests",
+        url: "/benefit-requests/",
         method: "POST",
         body: body,
       }),
