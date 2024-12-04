@@ -143,12 +143,12 @@ export const PurchaseHistoryTable: FC = () => {
           icon={"move"}
           onClick={() => {
             setPage(prev => {
-              if (prev + 1 < (requests.data?.length || 0) / 6) return prev + 1;
+              if (prev + 1 < (data?.length || 0) / 6) return prev + 1;
 
               return prev;
             });
           }}
-          className={classNames(styles.move, page + 1 < (requests.data?.length || 0) / 6 ? null : styles.disabled)}
+          className={classNames(styles.move, page + 1 < (data?.length || 0) / 6 ? null : styles.disabled)}
         />
       </div>
     </div>

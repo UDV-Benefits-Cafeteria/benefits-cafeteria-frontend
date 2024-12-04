@@ -75,17 +75,17 @@ export const SORT_PARAMS: TSortParam[] = [
   {
     text: "По алфавиту",
     sortBy: "fullname",
-    sortOrder: "desc",
+    sortOrder: "asc",
   },
   {
     text: "По дате найма ↑",
     sortBy: "hired_at",
-    sortOrder: "desc",
+    sortOrder: "asc",
   },
   {
     text: "По дате найма ↓",
     sortBy: "hired_at",
-    sortOrder: "asc",
+    sortOrder: "desc",
   },
 ];
 

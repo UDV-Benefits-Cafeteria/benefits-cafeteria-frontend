@@ -209,7 +209,7 @@ export const ViewBenefits: FC = () => {
   const getPages = () => {
     const res = [];
 
-    for (let i = 0; i < data?.length; i += 8) {
+    for (let i = 0; i < benefits?.length; i += 8) {
       res.push(
         <button
           onClick={() => setPage(i / 8)}

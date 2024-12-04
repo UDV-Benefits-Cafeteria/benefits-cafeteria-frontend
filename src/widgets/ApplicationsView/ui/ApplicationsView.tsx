@@ -127,12 +127,12 @@ export const SORT_PARAMS: TSortParam[] = [
   {
     text: "По дате заявки ↑",
     sortBy: "created_at",
-    sortOrder: "asc",
+    sortOrder: "desc",
   },
   {
     text: "По дате заявки ↓",
     sortBy: "created_at",
-    sortOrder: "desc",
+    sortOrder: "asc",
   },
 ];
 

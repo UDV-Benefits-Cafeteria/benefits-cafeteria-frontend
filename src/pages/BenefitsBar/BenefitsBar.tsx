@@ -32,37 +32,37 @@ export const SORT_PARAMS: TSortParam[] = [
   {
     text: "Новинка",
     sortBy: "created_at",
-    sortOrder: "desc",
+    sortOrder: "asc",
   },
   {
     text: "По возрастанию цены",
     sortBy: "coins_cost",
-    sortOrder: "desc",
+    sortOrder: "asc",
   },
   {
     text: "По убыванию цены",
     sortBy: "coins_cost",
-    sortOrder: "asc",
+    sortOrder: "desc",
   },
   {
     text: "По возрастанию уровня",
     sortBy: "min_level_cost",
-    sortOrder: "desc",
+    sortOrder: "asc",
   },
   {
     text: "По убыванию уровня",
     sortBy: "min_level_cost",
-    sortOrder: "asc",
+    sortOrder: "desc",
   },
   {
     text: "По возрастанию количества",
     sortBy: "amount",
-    sortOrder: "desc",
+    sortOrder: "asc",
   },
   {
     text: "По убыванию количества",
     sortBy: "amount",
-    sortOrder: "asc",
+    sortOrder: "desc",
   },
 ];
 
