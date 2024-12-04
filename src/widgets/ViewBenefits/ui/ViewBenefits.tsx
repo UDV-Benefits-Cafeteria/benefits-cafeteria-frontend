@@ -121,7 +121,7 @@ export const ViewBenefits: FC = () => {
             {el.name}
           </span>
         ),
-        amount: el.amount,
+        amount: el.amount || "не ограничено",
         level: el.min_level_cost,
         coins: el.coins_cost || "бесплатно",
         price: el.real_currency_cost || "бесплатно",

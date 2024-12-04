@@ -42,8 +42,8 @@ export const LegalEntitiesView: FC = () => {
     ? legalEntities.map(el => ({
         id: el.id,
         name: el.name,
-        hrCount: 2,
-        employeeCount: 4,
+        hrCount: el.employee_count,
+        employeeCount: el.staff_count,
         points: <span>...</span>,
       }))
     : [];
