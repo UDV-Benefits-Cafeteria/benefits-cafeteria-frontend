@@ -114,6 +114,7 @@ export const ViewBenefits: FC = () => {
         name: (
           <span className={styles.fullname}>
             <Image
+              className={styles.avatarImage}
               type={"avatar"}
               srs={el.primary_image_url || BENEFIT_PLACEHOLDER}
               onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
@@ -121,7 +122,7 @@ export const ViewBenefits: FC = () => {
             {el.name}
           </span>
         ),
-        amount: el.amount || "не ограничено",
+        amount: el.amount || "неограниченно",
         level: el.min_level_cost,
         coins: el.coins_cost || "бесплатно",
         price: el.real_currency_cost || "бесплатно",
@@ -170,6 +171,7 @@ export const ViewBenefits: FC = () => {
           <SearchBar
             setValue={setSearch}
             value={search}
+            className={styles.searchBar}
           />
         }
       >

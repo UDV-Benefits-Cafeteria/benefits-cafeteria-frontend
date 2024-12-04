@@ -18,13 +18,11 @@
   }
 
   &.form {
-    @include largeText;
-
     border: 1px solid var(--grey_300);
     border-radius: 12px;
     padding: 14px 16px;
-    width: calc(100% - 32px);
     background-color: white;
+    font-size: 20px;
   }
 
   &.error {

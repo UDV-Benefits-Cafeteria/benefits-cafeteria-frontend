@@ -156,6 +156,7 @@ export const ViewEmployees: FC = () => {
         fullname: (
           <span className={styles.fullname}>
             <Image
+              className={styles.avatarImage}
               type={"avatar"}
               srs={el.image_url || USER_PLACEHOLDER}
               onError={e => (e.target.src = USER_PLACEHOLDER)}

@@ -1,7 +1,7 @@
 .fullname {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
 }
 
 .top {
@@ -14,7 +14,14 @@
   &__filters {
     display: flex;
     gap: 16px;
+    margin-bottom: 65px;
   }
+}
+
+.avatarImage {
+  border-radius: 16px;
+  width: 40px;
+  height: 40px;
 }
 
 .filter_button {
@@ -25,6 +32,7 @@
   width: 140px;
   font-size: 14px;
   gap: 5px;
+  height: 35px;
 
   &__icon {
     background-color: var(--main_text);
@@ -75,6 +83,10 @@
 
 .filters {
   padding: 5px;
+  width: 225px !important;
+  height: 35px !important;
+  font-size: 14px !important;
+  border-radius: 10px !important;
 }
 
 .text {
@@ -103,6 +115,10 @@
 
 .AddBtn {
   height: 40px;
+}
+
+.searchBar {
+  margin-bottom: 15px;
 }
 
 .actions {

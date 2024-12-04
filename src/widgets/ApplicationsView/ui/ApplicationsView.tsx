@@ -80,10 +80,11 @@ type TStatusSelectorProps = {
   possibleStatus: TSelectValue[];
   id: number;
   filter: TRequestStatus;
+  className?: string;
 };
 
 const StatusSelector: FC<TStatusSelectorProps> = props => {
-  const { possibleStatus, id, filter, setIsSuccessModalOpen, setIsDeniedModalOpen, setCurrentId } = props;
+  const { possibleStatus, id, filter, setIsSuccessModalOpen, setIsDeniedModalOpen, setCurrentId, className } = props;
   const [updateRequest] = useUpdateRequestsMutation();
   const [currentState, setCurrentState] = useState<TRequestStatus>(filter);
 
@@ -108,6 +109,7 @@ const StatusSelector: FC<TStatusSelectorProps> = props => {
       currentValue={currentState}
       setCurrentValue={setCurrentState}
       values={possibleStatus}
+      className={className}
     />
   );
 };
@@ -161,17 +163,20 @@ export const ApplicationsView: FC = () => {
             <div>
               <span>{dayjs(el.created_at).format("DD.MM.YYYY")}</span>
               {(el.status === "processing" || el.status === "pending") &&
-              dayjs(el.created_at).add(5, "day").diff(dayjs(), "day") <= 3 ? (
-                <p className={styles.warning}>
-                  {`Осталось ${dayjs(el.created_at).add(5, "day").diff(dayjs(), "day")} дн.`}
-                </p>
-              ) : null}
+              dayjs(el.created_at).add(5, "day").diff(dayjs(), "day") <= 4 ? (
+                      <p className={styles.warning}>
+                        {`Осталось ${dayjs(el.created_at).add(5, "day").diff(dayjs(), "day")} дн.`}
+                      </p>
+                  ) :
+                  <p className={styles.completed}>
+                    {`Завершена`}
+                  </p>}
             </div>
           ),
           fullname: (
-            <div
-              onClick={() => navigate(EMPLOYEES + "/" + el.user.id)}
-              className={styles.el}
+              <div
+                  onClick={() => navigate(EMPLOYEES + "/" + el.user.id)}
+                  className={styles.el}
             >
               {el.user.lastname} {el.user.firstname} {el.user.middlename}
             </div>
@@ -208,21 +213,47 @@ export const ApplicationsView: FC = () => {
           ),
 
           status: (
-            <span>
-              {filter === null || filter === "approved" || filter === "declined" ? (
-                el.status
+              <span
+                  style={{
+                    color:
+                        el.status === "approved"
+                            ? "#00BE00"
+                            : el.status === "declined"
+                                ? "#FF4040"
+                                : el.status === "pending"
+                                    ? "#6A6A6A"
+                                    : el.status === "processing"
+                                        ? "#E7AB08"
+                                        : "black",
+                  }}
+              >
+              {el.status === "approved" ? (
+                  "Подтверждена"
+              ) : el.status === "declined" ? (
+                  "Отклонена"
+              ) : el.status === "pending" || el.status === "processing" ? (
+                  filter === null ? (
+                      el.status === "processing" ? (
+                          "В работе"
+                      ) : (
+                          "Новая"
+                      )
+                  ) : (
+                      <StatusSelector
+                          setIsSuccessModalOpen={setIsSuccessModalOpen}
+                          setIsDeniedModalOpen={setIsDeniedModalOpen}
+                          setCurrentId={setCurrentId}
+                          possibleStatus={possibleStatus}
+                          filter={filter}
+                          id={el.id}
+                          className={styles.statusSelector}
+                      />
+                  )
               ) : (
-                <StatusSelector
-                  setIsSuccessModalOpen={setIsSuccessModalOpen}
-                  setIsDeniedModalOpen={setIsDeniedModalOpen}
-                  setCurrentId={setCurrentId}
-                  possibleStatus={possibleStatus}
-                  filter={filter}
-                  id={el.id}
-                />
+                  el.status
               )}
             </span>
-          ),
+          )
         });
 
         return acc;
@@ -232,7 +263,7 @@ export const ApplicationsView: FC = () => {
   return (
     <>
       <ViewInfoContainer>
-        <Title type={"page"}>Заявки</Title>
+        <Title className={styles.applicationsTitle} type={"page"}>Заявки</Title>
 
         <div className={styles.filter}>
           <Text

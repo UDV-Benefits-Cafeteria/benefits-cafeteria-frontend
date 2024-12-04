@@ -52,7 +52,7 @@ export const LegalEntitiesView: FC = () => {
     <>
       <ViewInfoContainer>
         <ViewHeader title={"Юридические лица"}>
-          <div style={{ display: "flex", width: 200, gap: 32 }}>
+          <div style={{ display: "flex", width: 200, gap: 32, marginBottom: 65 }}>
             <Button className={styles.AddBtn} onClick={() => setModalCreateLegalEntityOpen(true)}>Добавить юр.лицо</Button>
           </div>
         </ViewHeader>

@@ -1,11 +1,13 @@
 @import "@shared/styles/mixins";
 
 .selector {
-  @include largeText;
-
   border-radius: 12px;
   padding: 14px 16px;
   cursor: pointer;
+  font-size: 20px;
+  font-family: 'Golos', sans-serif;
+  font-weight: 500;
+  width: 400px;
 
   .default {
     border: 1px solid var(--grey_300);
@@ -14,6 +16,10 @@
   .filter {
     border: 1px solid var(--main_text);
   }
+}
+
+select:disabled {
+  background-color: #D9D9D980;
 }
 
 .option:hover {
