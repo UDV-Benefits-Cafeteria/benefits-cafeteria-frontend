@@ -32,7 +32,7 @@ export const SORT_PARAMS: TSortParam[] = [
   {
     text: "Новинка",
     sortBy: "created_at",
-    sortOrder: "asc",
+    sortOrder: "desc",
   },
   {
     text: "По возрастанию цены",
