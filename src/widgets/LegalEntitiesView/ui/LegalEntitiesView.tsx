@@ -97,7 +97,7 @@ export const LegalEntitiesView: FC = () => {
   const getPages = () => {
     const res = [];
 
-    for (let i = 0; i < legalEntities?.length; i += 8) {
+    for (let i = 0; i < data?.length; i += 8) {
       res.push(
         <button
           onClick={() => setPage(i / 8)}
