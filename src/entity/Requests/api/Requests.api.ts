@@ -34,14 +34,14 @@ export const RequestsApi = rtkApi.injectEndpoints({
   endpoints: build => ({
     getAllRequests: build.query<TRequest[], { filter: string; sort: string }>({
       query: params => ({
-        url: "/benefit-requests/?" + params.sort,
+        url: "/benefit-requests?" + params.sort,
         ...(params.filter !== null ? { params: { status: params.filter } } : {}),
       }),
       providesTags: ["Requests"],
     }),
     createRequests: build.mutation<TRequest, TRequestData>({
       query: (body: TRequestData) => ({
-        url: "/benefit-requests/",
+        url: "/benefit-requests",
         method: "POST",
         body: body,
       }),
@@ -49,7 +49,7 @@ export const RequestsApi = rtkApi.injectEndpoints({
     }),
     exportData: build.query<File, null>({
       query: () => ({
-        url: "/benefit-requests/export/",
+        url: "/benefit-requests/export",
         responseHandler: response => response.blob(),
       }),
     }),

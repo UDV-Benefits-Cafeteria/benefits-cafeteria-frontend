@@ -1,28 +1,23 @@
 .table {
+  overflow: hidden;
   border: 1px solid var(--sidebar_border);
   border-radius: 16px;
   border-spacing: 0; /* Убираем разрыв между ячейками */
-  overflow: hidden;
 
   .title {
+    border-bottom: 2px solid var(--sidebar_border);
     text-align: left;
     color: var(--grey_100);
-    border-bottom: 2px solid var(--sidebar_border);
   }
 
   .row {
     position: relative;
 
-    &:hover {
-      opacity: 0.6;
-      cursor: pointer;
-    }
-
     &::after {
       content: "";
       position: absolute;
-      bottom: 0;
       left: 0;
+      bottom: 0;
       width: 100%;
       height: 1px;
       background-color: var(--sidebar_border);
@@ -40,8 +35,8 @@
   }
 
   th {
+    border-bottom: 1px solid var(--sidebar_border);
     padding: 0 20px;
     height: 50px;
-    border-bottom: 1px solid var(--sidebar_border);
   }
 }

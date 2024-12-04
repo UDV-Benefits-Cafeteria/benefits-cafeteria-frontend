@@ -1,15 +1,25 @@
-import { type FC, useState } from "react";
+import { ChangeEvent, type FC, useState } from "react";
 
-import { useCreateLegalEntitiesMutation, useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
+import {
+  useBulkLegalEntitiesCreateMutation,
+  useCreateLegalEntitiesMutation,
+  useGetLegalEntitiesQuery,
+  useImportLegalEntitiesDataMutation,
+  useLazyExportLegalEntitiesDataQuery,
+} from "@entity/LegalEntities/api/LegalEntities.api";
 import { DataTable } from "@feature/DataTable";
 import { Button } from "@shared/ui/Button";
+import { Icon } from "@shared/ui/Icons/Icon";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
 import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Modal } from "@shared/ui/Modal";
+import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
+import { Popover } from "antd";
+import dayjs from "dayjs";
 
 import { EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
@@ -48,12 +58,112 @@ export const LegalEntitiesView: FC = () => {
       }))
     : [];
 
+  const [trigger] = useLazyExportLegalEntitiesDataQuery();
+
+  const getFile = async () => {
+    const res = await trigger(null);
+
+    if (!res?.data) return;
+
+    const url = URL.createObjectURL(new Blob([res.data]));
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.setAttribute("download", `benefit-requests${dayjs().format("DD.MM.YYYY_HH:mm")}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
+  const [bulkCreate] = useBulkLegalEntitiesCreateMutation();
+  const [importData] = useImportLegalEntitiesDataMutation();
+
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+
+      const res = await importData(file);
+
+      if (res.data) {
+        bulkCreate(res.data.valid_entities);
+      }
+    }
+  };
+
   return (
     <>
       <ViewInfoContainer>
         <ViewHeader title={"Юридические лица"}>
-          <div style={{ display: "flex", width: 200, gap: 32, marginBottom: 65 }}>
-            <Button className={styles.AddBtn} onClick={() => setModalCreateLegalEntityOpen(true)}>Добавить юр.лицо</Button>
+          <div style={{ display: "flex", gap: 16, marginBottom: 65 }}>
+            <Button
+              className={styles.AddBtn}
+              onClick={() => setModalCreateLegalEntityOpen(true)}
+            >
+              Добавить юр.лицо
+            </Button>
+
+            <Popover
+              trigger={"click"}
+              arrow={false}
+              className={styles.dots}
+              content={
+                <div className={styles.menu}>
+                  <div className={styles.menu__top}>
+                    <input
+                      id={"qwe"}
+                      type={"file"}
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
+                    <label htmlFor={"qwe"}>
+                      <Text className={styles.menu__el}>
+                        <Icon
+                          icon={"upload"}
+                          className={styles.filter_button__icon}
+                          size={"s"}
+                        />
+                        Импорт списка юридических лиц Excel
+                      </Text>
+                    </label>
+
+                    <a
+                      download
+                      style={{ color: "black" }}
+                      href={"https://digital-portfolio.hb.ru-msk.vkcloud-storage.ru/legalentities.xlsx"}
+                    >
+                      <Text className={styles.menu__el}>
+                        <Icon
+                          icon={"download"}
+                          className={styles.filter_button__icon}
+                          size={"s"}
+                        />
+                        Скачать шаблон импорта Excel
+                      </Text>
+                    </a>
+                  </div>
+                  <Text
+                    className={styles.menu__el}
+                    onClick={getFile}
+                  >
+                    <Icon
+                      icon={"download"}
+                      className={styles.filter_button__icon}
+                      size={"s"}
+                    />
+                    Экспорт списка юридических лиц Excel
+                  </Text>
+                </div>
+              }
+            >
+              <div className={styles.import}>
+                <Icon
+                  icon={"import"}
+                  size={"m"}
+                  className={styles.import_icon}
+                />
+              </div>
+            </Popover>
           </div>
         </ViewHeader>
 
@@ -97,7 +207,11 @@ const ModalCreateLegalEntity: FC<{ isOpen: boolean; onClose: () => void }> = pro
       <InputContainer className={styles.inputContainerModal}>
         <InputLabel>Название*</InputLabel>
 
-        <InputField placeholder={"Введите название юр.лица"} className={styles.inputFieldModal} onChange={e => setPositionName(e.currentTarget.value)} />
+        <InputField
+          placeholder={"Введите название юр.лица"}
+          className={styles.inputFieldModal}
+          onChange={e => setPositionName(e.currentTarget.value)}
+        />
       </InputContainer>
 
       <div className={styles.buttons}>

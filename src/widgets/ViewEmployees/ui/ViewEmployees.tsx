@@ -2,7 +2,13 @@ import { ChangeEvent, type FC, useEffect, useState } from "react";
 
 import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
 import { useLazyExportDataQuery } from "@entity/Requests/api/Requests.api";
-import { useBulkCreateMutation, useEditUserMutation, useGetAllUserQuery, useImportDataMutation } from "@entity/User";
+import {
+  useBulkCreateMutation,
+  useEditUserMutation,
+  useGetAllUserQuery,
+  useImportDataMutation,
+  useLazyExportUsersDataQuery,
+} from "@entity/User";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { getActiveCategory, preparePeriod, toQuery } from "@pages/BenefitsBar/BenefitsBar";
@@ -213,6 +219,24 @@ export const ViewEmployees: FC = () => {
 
   const [trigger] = useLazyExportDataQuery();
 
+  const [triggerUser] = useLazyExportUsersDataQuery();
+
+  const getUsersFile = async () => {
+    const res = await triggerUser(null);
+
+    if (!res?.data) return;
+
+    const url = URL.createObjectURL(new Blob([res.data]));
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.setAttribute("download", `users_${dayjs().format("DD.MM.YYYY_HH:mm")}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   const getFile = async () => {
     const res = await trigger(null);
 
@@ -239,7 +263,6 @@ export const ViewEmployees: FC = () => {
       const res = await importData(file);
 
       if (res.data) {
-        console.log(res.data.valid_users.length);
         bulkCreate(res.data.valid_users);
       }
     }
@@ -258,7 +281,12 @@ export const ViewEmployees: FC = () => {
         }
       >
         <div style={{ display: "flex", gap: 16 }}>
-          <Button className={styles.AddBtn} onClick={() => navigate(CREATE_EMPLOYEES)}>Добавить сотрудника</Button>
+          <Button
+            className={styles.AddBtn}
+            onClick={() => navigate(CREATE_EMPLOYEES)}
+          >
+            Добавить сотрудника
+          </Button>
 
           <Popover
             trigger={"click"}
@@ -299,7 +327,10 @@ export const ViewEmployees: FC = () => {
                     </Text>
                   </a>
                 </div>
-                <Text className={styles.menu__el}>
+                <Text
+                  className={styles.menu__el}
+                  onClick={getUsersFile}
+                >
                   <Icon
                     icon={"download"}
                     className={styles.filter_button__icon}

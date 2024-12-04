@@ -1,3 +1,4 @@
+import { transform } from "@entity/Benefit/api/Benefit.api";
 import { rtkApi } from "@shared/api/rtkApi";
 
 import type { TUserData } from "@entity/User/model/types/User.types";
@@ -12,14 +13,6 @@ type TLoginResponse = { is_success: boolean };
 type TLoginData = { email: string; password: string };
 
 type TAddImageData = { image: File; id: number };
-
-const transform = (image: File, field: string) => {
-  const formData = new FormData();
-
-  formData.append(field, image);
-
-  return formData;
-};
 
 export const UserApi = rtkApi.injectEndpoints({
   endpoints: build => ({
@@ -95,6 +88,12 @@ export const UserApi = rtkApi.injectEndpoints({
         body: transform(param, "file"),
       }),
     }),
+    exportUsersData: build.query<File, null>({
+      query: () => ({
+        url: "/users/export",
+        responseHandler: response => response.blob(),
+      }),
+    }),
     bulkCreate: build.mutation<any, any>({
       query: param => ({
         url: "/users/bulk_create",
@@ -113,6 +112,7 @@ export const UserApi = rtkApi.injectEndpoints({
 });
 
 export const {
+  useLazyExportUsersDataQuery,
   useBulkCreateMutation,
   useImportDataMutation,
   useLazyGetUserQuery,

@@ -2,10 +2,10 @@ import { rtkApi } from "@shared/api/rtkApi";
 
 import type { TBenefit, TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 
-const transform = (image: File) => {
+export const transform = (image: File, field: string) => {
   const formData = new FormData();
 
-  formData.append("images", image);
+  formData.append(field, image);
 
   return formData;
 };
@@ -48,7 +48,7 @@ export const BenefitApi = rtkApi.injectEndpoints({
       query: (body: { id: number; image: File }) => ({
         method: "POST",
         url: `/benefits/${body.id}/images`,
-        body: transform(body.image),
+        body: transform(body.image, "images"),
       }),
       invalidatesTags: ["Benefits"],
     }),
@@ -76,10 +76,34 @@ export const BenefitApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["Benefits"],
     }),
+    importBenefitData: build.mutation<any, File>({
+      query: param => ({
+        url: "/benefits/upload",
+        method: "POST",
+        body: transform(param, "file"),
+      }),
+    }),
+    exportData: build.query<File, null>({
+      query: () => ({
+        url: "/benefits/export",
+        responseHandler: response => response.blob(),
+      }),
+    }),
+    bulkBenefitCreate: build.mutation<any, any>({
+      query: param => ({
+        url: "/benefits/bulk_create",
+        method: "POST",
+        body: param,
+      }),
+      invalidatesTags: ["Benefits"],
+    }),
   }),
 });
 
 export const {
+  useBulkBenefitCreateMutation,
+  useLazyExportDataQuery,
+  useImportBenefitDataMutation,
   useCreateBenefitMutation,
   useGetAllBenefitQuery,
   useLazyGetAllBenefitQuery,
