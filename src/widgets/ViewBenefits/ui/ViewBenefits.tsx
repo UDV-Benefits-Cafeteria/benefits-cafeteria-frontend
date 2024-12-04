@@ -238,6 +238,7 @@ export const ViewBenefits: FC = () => {
         </Button>
 
         <BenefitFilter
+          type={"admin"}
           setMinLevel={setMinLevel}
           setActive={setActive}
           setAdaptation={setAdaptation}
@@ -334,7 +335,11 @@ const DisableModal = ({ open, onClose, id }) => {
             className={styles.text}
             boldness={"medium"}
           >
-            Бенефит отключен.<br/>Включить бенефит снова можно<br/>через меню таблицы.
+            Бенефит отключен.
+            <br />
+            Включить бенефит снова можно
+            <br />
+            через меню таблицы.
           </Title>
 
           <div className={styles.buttons}>

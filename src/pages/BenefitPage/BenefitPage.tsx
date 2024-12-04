@@ -20,7 +20,7 @@ import styles from "./BenefitPage.module.scss";
 export const BenefitPage: FC = () => {
   const pathname = useLocation().pathname;
   const user = useAppSelector(state => state.user.data!);
-  const benefitId = Number(pathname[pathname.length - 1]);
+  const benefitId = Number(pathname.split("/")?.[pathname.split("/").length - 1]);
   const benefit = useGetBenefitQuery(benefitId).data;
   const userRole = useAppSelector(state => state.user.data!.role);
   const [addStep, setAddStep] = useState<"add" | "success">("add");
@@ -56,7 +56,12 @@ export const BenefitPage: FC = () => {
       <BarHeader />
       <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
         <Title type={"page"}>
-          <Link className={styles.link} route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
+          <Link
+            className={styles.link}
+            route={BENEFITS_BAR}
+          >
+            {"<-"} Вернуться в бар бенефитов
+          </Link>
         </Title>
 
         <div className={styles.container}>
@@ -64,11 +69,17 @@ export const BenefitPage: FC = () => {
             <Image
               srs={benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
               className={styles.image}
-              onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
+              onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
             />
 
             <div className={styles.data_container}>
-              <Title boldness={"medium"} className={styles.title} type={"block"}>{benefit.name}</Title>
+              <Title
+                boldness={"medium"}
+                className={styles.title}
+                type={"block"}
+              >
+                {benefit.name}
+              </Title>
 
               <Title
                 type={"block"}
@@ -79,16 +90,24 @@ export const BenefitPage: FC = () => {
                 <div className={styles.coin} />
               </Title>
 
-              <Text type={"block"} boldness={"medium"} className={styles.level}>C {benefit.min_level_cost} уровня</Text>
+              <Text
+                type={"block"}
+                boldness={"medium"}
+                className={styles.level}
+              >
+                C {benefit.min_level_cost} уровня
+              </Text>
 
-              <Text type={"block"} boldness={"medium"} className={styles.count}>
-                {
-                  benefit.amount === null
-                      ? "Неограниченное количество"
-                      : benefit.amount > 0
-                          ? `Осталось ${benefit.amount} шт.`
-                          : "Бенефит закончился"
-                }
+              <Text
+                type={"block"}
+                boldness={"medium"}
+                className={styles.count}
+              >
+                {benefit.amount === null
+                  ? "Неограниченное количество"
+                  : benefit.amount > 0
+                    ? `Осталось ${benefit.amount} шт.`
+                    : "Бенефит закончился"}
               </Text>
 
               <Button
@@ -105,13 +124,23 @@ export const BenefitPage: FC = () => {
         </div>
 
         <div className={styles.desc_container}>
-          <Title className={styles.title} type={"element"}>Описание</Title>
+          <Title
+            className={styles.title}
+            type={"element"}
+          >
+            Описание
+          </Title>
 
           <Text className={styles.desc}>{benefit.description}</Text>
         </div>
 
         <div className={styles.char_container}>
-          <Title className={styles.title} type={"element"}>Характеристики</Title>
+          <Title
+            className={styles.title}
+            type={"element"}
+          >
+            Характеристики
+          </Title>
 
           <div className={styles.characteristic}>
             <Text className={styles.text}>
@@ -120,7 +149,9 @@ export const BenefitPage: FC = () => {
 
             <Text className={styles.text}>
               Адаптационный период:{" "}
-              <span className={styles.count}>{benefit.adaptation_required ? "должен быть пройден" : "не обязателен"}</span>
+              <span className={styles.count}>
+                {benefit.adaptation_required ? "должен быть пройден" : "не обязателен"}
+              </span>
             </Text>
 
             <Text className={styles.text}>

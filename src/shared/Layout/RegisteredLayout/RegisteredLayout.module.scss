@@ -12,15 +12,18 @@
 }
 
 .sidebar {
+  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-right: 1px solid var(--sidebar_border);
   padding: 34px 19px;
   width: 318px;
+  height: calc(100dvh);
 }
 
 .content {
+  margin-left: 318px;
   padding-top: 54px;
   padding-right: 32px;
   padding-left: 80px;

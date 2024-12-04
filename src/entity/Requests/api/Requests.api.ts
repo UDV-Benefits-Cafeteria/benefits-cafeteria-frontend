@@ -47,6 +47,12 @@ export const RequestsApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["Requests", "User"],
     }),
+    exportData: build.query<File, null>({
+      query: () => ({
+        url: "/benefit-requests/export/",
+        responseHandler: response => response.blob(),
+      }),
+    }),
     deleteRequests: build.mutation<null, number>({
       query: (id: number) => ({
         url: "/benefit-requests/" + id,
@@ -78,6 +84,7 @@ export const RequestsApi = rtkApi.injectEndpoints({
 export const {
   useGetAllRequestsQuery,
   useGetUserRequestsQuery,
+  useLazyExportDataQuery,
   useDeleteRequestsMutation,
   useUpdateRequestsMutation,
   useCreateRequestsMutation,

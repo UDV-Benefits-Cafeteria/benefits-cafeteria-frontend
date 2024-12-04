@@ -202,6 +202,7 @@ export const BenefitsBar: FC = () => {
 };
 
 export const BenefitFilter = ({
+  type,
   sidebarOpen,
   setSidebarOpen,
   minCost,
@@ -223,6 +224,7 @@ export const BenefitFilter = ({
 }) => {
   return (
     <FiltersSidebar
+      type={type}
       title={"Все фильтры"}
       isOpen={sidebarOpen}
       onClose={() => setSidebarOpen(false)}

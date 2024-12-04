@@ -13,10 +13,10 @@ type TLoginData = { email: string; password: string };
 
 type TAddImageData = { image: File; id: number };
 
-const transform = (image: File) => {
+const transform = (image: File, field: string) => {
   const formData = new FormData();
 
-  formData.append("image", image);
+  formData.append(field, image);
 
   return formData;
 };
@@ -70,7 +70,7 @@ export const UserApi = rtkApi.injectEndpoints({
       query: (body: TAddImageData) => ({
         method: "PATCH",
         url: `/users/${body.id}/image`,
-        body: transform(body.image),
+        body: transform(body.image, "image"),
       }),
     }),
     createUser: build.mutation<TUserData, TUserData>({
@@ -88,6 +88,21 @@ export const UserApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    importData: build.mutation<any, File>({
+      query: param => ({
+        url: "/users/upload",
+        method: "POST",
+        body: transform(param, "file"),
+      }),
+    }),
+    bulkCreate: build.mutation<any, any>({
+      query: param => ({
+        url: "/users/bulk_create",
+        method: "POST",
+        body: param,
+      }),
+      invalidatesTags: ["User"],
+    }),
     getCurrentUser: build.query<TUserData, number>({
       query: (id: number) => ({
         url: "/users/" + id,
@@ -98,6 +113,8 @@ export const UserApi = rtkApi.injectEndpoints({
 });
 
 export const {
+  useBulkCreateMutation,
+  useImportDataMutation,
   useLazyGetUserQuery,
   useVerifyEmailMutation,
   useSetPasswordMutation,

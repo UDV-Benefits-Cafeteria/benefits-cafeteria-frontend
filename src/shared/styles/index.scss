@@ -19,10 +19,14 @@
   --sidebar_border: #{$sidebar_border};
 }
 
+* {
+  box-sizing: border-box;
+  font-family: 'Golos', sans-serif;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Golos', sans-serif;
   color: var(--main_text);
   background-color: var(--main_bg);
 }

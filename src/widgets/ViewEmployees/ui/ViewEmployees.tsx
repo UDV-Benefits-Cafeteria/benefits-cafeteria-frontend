@@ -1,7 +1,8 @@
-import { type FC, useEffect, useState } from "react";
+import { ChangeEvent, type FC, useEffect, useState } from "react";
 
 import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
-import { useEditUserMutation, useGetAllUserQuery } from "@entity/User";
+import { useLazyExportDataQuery } from "@entity/Requests/api/Requests.api";
+import { useBulkCreateMutation, useEditUserMutation, useGetAllUserQuery, useImportDataMutation } from "@entity/User";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { getActiveCategory, preparePeriod, toQuery } from "@pages/BenefitsBar/BenefitsBar";
@@ -23,6 +24,7 @@ import { Title } from "@shared/ui/Title";
 import { ViewHeader } from "@shared/ui/ViewInfoContainer/ViewHeader";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
 import { Popover } from "antd";
+import dayjs from "dayjs";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { CREATE_EMPLOYEES, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
@@ -208,6 +210,40 @@ export const ViewEmployees: FC = () => {
 
   const userRole = useAppSelector(state => state.user.data?.role);
 
+  const [trigger] = useLazyExportDataQuery();
+
+  const getFile = async () => {
+    const res = await trigger(null);
+
+    if (!res?.data) return;
+
+    const url = URL.createObjectURL(new Blob([res.data]));
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.setAttribute("download", `benefit-requests${dayjs().format("DD.MM.YYYY_HH:mm")}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
+  const [bulkCreate] = useBulkCreateMutation();
+  const [importData] = useImportDataMutation();
+
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+
+      const res = await importData(file);
+
+      if (res.data) {
+        console.log(res.data.valid_users.length);
+        bulkCreate(res.data.valid_users);
+      }
+    }
+  };
+
   return (
     <ViewInfoContainer>
       <ViewHeader
@@ -230,22 +266,37 @@ export const ViewEmployees: FC = () => {
             content={
               <div className={styles.menu}>
                 <div className={styles.menu__top}>
-                  <Text className={styles.menu__el}>
-                    <Icon
-                      icon={"upload"}
-                      className={styles.filter_button__icon}
-                      size={"s"}
-                    />
-                    Импорт списка пользователей Excel
-                  </Text>
-                  <Text className={styles.menu__el}>
-                    <Icon
-                      icon={"download"}
-                      className={styles.filter_button__icon}
-                      size={"s"}
-                    />
-                    Скачать шаблон импорта Excel
-                  </Text>
+                  <input
+                    id={"qwe"}
+                    type={"file"}
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                  />
+                  <label htmlFor={"qwe"}>
+                    <Text className={styles.menu__el}>
+                      <Icon
+                        icon={"upload"}
+                        className={styles.filter_button__icon}
+                        size={"s"}
+                      />
+                      Импорт списка пользователей Excel
+                    </Text>
+                  </label>
+
+                  <a
+                    download
+                    style={{ color: "black" }}
+                    href={"https://digital-portfolio.hb.ru-msk.vkcloud-storage.ru/users.xlsx"}
+                  >
+                    <Text className={styles.menu__el}>
+                      <Icon
+                        icon={"download"}
+                        className={styles.filter_button__icon}
+                        size={"s"}
+                      />
+                      Скачать шаблон импорта Excel
+                    </Text>
+                  </a>
                 </div>
                 <Text className={styles.menu__el}>
                   <Icon
@@ -255,13 +306,16 @@ export const ViewEmployees: FC = () => {
                   />
                   Экспорт списка пользователей Excel
                 </Text>
-                <Text className={styles.menu__el}>
+                <Text
+                  className={styles.menu__el}
+                  onClick={getFile}
+                >
                   <Icon
                     icon={"download"}
                     className={styles.filter_button__icon}
                     size={"s"}
                   />
-                  Экспорт списка пользователей Excel
+                  Экспорт списка трат Excel
                 </Text>
               </div>
             }
@@ -528,7 +582,13 @@ const DisableModal = ({ open, onClose, id }) => {
             className={styles.text}
             boldness={"medium"}
           >
-            Вы уверены, что хотите<br/>отключить профиль сотрудника?<br/>Сотрудник не сможет пользоваться<br/>данным сервисом.
+            Вы уверены, что хотите
+            <br />
+            отключить профиль сотрудника?
+            <br />
+            Сотрудник не сможет пользоваться
+            <br />
+            данным сервисом.
           </Title>
 
           <div className={styles.buttons}>
@@ -560,7 +620,11 @@ const DisableModal = ({ open, onClose, id }) => {
             className={styles.text}
             boldness={"medium"}
           >
-            Профиль отключен.<br/>Включить профиль сотрудника снова можно<br/>через меню таблицы.{" "}
+            Профиль отключен.
+            <br />
+            Включить профиль сотрудника снова можно
+            <br />
+            через меню таблицы.{" "}
           </Title>
 
           <div className={styles.buttons}>

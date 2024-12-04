@@ -29,7 +29,7 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
         <Image
           className={styles.image}
           src={benefit.primary_image_url || BENEFIT_PLACEHOLDER}
-          onError={(e) => (e.target.src = BENEFIT_PLACEHOLDER)}
+          onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
         />
 
         <div className={styles.price}>
@@ -40,17 +40,23 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
 
         <Text boldness={"medium"}>C {benefit.min_level_cost} уровня</Text>
 
-        <Text boldness={"medium"} className={styles.amount}>
-            {
-                benefit.amount === null
-                    ? "Неограниченное количество"
-                    : benefit.amount > 0
-                        ? `Осталось ${benefit.amount} шт.`
-                        : "Бенефит закончился!"
-            }
+        <Text
+          boldness={"medium"}
+          className={styles.amount}
+        >
+          {benefit.amount === null
+            ? "Неограниченное количество"
+            : benefit.amount > 0
+              ? `Осталось ${benefit.amount} шт.`
+              : "Бенефит закончился!"}
         </Text>
 
-        <Text boldness={"medium"} className={styles.name}>{benefit.name}</Text>
+        <Text
+          boldness={"medium"}
+          className={styles.name}
+        >
+          {benefit.name}
+        </Text>
       </div>
 
       <Button
