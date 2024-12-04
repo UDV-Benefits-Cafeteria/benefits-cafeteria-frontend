@@ -35,7 +35,7 @@ export const RequestsApi = rtkApi.injectEndpoints({
     getAllRequests: build.query<TRequest[], { filter: string; sort: string }>({
       query: params => ({
         url: "/benefit-requests?" + params.sort,
-        ...(params.filter !== null ? { params: { status: params.filter } } : {}),
+        ...(params.filter !== null ? { params: { status: params.filter, limit: 100 } } : { limit: 100 }),
       }),
       providesTags: ["Requests"],
     }),
@@ -63,6 +63,7 @@ export const RequestsApi = rtkApi.injectEndpoints({
     getUserRequests: build.query<TRequest[], null>({
       query: () => ({
         url: "/benefit-requests/current-user",
+        params: { limit: 100 },
       }),
       providesTags: ["Requests"],
     }),

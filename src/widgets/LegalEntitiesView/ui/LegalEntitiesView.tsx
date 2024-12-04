@@ -8,6 +8,7 @@ import {
   useLazyExportLegalEntitiesDataQuery,
 } from "@entity/LegalEntities/api/LegalEntities.api";
 import { DataTable } from "@feature/DataTable";
+import { classNames } from "@shared/lib/classNames/classNames";
 import { Button } from "@shared/ui/Button";
 import { Icon } from "@shared/ui/Icons/Icon";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
@@ -48,8 +49,10 @@ export const LegalEntitiesView: FC = () => {
   const { data: legalEntities } = useGetLegalEntitiesQuery(null);
   const [modalCreateLegalEntityOpen, setModalCreateLegalEntityOpen] = useState(false);
 
+  const [page, setPage] = useState(0);
+
   const data = legalEntities
-    ? legalEntities.map(el => ({
+    ? legalEntities.slice(page * 8, page * 8 + 8).map(el => ({
         id: el.id,
         name: el.name,
         hrCount: el.employee_count,
@@ -89,6 +92,23 @@ export const LegalEntitiesView: FC = () => {
         bulkCreate(res.data.valid_entities);
       }
     }
+  };
+
+  const getPages = () => {
+    const res = [];
+
+    for (let i = 0; i < legalEntities?.length; i += 8) {
+      res.push(
+        <button
+          onClick={() => setPage(i / 8)}
+          className={classNames(styles.item, i / 8 === page ? styles.active : null)}
+        >
+          {i / 8 + 1}
+        </button>
+      );
+    }
+
+    return res;
   };
 
   return (
@@ -173,6 +193,37 @@ export const LegalEntitiesView: FC = () => {
           data={data}
         />
       </ViewInfoContainer>
+
+      <div className={styles.pag}>
+        <Icon
+          icon={"move"}
+          size={"l"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev - 1 >= 0) return prev - 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, styles.reverse, page - 1 >= 0 ? null : styles.disabled)}
+        />
+
+        {getPages()}
+
+        <Icon
+          size={"l"}
+          icon={"move"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev + 1 < (legalEntities?.length || 0) / 8) return prev + 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, page + 1 < (legalEntities?.length || 0) / 8 ? null : styles.disabled)}
+        />
+      </div>
+
       <ModalCreateLegalEntity
         isOpen={modalCreateLegalEntityOpen}
         onClose={() => setModalCreateLegalEntityOpen(false)}

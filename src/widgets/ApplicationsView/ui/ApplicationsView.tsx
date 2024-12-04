@@ -141,6 +141,7 @@ export const ApplicationsView: FC = () => {
   const navigate = useNavigate();
   const [possibleStatus, setPossibleStatus] = useState<TSelectValue[]>(newState);
   const [currentId, setCurrentId] = useState<number>(-1);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     if (filter === "processing") setPossibleStatus(inWorkState);
@@ -156,114 +157,137 @@ export const ApplicationsView: FC = () => {
   const [copyEmail, setCopyEmail] = useState("");
 
   const data = requests?.data
-    ? requests.data.reduce((acc: any[], el) => {
-        acc.push({
-          id: el.id,
-          date: (
-            <div>
-              <span>{dayjs(el.created_at).format("DD.MM.YYYY")}</span>
-              {(el.status === "processing" || el.status === "pending") &&
-              dayjs(el.created_at).add(5, "day").diff(dayjs(), "day") <= 4 ? (
-                      <p className={styles.warning}>
-                        {`Осталось ${dayjs(el.created_at).add(5, "day").diff(dayjs(), "day")} дн.`}
-                      </p>
-                  ) :
-                  <p className={styles.completed}>
-                    {`Завершена`}
-                  </p>}
-            </div>
-          ),
-          fullname: (
+    ? requests.data
+        .reduce((acc: any[], el) => {
+          acc.push({
+            id: el.id,
+            date: (
+              <div>
+                <span>{dayjs(el.created_at).format("DD.MM.YYYY")}</span>
+                {(el.status === "processing" || el.status === "pending") &&
+                dayjs(el.created_at).add(5, "day").diff(dayjs(), "day") <= 4 ? (
+                  <p className={styles.warning}>
+                    {`Осталось ${dayjs(el.created_at).add(5, "day").diff(dayjs(), "day")} дн.`}
+                  </p>
+                ) : (
+                  <p className={styles.completed}>{"Завершена"}</p>
+                )}
+              </div>
+            ),
+            fullname: (
               <div
-                  onClick={() => navigate(EMPLOYEES + "/" + el.user.id)}
-                  className={styles.el}
-            >
-              {el.user.lastname} {el.user.firstname} {el.user.middlename}
-            </div>
-          ),
-          email: (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                navigator.clipboard.writeText(el.user.email);
-                setCopyEmail(el.user.email);
-              }}
-              className={styles.el}
-            >
-              <span>{el.user.email}</span>
-              <Icon
-                icon={"copy"}
-                size={"s"}
-                className={classNames(styles.copy, el.user.email === copyEmail ? styles.active : null)}
-              />
-            </div>
-          ),
-          benefitName: (
-            <div
-              onClick={() => navigate(BENEFITS + "/" + el.user.id)}
-              className={styles.el}
-            >
-              {el.benefit.name}
-            </div>
-          ),
-
-          status: (
-              <span
-                  style={{
-                    color:
-                        el.status === "approved"
-                            ? "#00BE00"
-                            : el.status === "declined"
-                                ? "#FF4040"
-                                : el.status === "pending"
-                                    ? "#6A6A6A"
-                                    : el.status === "processing"
-                                        ? "#E7AB08"
-                                        : "black",
-                  }}
+                onClick={() => navigate(EMPLOYEES + "/" + el.user.id)}
+                className={styles.el}
               >
-              {el.status === "approved" ? (
-                  "Подтверждена"
-              ) : el.status === "declined" ? (
-                  "Отклонена"
-              ) : el.status === "pending" || el.status === "processing" ? (
-                  filter === null ? (
-                      el.status === "processing" ? (
-                          "В работе"
-                      ) : (
-                          "Новая"
-                      )
-                  ) : (
-                      <StatusSelector
-                          setIsSuccessModalOpen={setIsSuccessModalOpen}
-                          setIsDeniedModalOpen={setIsDeniedModalOpen}
-                          setCurrentId={setCurrentId}
-                          possibleStatus={possibleStatus}
-                          filter={filter}
-                          id={el.id}
-                          className={styles.statusSelector}
-                      />
-                  )
-              ) : (
-                  el.status
-              )}
-            </span>
-          )
-        });
+                {el.user.lastname} {el.user.firstname} {el.user.middlename}
+              </div>
+            ),
+            email: (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigator.clipboard.writeText(el.user.email);
+                  setCopyEmail(el.user.email);
+                }}
+                className={styles.el}
+              >
+                <span>{el.user.email}</span>
+                <Icon
+                  icon={"copy"}
+                  size={"s"}
+                  className={classNames(styles.copy, el.user.email === copyEmail ? styles.active : null)}
+                />
+              </div>
+            ),
+            benefitName: (
+              <div
+                onClick={() => navigate(BENEFITS + "/" + el.user.id)}
+                className={styles.el}
+              >
+                {el.benefit.name}
+              </div>
+            ),
 
-        return acc;
-      }, [])
+            status: (
+              <span
+                style={{
+                  color:
+                    el.status === "approved"
+                      ? "#00BE00"
+                      : el.status === "declined"
+                        ? "#FF4040"
+                        : el.status === "pending"
+                          ? "#6A6A6A"
+                          : el.status === "processing"
+                            ? "#E7AB08"
+                            : "black",
+                }}
+              >
+                {el.status === "approved" ? (
+                  "Подтверждена"
+                ) : el.status === "declined" ? (
+                  "Отклонена"
+                ) : el.status === "pending" || el.status === "processing" ? (
+                  filter === null ? (
+                    el.status === "processing" ? (
+                      "В работе"
+                    ) : (
+                      "Новая"
+                    )
+                  ) : (
+                    <StatusSelector
+                      setIsSuccessModalOpen={setIsSuccessModalOpen}
+                      setIsDeniedModalOpen={setIsDeniedModalOpen}
+                      setCurrentId={setCurrentId}
+                      possibleStatus={possibleStatus}
+                      filter={filter}
+                      id={el.id}
+                      className={styles.statusSelector}
+                    />
+                  )
+                ) : (
+                  el.status
+                )}
+              </span>
+            ),
+          });
+
+          return acc;
+        }, [])
+        .slice(page * 8, page * 8 + 8)
     : [];
+
+  const getPages = () => {
+    const res = [];
+
+    for (let i = 0; i < requests.data?.length; i += 8) {
+      res.push(
+        <button
+          onClick={() => setPage(i / 8)}
+          className={classNames(styles.item, i / 8 === page ? styles.active : null)}
+        >
+          {i / 8 + 1}
+        </button>
+      );
+    }
+
+    return res;
+  };
 
   return (
     <>
       <ViewInfoContainer>
-        <Title className={styles.applicationsTitle} type={"page"}>Заявки</Title>
+        <Title
+          className={styles.applicationsTitle}
+          type={"page"}
+        >
+          Заявки
+        </Title>
 
         <div className={styles.filter}>
           <Text
@@ -320,6 +344,36 @@ export const ApplicationsView: FC = () => {
         />
       </ViewInfoContainer>
 
+      <div className={styles.pag}>
+        <Icon
+          icon={"move"}
+          size={"l"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev - 1 >= 0) return prev - 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, styles.reverse, page - 1 >= 0 ? null : styles.disabled)}
+        />
+
+        {getPages()}
+
+        <Icon
+          size={"l"}
+          icon={"move"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev + 1 < (requests.data?.length || 0) / 8) return prev + 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, page + 1 < (requests.data?.length || 0) / 8 ? null : styles.disabled)}
+        />
+      </div>
+
       <ModalSuccessRequest
         id={currentId}
         isOpen={isSuccessModalOpen}
@@ -354,7 +408,9 @@ const ModalSuccessRequest: FC<{ isOpen: boolean; onClose: () => void; id: number
         boldness={"medium"}
         type={"block"}
       >
-        Вы уверены, что хотите одобрить<br/>заявку на покупку бенефита?
+        Вы уверены, что хотите одобрить
+        <br />
+        заявку на покупку бенефита?
       </Title>
 
       <div className={styles.buttons}>

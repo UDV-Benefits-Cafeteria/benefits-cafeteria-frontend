@@ -13,8 +13,8 @@
 
   &__filters {
     display: flex;
-    gap: 16px;
     margin-bottom: 65px;
+    gap: 16px;
   }
 }
 
@@ -30,9 +30,9 @@
   border-radius: 10px;
   padding: 5px;
   width: 140px;
+  height: 35px;
   font-size: 14px;
   gap: 5px;
-  height: 35px;
 
   &__icon {
     background-color: var(--main_text);
@@ -56,9 +56,9 @@
   }
 
   &__el {
-    cursor: pointer;
     display: flex;
     align-items: center;
+    cursor: pointer;
     gap: 5px;
 
     &:hover {
@@ -82,11 +82,11 @@
 }
 
 .filters {
+  border-radius: 10px !important;
   padding: 5px;
   width: 225px !important;
   height: 35px !important;
   font-size: 14px !important;
-  border-radius: 10px !important;
 }
 
 .text {
@@ -95,11 +95,11 @@
 
 .buttons {
   display: flex;
+  justify-content: center;
   margin-top: 32px;
   margin-right: auto;
   margin-left: auto;
   gap: 16px;
-  justify-content: center;
 }
 
 .points {
@@ -136,5 +136,41 @@
 
   .warning {
     color: var(--error_text);
+  }
+}
+
+.move {
+  background-color: var(--main_text);
+  cursor: pointer;
+
+  &.disabled {
+    background-color: var(--grey_100);
+  }
+
+  &.reverse {
+    transform: rotate(180deg);
+  }
+}
+
+.pag {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  gap: 20px;
+
+  .item {
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+
+    &.active {
+      border-radius: 50%;
+      color: white;
+      background-color: var(--primary);
+    }
   }
 }

@@ -5,6 +5,7 @@ import { DataTable } from "@feature/DataTable";
 import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { classNames } from "@shared/lib/classNames/classNames";
 import { Button } from "@shared/ui/Button";
+import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
@@ -46,45 +47,65 @@ export const PurchaseHistoryTable: FC = () => {
   const requests = useGetUserRequestsQuery(null);
   const navigate = useNavigate();
   const [updateRequest] = useUpdateRequestsMutation();
+  const [page, setPage] = useState(0);
 
   const data = requests?.data
-    ? requests.data.reduce((acc: any[], el) => {
-        if (activeFilter !== "all" && el.status !== activeFilter) return acc;
+    ? requests.data
+        .reduce((acc: any[], el) => {
+          if (activeFilter !== "all" && el.status !== activeFilter) return acc;
 
-        acc.push({
-          id: el.benefit.id,
-          date: dayjs(el.created_at).format("DD.MM.YYYY"),
-          name: (
-            <span
-              className={styles.fullname}
-              onClick={() => navigate(BENEFITS + "/" + el.benefit.id)}
-            >
-              <Image
-                type={"avatar"}
-                srs={el.benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
-                onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
-              />
-              {el.benefit.name}
-            </span>
-          ),
-          status: <span className={styles[el.status]}>{status[el.status]}</span>,
-          cancel: (
-            <>
-              {el.status === "pending" ? (
-                <Button
-                  onClick={() => updateRequest({ id: el.id, status: "declined" })}
-                  buttonType={"secondary-red"}
-                >
-                  Отменить покупку
-                </Button>
-              ) : null}
-            </>
-          ),
-        });
+          acc.push({
+            id: el.benefit.id,
+            date: dayjs(el.created_at).format("DD.MM.YYYY"),
+            name: (
+              <span
+                className={styles.fullname}
+                onClick={() => navigate(BENEFITS + "/" + el.benefit.id)}
+              >
+                <Image
+                  type={"avatar"}
+                  srs={el.benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
+                  onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
+                />
+                {el.benefit.name}
+              </span>
+            ),
+            status: <span className={styles[el.status]}>{status[el.status]}</span>,
+            cancel: (
+              <>
+                {el.status === "pending" ? (
+                  <Button
+                    onClick={() => updateRequest({ id: el.id, status: "declined" })}
+                    buttonType={"secondary-red"}
+                  >
+                    Отменить покупку
+                  </Button>
+                ) : null}
+              </>
+            ),
+          });
 
-        return acc;
-      }, [])
+          return acc;
+        }, [])
+        .slice(page * 6, page * 6 + 6)
     : [];
+
+  const getPages = () => {
+    const res = [];
+
+    for (let i = 0; i < requests.data?.length; i += 6) {
+      res.push(
+        <button
+          onClick={() => setPage(i / 6)}
+          className={classNames(styles.item, i / 6 === page ? styles.active : null)}
+        >
+          {i / 6 + 1}
+        </button>
+      );
+    }
+
+    return res;
+  };
 
   return (
     <div className={styles.container}>
@@ -100,6 +121,36 @@ export const PurchaseHistoryTable: FC = () => {
         headers={tableHeader}
         data={data}
       />
+
+      <div className={styles.pag}>
+        <Icon
+          icon={"move"}
+          size={"l"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev - 1 >= 0) return prev - 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, styles.reverse, page - 1 >= 0 ? null : styles.disabled)}
+        />
+
+        {getPages()}
+
+        <Icon
+          size={"l"}
+          icon={"move"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev + 1 < (requests.data?.length || 0) / 6) return prev + 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, page + 1 < (requests.data?.length || 0) / 6 ? null : styles.disabled)}
+        />
+      </div>
     </div>
   );
 };

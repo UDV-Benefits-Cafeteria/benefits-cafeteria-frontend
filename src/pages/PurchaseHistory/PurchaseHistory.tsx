@@ -13,9 +13,14 @@ export const PurchaseHistory: FC = () => {
   return (
     <>
       <BarHeader />
-      <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
+      <div style={{ maxWidth: 1200, margin: "auto", paddingTop: "190px", height: "100dvh" }}>
         <Title type={"page"}>
-          <Link className={styles.link} route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
+          <Link
+            className={styles.link}
+            route={BENEFITS_BAR}
+          >
+            {"<-"} Вернуться в бар бенефитов
+          </Link>
         </Title>
 
         <PurchaseHistoryTable />

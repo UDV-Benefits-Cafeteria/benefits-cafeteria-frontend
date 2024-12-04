@@ -8,6 +8,7 @@ export const LegalEntitiesApi = rtkApi.injectEndpoints({
     getLegalEntities: build.query<TLegalEntity[], null>({
       query: () => ({
         url: "/legal-entities/",
+        params: { limit: 100 },
       }),
       providesTags: ["LegalEntities"],
     }),

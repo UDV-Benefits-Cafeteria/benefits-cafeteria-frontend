@@ -156,8 +156,10 @@ export const ViewEmployees: FC = () => {
   const users = useGetAllUserQuery({ search: search, sort: sort, filters: filters });
   const navigate = useNavigate();
 
+  const [page, setPage] = useState(0);
+
   const data = users?.data
-    ? users.data.map(el => ({
+    ? users.data.slice(page * 8, page * 8 + 8).map(el => ({
         id: el.id,
         fullname: (
           <span className={styles.fullname}>
@@ -268,330 +270,378 @@ export const ViewEmployees: FC = () => {
     }
   };
 
+  const getPages = () => {
+    const res = [];
+
+    for (let i = 0; i < users?.data?.length; i += 8) {
+      res.push(
+        <button
+          onClick={() => setPage(i / 8)}
+          className={classNames(styles.item, i / 8 === page ? styles.active : null)}
+        >
+          {i / 8 + 1}
+        </button>
+      );
+    }
+
+    return res;
+  };
+
   return (
-    <ViewInfoContainer>
-      <ViewHeader
-        title={"Сотрудники"}
-        searchBar={
-          <SearchBar
-            setValue={setSearch}
-            className={styles.searchBar}
-            value={search}
-          />
-        }
-      >
-        <div style={{ display: "flex", gap: 16 }}>
+    <>
+      <ViewInfoContainer>
+        <ViewHeader
+          title={"Сотрудники"}
+          searchBar={
+            <SearchBar
+              setValue={setSearch}
+              className={styles.searchBar}
+              value={search}
+            />
+          }
+        >
+          <div style={{ display: "flex", gap: 16 }}>
+            <Button
+              className={styles.AddBtn}
+              onClick={() => navigate(CREATE_EMPLOYEES)}
+            >
+              Добавить сотрудника
+            </Button>
+
+            <Popover
+              trigger={"click"}
+              arrow={false}
+              className={styles.dots}
+              content={
+                <div className={styles.menu}>
+                  <div className={styles.menu__top}>
+                    <input
+                      id={"qwe"}
+                      type={"file"}
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
+                    <label htmlFor={"qwe"}>
+                      <Text className={styles.menu__el}>
+                        <Icon
+                          icon={"upload"}
+                          className={styles.filter_button__icon}
+                          size={"s"}
+                        />
+                        Импорт списка пользователей Excel
+                      </Text>
+                    </label>
+
+                    <a
+                      download
+                      style={{ color: "black" }}
+                      href={"https://digital-portfolio.hb.ru-msk.vkcloud-storage.ru/users.xlsx"}
+                    >
+                      <Text className={styles.menu__el}>
+                        <Icon
+                          icon={"download"}
+                          className={styles.filter_button__icon}
+                          size={"s"}
+                        />
+                        Скачать шаблон импорта Excel
+                      </Text>
+                    </a>
+                  </div>
+                  <Text
+                    className={styles.menu__el}
+                    onClick={getUsersFile}
+                  >
+                    <Icon
+                      icon={"download"}
+                      className={styles.filter_button__icon}
+                      size={"s"}
+                    />
+                    Экспорт списка пользователей Excel
+                  </Text>
+                  <Text
+                    className={styles.menu__el}
+                    onClick={getFile}
+                  >
+                    <Icon
+                      icon={"download"}
+                      className={styles.filter_button__icon}
+                      size={"s"}
+                    />
+                    Экспорт списка трат Excel
+                  </Text>
+                </div>
+              }
+            >
+              <div className={styles.import}>
+                <Icon
+                  icon={"import"}
+                  size={"m"}
+                  className={styles.import_icon}
+                />
+              </div>
+            </Popover>
+          </div>
+        </ViewHeader>
+
+        <div className={styles.top__filters}>
           <Button
-            className={styles.AddBtn}
-            onClick={() => navigate(CREATE_EMPLOYEES)}
+            buttonType={"secondary-black"}
+            onClick={() => setSidebarOpen(prev => !prev)}
+            className={styles.filter_button}
           >
-            Добавить сотрудника
+            <Icon
+              size={"m"}
+              icon={"filters"}
+              className={styles.filter_button__icon}
+            />
+
+            <Text boldness={"medium"}>Все фильтры</Text>
           </Button>
 
-          <Popover
-            trigger={"click"}
-            arrow={false}
-            className={styles.dots}
-            content={
-              <div className={styles.menu}>
-                <div className={styles.menu__top}>
-                  <input
-                    id={"qwe"}
-                    type={"file"}
-                    style={{ display: "none" }}
-                    onChange={handleImageChange}
-                  />
-                  <label htmlFor={"qwe"}>
-                    <Text className={styles.menu__el}>
-                      <Icon
-                        icon={"upload"}
-                        className={styles.filter_button__icon}
-                        size={"s"}
-                      />
-                      Импорт списка пользователей Excel
-                    </Text>
-                  </label>
-
-                  <a
-                    download
-                    style={{ color: "black" }}
-                    href={"https://digital-portfolio.hb.ru-msk.vkcloud-storage.ru/users.xlsx"}
-                  >
-                    <Text className={styles.menu__el}>
-                      <Icon
-                        icon={"download"}
-                        className={styles.filter_button__icon}
-                        size={"s"}
-                      />
-                      Скачать шаблон импорта Excel
-                    </Text>
-                  </a>
-                </div>
-                <Text
-                  className={styles.menu__el}
-                  onClick={getUsersFile}
-                >
-                  <Icon
-                    icon={"download"}
-                    className={styles.filter_button__icon}
-                    size={"s"}
-                  />
-                  Экспорт списка пользователей Excel
-                </Text>
-                <Text
-                  className={styles.menu__el}
-                  onClick={getFile}
-                >
-                  <Icon
-                    icon={"download"}
-                    className={styles.filter_button__icon}
-                    size={"s"}
-                  />
-                  Экспорт списка трат Excel
-                </Text>
-              </div>
-            }
-          >
-            <div className={styles.import}>
-              <Icon
-                icon={"import"}
-                size={"m"}
-                className={styles.import_icon}
-              />
-            </div>
-          </Popover>
-        </div>
-      </ViewHeader>
-
-      <div className={styles.top__filters}>
-        <Button
-          buttonType={"secondary-black"}
-          onClick={() => setSidebarOpen(prev => !prev)}
-          className={styles.filter_button}
-        >
-          <Icon
-            size={"m"}
-            icon={"filters"}
-            className={styles.filter_button__icon}
+          <Selector
+            currentValue={sort}
+            setCurrentValue={setSort}
+            className={styles.filters}
+            values={SORT_PARAMS.map(el => ({
+              data: toQuery(el.sortBy, el.sortOrder),
+              text: el.text,
+            }))}
           />
 
-          <Text boldness={"medium"}>Все фильтры</Text>
-        </Button>
+          <FiltersSidebar
+            type={"admin"}
+            title={"Все фильтры"}
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          >
+            <div className={styles.filter_container}>
+              {userRole === "admin" ? (
+                <>
+                  <div className={styles.filter_block}>
+                    <Title type={"element"}>Роль</Title>
 
-        <Selector
-          currentValue={sort}
-          setCurrentValue={setSort}
-          className={styles.filters}
-          values={SORT_PARAMS.map(el => ({
-            data: toQuery(el.sortBy, el.sortOrder),
-            text: el.text,
-          }))}
+                    <Checkbox
+                      className={styles.radio}
+                      onChange={() => handelClickRoleCheckBox("employee")}
+                      label={"Сотрудник"}
+                      value={roles.includes("employee")}
+                    />
+
+                    <Checkbox
+                      className={styles.radio}
+                      onChange={() => handelClickRoleCheckBox("hr")}
+                      label={"HR"}
+                      value={roles.includes("hr")}
+                    />
+
+                    <Checkbox
+                      className={styles.radio}
+                      onChange={() => handelClickRoleCheckBox("admin")}
+                      label={"Админ"}
+                      value={roles.includes("admin")}
+                    />
+                  </div>
+
+                  <div className={styles.filter_block}>
+                    <Title type={"element"}>Юридические лица</Title>
+
+                    {legalEntityCheckbox && (
+                      <div className={styles.checkbox_container}>
+                        {Object.keys(legalEntityCheckbox).map(el => (
+                          <Checkbox
+                            key={el}
+                            className={styles.element}
+                            value={legalEntityCheckbox[el].active}
+                            label={el}
+                            onChange={() =>
+                              setLegalEntityCheckbox(prev => ({
+                                ...prev,
+                                [el]: { active: !prev![el].active, id: prev![el].id },
+                              }))
+                            }
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : null}
+
+              <div className={styles.filter_block}>
+                <Title type={"element"}>Статус пользователя</Title>
+
+                <div className={styles.active_container}>
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => setIsActive(true)}
+                    label={"Активные"}
+                    value={isActive !== null ? isActive : false}
+                  />
+
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => setIsActive(false)}
+                    label={"Неактивные"}
+                    value={isActive !== null ? !isActive : false}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.filter_block}>
+                <Title type={"element"}>Дата найма</Title>
+
+                <div className={styles.numbers}>
+                  <InputContainer>
+                    <InputLabel>
+                      <Text type={"description"}>От</Text>
+                    </InputLabel>
+
+                    <InputField
+                      isForm={true}
+                      type={"date"}
+                      value={minDate}
+                      placeholder={"Введите число"}
+                      className={styles.numbers__input}
+                      onChange={e => setMinDate(e.currentTarget.value)}
+                    />
+                  </InputContainer>
+
+                  <InputContainer>
+                    <InputLabel>
+                      <Text type={"description"}>До</Text>
+                    </InputLabel>
+
+                    <InputField
+                      isForm={true}
+                      type={"date"}
+                      placeholder={"Введите число"}
+                      className={styles.numbers__input}
+                      value={maxDate}
+                      onChange={e => setMaxDate(e.currentTarget.value)}
+                    />
+                  </InputContainer>
+                </div>
+              </div>
+
+              <div className={styles.filter_block}>
+                <Title type={"element"}>Адаптация</Title>
+
+                <div className={styles.active_container}>
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => setIsAdapted(true)}
+                    label={"Пройдена"}
+                    value={isAdapted !== null ? isAdapted : false}
+                  />
+
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => setIsAdapted(false)}
+                    label={"не пройдена"}
+                    value={isAdapted !== null ? !isAdapted : false}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.filter_block}>
+                <Title type={"element"}>Верификация</Title>
+
+                <div className={styles.active_container}>
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => setIsVerified(true)}
+                    label={"Пройдена"}
+                    value={isVerified !== null ? isVerified : false}
+                  />
+
+                  <Checkbox
+                    className={styles.radio}
+                    onChange={() => setIsVerified(false)}
+                    label={"не пройдена"}
+                    value={isVerified !== null ? !isVerified : false}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.buttons}>
+                <Button
+                  onClick={() => {
+                    toInitialState();
+                    setFilters({});
+                  }}
+                  buttonType={"secondary"}
+                >
+                  Сбросить
+                </Button>
+
+                <Button
+                  onClick={() =>
+                    setFilters({
+                      ...(getActiveCategory(legalEntityCheckbox).length
+                        ? {
+                            legal_entities: getActiveCategory(legalEntityCheckbox).reduce((acc, el, index) => {
+                              acc +=
+                                `legal_entities=${legalEntityCheckbox[el].id}` +
+                                `${index === getActiveCategory(legalEntityCheckbox).length - 1 ? "" : "&"}`;
+
+                              return acc;
+                            }, ""),
+                          }
+                        : {}),
+                      ...(isAdapted !== null ? { is_adapted: isAdapted } : {}),
+                      ...(isActive !== null ? { is_active: isActive } : {}),
+                      ...(minDate !== null && maxDate !== null ? { hired_at: preparePeriod(minDate, maxDate) } : {}),
+                    })
+                  }
+                >
+                  Показать
+                </Button>
+              </div>
+            </div>
+          </FiltersSidebar>
+        </div>
+
+        <DataTable
+          headers={tableHeader}
+          data={data}
         />
 
-        <FiltersSidebar
-          type={"admin"}
-          title={"Все фильтры"}
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        >
-          <div className={styles.filter_container}>
-            {userRole === "admin" ? (
-              <>
-                <div className={styles.filter_block}>
-                  <Title type={"element"}>Роль</Title>
+        <DisableModal
+          open={open}
+          onClose={() => setOpen(false)}
+          id={id}
+        />
+      </ViewInfoContainer>
+      <div className={styles.pag}>
+        <Icon
+          icon={"move"}
+          size={"l"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev - 1 >= 0) return prev - 1;
 
-                  <Checkbox
-                    className={styles.radio}
-                    onChange={() => handelClickRoleCheckBox("employee")}
-                    label={"Сотрудник"}
-                    value={roles.includes("employee")}
-                  />
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, styles.reverse, page - 1 >= 0 ? null : styles.disabled)}
+        />
 
-                  <Checkbox
-                    className={styles.radio}
-                    onChange={() => handelClickRoleCheckBox("hr")}
-                    label={"HR"}
-                    value={roles.includes("hr")}
-                  />
+        {getPages()}
 
-                  <Checkbox
-                    className={styles.radio}
-                    onChange={() => handelClickRoleCheckBox("admin")}
-                    label={"Админ"}
-                    value={roles.includes("admin")}
-                  />
-                </div>
+        <Icon
+          size={"l"}
+          icon={"move"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev + 1 < (users?.data?.length || 0) / 8) return prev + 1;
 
-                <div className={styles.filter_block}>
-                  <Title type={"element"}>Юридические лица</Title>
-
-                  {legalEntityCheckbox && (
-                    <div className={styles.checkbox_container}>
-                      {Object.keys(legalEntityCheckbox).map(el => (
-                        <Checkbox
-                          key={el}
-                          className={styles.element}
-                          value={legalEntityCheckbox[el].active}
-                          label={el}
-                          onChange={() =>
-                            setLegalEntityCheckbox(prev => ({
-                              ...prev,
-                              [el]: { active: !prev![el].active, id: prev![el].id },
-                            }))
-                          }
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : null}
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Статус пользователя</Title>
-
-              <div className={styles.active_container}>
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setIsActive(true)}
-                  label={"Активные"}
-                  value={isActive !== null ? isActive : false}
-                />
-
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setIsActive(false)}
-                  label={"Неактивные"}
-                  value={isActive !== null ? !isActive : false}
-                />
-              </div>
-            </div>
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Дата найма</Title>
-
-              <div className={styles.numbers}>
-                <InputContainer>
-                  <InputLabel>
-                    <Text type={"description"}>От</Text>
-                  </InputLabel>
-
-                  <InputField
-                    isForm={true}
-                    type={"date"}
-                    value={minDate}
-                    placeholder={"Введите число"}
-                    className={styles.numbers__input}
-                    onChange={e => setMinDate(e.currentTarget.value)}
-                  />
-                </InputContainer>
-
-                <InputContainer>
-                  <InputLabel>
-                    <Text type={"description"}>До</Text>
-                  </InputLabel>
-
-                  <InputField
-                    isForm={true}
-                    type={"date"}
-                    placeholder={"Введите число"}
-                    className={styles.numbers__input}
-                    value={maxDate}
-                    onChange={e => setMaxDate(e.currentTarget.value)}
-                  />
-                </InputContainer>
-              </div>
-            </div>
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Адаптация</Title>
-
-              <div className={styles.active_container}>
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setIsAdapted(true)}
-                  label={"Пройдена"}
-                  value={isAdapted !== null ? isAdapted : false}
-                />
-
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setIsAdapted(false)}
-                  label={"не пройдена"}
-                  value={isAdapted !== null ? !isAdapted : false}
-                />
-              </div>
-            </div>
-
-            <div className={styles.filter_block}>
-              <Title type={"element"}>Верификация</Title>
-
-              <div className={styles.active_container}>
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setIsVerified(true)}
-                  label={"Пройдена"}
-                  value={isVerified !== null ? isVerified : false}
-                />
-
-                <Checkbox
-                  className={styles.radio}
-                  onChange={() => setIsVerified(false)}
-                  label={"не пройдена"}
-                  value={isVerified !== null ? !isVerified : false}
-                />
-              </div>
-            </div>
-
-            <div className={styles.buttons}>
-              <Button
-                onClick={() => {
-                  toInitialState();
-                  setFilters({});
-                }}
-                buttonType={"secondary"}
-              >
-                Сбросить
-              </Button>
-
-              <Button
-                onClick={() =>
-                  setFilters({
-                    ...(getActiveCategory(legalEntityCheckbox).length
-                      ? {
-                          legal_entities: getActiveCategory(legalEntityCheckbox).reduce((acc, el, index) => {
-                            acc +=
-                              `legal_entities=${legalEntityCheckbox[el].id}` +
-                              `${index === getActiveCategory(legalEntityCheckbox).length - 1 ? "" : "&"}`;
-
-                            return acc;
-                          }, ""),
-                        }
-                      : {}),
-                    ...(isAdapted !== null ? { is_adapted: isAdapted } : {}),
-                    ...(isActive !== null ? { is_active: isActive } : {}),
-                    ...(minDate !== null && maxDate !== null ? { hired_at: preparePeriod(minDate, maxDate) } : {}),
-                  })
-                }
-              >
-                Показать
-              </Button>
-            </div>
-          </div>
-        </FiltersSidebar>
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, page + 1 < (users?.data?.length || 0) / 8 ? null : styles.disabled)}
+        />
       </div>
-
-      <DataTable
-        headers={tableHeader}
-        data={data}
-      />
-
-      <DisableModal
-        open={open}
-        onClose={() => setOpen(false)}
-        id={id}
-      />
-    </ViewInfoContainer>
+    </>
   );
 };
 

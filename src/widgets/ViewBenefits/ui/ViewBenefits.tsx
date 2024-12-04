@@ -149,8 +149,10 @@ export const ViewBenefits: FC = () => {
     }
   };
 
+  const [page, setPage] = useState(0);
+
   const data = benefits
-    ? benefits.map(el => ({
+    ? benefits.slice(page * 8, page * 8 + 8).map(el => ({
         id: el.id,
         name: (
           <span className={styles.fullname}>
@@ -204,148 +206,197 @@ export const ViewBenefits: FC = () => {
       }))
     : [];
 
+  const getPages = () => {
+    const res = [];
+
+    for (let i = 0; i < benefits?.length; i += 8) {
+      res.push(
+        <button
+          onClick={() => setPage(i / 8)}
+          className={classNames(styles.item, i / 8 === page ? styles.active : null)}
+        >
+          {i / 8 + 1}
+        </button>
+      );
+    }
+
+    return res;
+  };
+
   return (
-    <ViewInfoContainer>
-      <ViewHeader
-        title={"Бенефиты"}
-        searchBar={
-          <SearchBar
-            setValue={setSearch}
-            value={search}
-            className={styles.searchBar}
-          />
-        }
-      >
-        <div style={{ display: "flex", gap: 16 }}>
+    <>
+      <ViewInfoContainer>
+        <ViewHeader
+          title={"Бенефиты"}
+          searchBar={
+            <SearchBar
+              setValue={setSearch}
+              value={search}
+              className={styles.searchBar}
+            />
+          }
+        >
+          <div style={{ display: "flex", gap: 16 }}>
+            <Button
+              className={styles.AddBtn}
+              onClick={() => navigate(CREATE_BENEFITS)}
+            >
+              Добавить бенефит
+            </Button>
+
+            <Popover
+              trigger={"click"}
+              className={styles.dots}
+              arrow={false}
+              content={
+                <div className={styles.menu}>
+                  <div className={styles.menu__top}>
+                    <input
+                      id={"qwe"}
+                      type={"file"}
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
+                    <label htmlFor={"qwe"}>
+                      <Text className={styles.menu__el}>
+                        <Icon
+                          icon={"upload"}
+                          className={styles.filter_button__icon}
+                          size={"s"}
+                        />
+                        Импорт списка бенефитов Excel
+                      </Text>
+                    </label>
+                    <a
+                      download
+                      style={{ color: "black" }}
+                      href={"https://digital-portfolio.hb.ru-msk.vkcloud-storage.ru/benefits.xlsx"}
+                    >
+                      <Text className={styles.menu__el}>
+                        <Icon
+                          icon={"download"}
+                          className={styles.filter_button__icon}
+                          size={"s"}
+                        />
+                        Скачать шаблон импорта Excel
+                      </Text>
+                    </a>
+                  </div>
+                  <Text
+                    className={styles.menu__el}
+                    onClick={getFile}
+                  >
+                    <Icon
+                      icon={"download"}
+                      className={styles.filter_button__icon}
+                      size={"s"}
+                    />
+                    Экспорт списка бенефитов Excel
+                  </Text>
+                </div>
+              }
+            >
+              <div className={styles.import}>
+                <Icon
+                  icon={"import"}
+                  size={"m"}
+                  className={styles.import_icon}
+                />
+              </div>
+            </Popover>
+          </div>
+        </ViewHeader>
+
+        <div className={styles.top__filters}>
           <Button
-            className={styles.AddBtn}
-            onClick={() => navigate(CREATE_BENEFITS)}
+            buttonType={"secondary-black"}
+            onClick={() => setSidebarOpen(prev => !prev)}
+            className={styles.filter_button}
           >
-            Добавить бенефит
+            <Icon
+              size={"m"}
+              icon={"filters"}
+              className={styles.filter_button__icon}
+            />
+
+            <Text boldness={"medium"}>Все фильтры</Text>
           </Button>
 
-          <Popover
-            trigger={"click"}
-            className={styles.dots}
-            arrow={false}
-            content={
-              <div className={styles.menu}>
-                <div className={styles.menu__top}>
-                  <input
-                    id={"qwe"}
-                    type={"file"}
-                    style={{ display: "none" }}
-                    onChange={handleImageChange}
-                  />
-                  <label htmlFor={"qwe"}>
-                    <Text className={styles.menu__el}>
-                      <Icon
-                        icon={"upload"}
-                        className={styles.filter_button__icon}
-                        size={"s"}
-                      />
-                      Импорт списка бенефитов Excel
-                    </Text>
-                  </label>
-                  <a
-                    download
-                    style={{ color: "black" }}
-                    href={"https://digital-portfolio.hb.ru-msk.vkcloud-storage.ru/benefits.xlsx"}
-                  >
-                    <Text className={styles.menu__el}>
-                      <Icon
-                        icon={"download"}
-                        className={styles.filter_button__icon}
-                        size={"s"}
-                      />
-                      Скачать шаблон импорта Excel
-                    </Text>
-                  </a>
-                </div>
-                <Text
-                  className={styles.menu__el}
-                  onClick={getFile}
-                >
-                  <Icon
-                    icon={"download"}
-                    className={styles.filter_button__icon}
-                    size={"s"}
-                  />
-                  Экспорт списка бенефитов Excel
-                </Text>
-              </div>
-            }
-          >
-            <div className={styles.import}>
-              <Icon
-                icon={"import"}
-                size={"m"}
-                className={styles.import_icon}
-              />
-            </div>
-          </Popover>
-        </div>
-      </ViewHeader>
-
-      <div className={styles.top__filters}>
-        <Button
-          buttonType={"secondary-black"}
-          onClick={() => setSidebarOpen(prev => !prev)}
-          className={styles.filter_button}
-        >
-          <Icon
-            size={"m"}
-            icon={"filters"}
-            className={styles.filter_button__icon}
+          <BenefitFilter
+            type={"admin"}
+            setMinLevel={setMinLevel}
+            setActive={setActive}
+            setAdaptation={setAdaptation}
+            setMaxCost={setMaxCost}
+            setMinCost={setMinCost}
+            setSidebarOpen={setSidebarOpen}
+            setMaxLevel={setMaxLevel}
+            sidebarOpen={sidebarOpen}
+            toInitialState={toInitialState}
+            minCost={minCost}
+            setFilters={setFilters}
+            adaptation={adaptation}
+            active={active}
+            minLevel={minLevel}
+            maxLevel={maxLevel}
+            categoriesCheckbox={categoriesCheckbox}
+            maxCost={maxCost}
+            setCategoriesCheckbox={setCategoriesCheckbox}
           />
 
-          <Text boldness={"medium"}>Все фильтры</Text>
-        </Button>
+          <Selector
+            currentValue={sort}
+            setCurrentValue={setSort}
+            className={styles.filters}
+            values={SORT_PARAMS.map(el => ({
+              data: toQuery(el.sortBy, el.sortOrder),
+              text: el.text,
+            }))}
+          />
+        </div>
 
-        <BenefitFilter
-          type={"admin"}
-          setMinLevel={setMinLevel}
-          setActive={setActive}
-          setAdaptation={setAdaptation}
-          setMaxCost={setMaxCost}
-          setMinCost={setMinCost}
-          setSidebarOpen={setSidebarOpen}
-          setMaxLevel={setMaxLevel}
-          sidebarOpen={sidebarOpen}
-          toInitialState={toInitialState}
-          minCost={minCost}
-          setFilters={setFilters}
-          adaptation={adaptation}
-          active={active}
-          minLevel={minLevel}
-          maxLevel={maxLevel}
-          categoriesCheckbox={categoriesCheckbox}
-          maxCost={maxCost}
-          setCategoriesCheckbox={setCategoriesCheckbox}
+        <DataTable
+          headers={tableHeader}
+          data={data}
         />
 
-        <Selector
-          currentValue={sort}
-          setCurrentValue={setSort}
-          className={styles.filters}
-          values={SORT_PARAMS.map(el => ({
-            data: toQuery(el.sortBy, el.sortOrder),
-            text: el.text,
-          }))}
+        <DisableModal
+          open={open}
+          onClose={() => setOpen(false)}
+          id={id}
+        />
+      </ViewInfoContainer>
+
+      <div className={styles.pag}>
+        <Icon
+          icon={"move"}
+          size={"l"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev - 1 >= 0) return prev - 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, styles.reverse, page - 1 >= 0 ? null : styles.disabled)}
+        />
+
+        {getPages()}
+
+        <Icon
+          size={"l"}
+          icon={"move"}
+          onClick={() => {
+            setPage(prev => {
+              if (prev + 1 < (benefits?.length || 0) / 8) return prev + 1;
+
+              return prev;
+            });
+          }}
+          className={classNames(styles.move, page + 1 < (benefits?.length || 0) / 8 ? null : styles.disabled)}
         />
       </div>
-
-      <DataTable
-        headers={tableHeader}
-        data={data}
-      />
-
-      <DisableModal
-        open={open}
-        onClose={() => setOpen(false)}
-        id={id}
-      />
-    </ViewInfoContainer>
+    </>
   );
 };
 

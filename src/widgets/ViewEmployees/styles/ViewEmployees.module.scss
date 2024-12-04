@@ -205,3 +205,39 @@
   justify-content: space-between;
   width: 100%;
 }
+
+.move {
+  background-color: var(--main_text);
+  cursor: pointer;
+
+  &.disabled {
+    background-color: var(--grey_100);
+  }
+
+  &.reverse {
+    transform: rotate(180deg);
+  }
+}
+
+.pag {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  gap: 20px;
+
+  .item {
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-weight: 500;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+
+    &.active {
+      border-radius: 50%;
+      color: white;
+      background-color: var(--primary);
+    }
+  }
+}

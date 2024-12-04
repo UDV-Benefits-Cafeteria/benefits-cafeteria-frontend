@@ -38,7 +38,7 @@ export const BenefitApi = rtkApi.injectEndpoints({
           `${params.search ? "&query=" + params.search : ""}`,
         params: {
           ...params.filters,
-          limit: params.limit,
+          limit: 100,
           categories: undefined,
         },
       }),
