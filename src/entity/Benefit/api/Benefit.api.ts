@@ -55,7 +55,7 @@ export const BenefitApi = rtkApi.injectEndpoints({
     deleteBenefitImage: build.mutation<TBenefit, { id: number; imagesId: number[] }>({
       query: (body: { id: number; imagesId: number[] }) => ({
         method: "DELETE",
-        url: `/benefits/images`,
+        url: `/benefits/${body.id}/images`,
         body: body.imagesId,
       }),
       invalidatesTags: ["Benefits"],
