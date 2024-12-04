@@ -215,12 +215,12 @@ export const LegalEntitiesView: FC = () => {
           icon={"move"}
           onClick={() => {
             setPage(prev => {
-              if (prev + 1 < (legalEntities?.length || 0) / 8) return prev + 1;
+              if (prev + 1 < (data.length || 0) / 8) return prev + 1;
 
               return prev;
             });
           }}
-          className={classNames(styles.move, page + 1 < (legalEntities?.length || 0) / 8 ? null : styles.disabled)}
+          className={classNames(styles.move, page + 1 < (data.length || 0) / 8 ? null : styles.disabled)}
         />
       </div>
 
