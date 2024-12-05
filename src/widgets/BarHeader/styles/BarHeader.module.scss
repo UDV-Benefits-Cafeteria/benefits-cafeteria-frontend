@@ -64,6 +64,22 @@
   height: 18px;
 }
 
+.iconHeaderBag {
+  position: relative;
+  top: 4px;
+  background-color: var(--main_text);
+  width: 22px;
+  height: 27px;
+}
+
+.iconHeaderUser {
+  position: relative;
+  top: 4px;
+  background-color: var(--main_text);
+  width: 27px;
+  height: 27px;
+}
+
 .searchWrapper {
   position: relative;
 }

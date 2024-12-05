@@ -190,7 +190,7 @@ export const BarHeader: FC = () => {
           onClick={() => navigate(PURCHASE_HISTORY)}
         >
           <Icon
-            className={styles.icon}
+            className={styles.iconHeaderBag}
             icon={"bag"}
             size={"l"}
           />
@@ -238,7 +238,7 @@ export const BarHeader: FC = () => {
         >
           <div className={classNames(styles.item, styles.click)}>
             <Icon
-              className={styles.icon}
+              className={styles.iconHeaderUser}
               icon={"account"}
               size={"l"}
             />
