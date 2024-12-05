@@ -170,6 +170,7 @@ export const ViewEmployees: FC = () => {
               type={"avatar"}
               srs={el.image_url || USER_PLACEHOLDER}
               onError={e => (e.target.src = USER_PLACEHOLDER)}
+              style={!el.is_active ? { filter: "grayscale(100%)" } : {}}
             />
             {el.lastname} {el.firstname} {el.middlename}
           </span>
