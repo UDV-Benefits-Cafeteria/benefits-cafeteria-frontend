@@ -36,10 +36,10 @@ const tableHeader = [
 ];
 
 const status = {
-  processing: "В работе",
-  pending: "На рассмотрении",
-  approved: "Подтверждён",
-  declined: "Отменён",
+    pending: "Оформлена",
+  processing: "В обработке",
+  approved: "Подтверждена",
+  declined: "Отклонена",
 };
 
 export const PurchaseHistoryTable: FC = () => {
@@ -63,6 +63,7 @@ export const PurchaseHistoryTable: FC = () => {
                 onClick={() => navigate(BENEFITS + "/" + el.benefit.id)}
               >
                 <Image
+                    className={styles.img}
                   type={"avatar"}
                   srs={el.benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
                   onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
@@ -77,8 +78,9 @@ export const PurchaseHistoryTable: FC = () => {
                   <Button
                     onClick={() => updateRequest({ id: el.id, status: "declined" })}
                     buttonType={"secondary-red"}
+                    className={styles.cancelBtn}
                   >
-                    Отменить покупку
+                    Отменить заявку
                   </Button>
                 ) : null}
               </>
@@ -175,28 +177,28 @@ export const RequestTabulator: FC<{
         onClick={() => setFilter("pending")}
         boldness={"bold"}
       >
-        Оформлена
+        Оформленные
       </Text>
       <Text
         className={classNames(styles.text, filter === "processing" ? styles.active : null)}
         onClick={() => setFilter("processing")}
         boldness={"bold"}
       >
-        В работе
+        В обработке
       </Text>
       <Text
         className={classNames(styles.text, filter === "approved" ? styles.active : null)}
         onClick={() => setFilter("approved")}
         boldness={"bold"}
       >
-        Подтвержденные
+        Подтверждённые
       </Text>
       <Text
         className={classNames(styles.text, filter === "declined" ? styles.active : null)}
         onClick={() => setFilter("declined")}
         boldness={"bold"}
       >
-        Отменённые
+        Отклонённые
       </Text>
     </div>
   );

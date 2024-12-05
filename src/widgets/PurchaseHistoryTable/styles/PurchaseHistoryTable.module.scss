@@ -24,6 +24,13 @@
   }
 }
 
+.img {
+  border-radius: 16px;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
 .move {
   background-color: var(--main_text);
   cursor: pointer;
@@ -64,17 +71,28 @@
 .fullname {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
 }
 
 .pending {
-  color: #e7ab08;
+  color: #6A6A6A;
+}
+
+.processing {
+  color: #E7AB08;
 }
 
 .approved {
-  color: #00be00;
+  color: #00BE00;
 }
 
 .declined {
-  color: #ff4040;
+  color: #FF4040;
+}
+
+.cancelBtn {
+  width: 210px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: 500;
 }
