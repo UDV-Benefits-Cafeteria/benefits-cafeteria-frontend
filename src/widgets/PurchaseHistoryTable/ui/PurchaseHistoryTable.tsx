@@ -96,7 +96,7 @@ export const PurchaseHistoryTable: FC = () => {
                   placement="bottom"
                   title={
                     el.status === "declined"
-                      ? `HR отклонил вашу заявку на покупку бенефита. Причина: "${el.comment ? el.comment && el.comment !== "" && el.comment !== " " : "Без причины"}"`
+                      ? `HR отклонил вашу заявку на покупку бенефита. Причина: "${el.comment && el.comment !== "" && el.comment !== " " ? el.comment : "Без причины"}"`
                       : null
                   }
                 >
