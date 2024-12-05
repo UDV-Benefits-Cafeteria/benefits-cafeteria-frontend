@@ -36,7 +36,7 @@ const tableHeader = [
 ];
 
 const status = {
-    pending: "Оформлена",
+  pending: "Оформлена",
   processing: "В обработке",
   approved: "Подтверждена",
   declined: "Отклонена",
@@ -63,7 +63,7 @@ export const PurchaseHistoryTable: FC = () => {
                 onClick={() => navigate(BENEFITS + "/" + el.benefit.id)}
               >
                 <Image
-                    className={styles.img}
+                  className={styles.img}
                   type={"avatar"}
                   srs={el.benefit.images[0]?.image_url || BENEFIT_PLACEHOLDER}
                   onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
@@ -95,7 +95,7 @@ export const PurchaseHistoryTable: FC = () => {
   const getPages = () => {
     const res = [];
 
-    for (let i = 0; i < data?.length; i += 6) {
+    for (let i = 0; i < requests?.data?.length; i += 6) {
       res.push(
         <button
           onClick={() => setPage(i / 6)}
@@ -150,7 +150,7 @@ export const PurchaseHistoryTable: FC = () => {
               return prev;
             });
           }}
-          className={classNames(styles.move, page + 1 < (data?.length || 0) / 6 ? null : styles.disabled)}
+          className={classNames(styles.move, page + 1 < (requests?.data?.length || 0) / 6 ? null : styles.disabled)}
         />
       </div>
     </div>
