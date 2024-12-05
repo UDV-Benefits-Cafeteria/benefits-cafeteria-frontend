@@ -77,6 +77,30 @@ function Field<T extends TBenefit | TUserData>({
     );
   }
 
+  if (type === "switcher") {
+    return (
+        <Checkbox
+            value={!!currentValue}
+            onChange={handleChangeForm as unknown as (value: boolean) => void}
+            label={field.label}
+            className={field.className}
+            switcher={true}
+        />
+    );
+  }
+
+  if (type === "radio") {
+    return (
+        <Checkbox
+            value={!!currentValue}
+            onChange={handleChangeForm as unknown as (value: boolean) => void}
+            label={field.label}
+            className={field.className}
+            radio={true}
+        />
+    );
+  }
+
   if (type === "text") {
     return (
         <ConfigProvider
@@ -124,7 +148,7 @@ export function Form<T extends TBenefit | TUserData>(props: TFormProps<T>) {
   return (
     <div className={classNames(styles.container, className)}>
       {inputs.map(el =>
-        el.type === "checkbox" ? (
+        el.type === "checkbox" || el.type === "switcher" || el.type === "radio" ? (
           <Field<T>
             key={el.fieldName as string}
             field={el}

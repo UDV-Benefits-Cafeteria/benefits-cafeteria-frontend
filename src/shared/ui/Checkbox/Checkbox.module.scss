@@ -1,24 +1,104 @@
-@import "@shared/styles/mixins";
-
 .container {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.container input:disabled + .visualWrapper {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.container input {
+  display: none;
+}
+
+.visualWrapper {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.radio .visualWrapper {
+  border-radius: 50%;
+}
+
+.checkbox input:checked + .visualWrapper {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.radio input:checked + .visualWrapper {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.checkIcon {
+  width: 16px;
+  height: 16px;
+  stroke: white;
+  stroke-width: 5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.radio .checkIcon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+}
+
+.checkbox input:checked + .visualWrapper .checkIcon,
+.radio input:checked + .visualWrapper .checkIcon {
+  visibility: visible;
 }
 
 .label {
-  @include mediumText;
-
-  font-weight: 700;
+  font-size: 16px;
+  user-select: none;
+  font-weight: 500;
 }
 
-.checkbox {
-  margin: 0;
-  border-radius: 6px;
-  width: 24px;
-  height: 24px;
-
-  &:checked {
-    background-color: var(--primary);
-  }
+.switcher {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.switcher .visualWrapper {
+  width: 50px;
+  height: 20px;
+  border-radius: 12px;
+  background-color: #939393;
+  border-color: #939393;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2px;
+}
+
+.switcher input:checked + .visualWrapper {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  justify-content: flex-end;
+}
+
+.switcher .checkIcon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: white;
+}
+

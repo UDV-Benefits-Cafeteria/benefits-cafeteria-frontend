@@ -79,12 +79,12 @@ const useGetInputs = (addButtonEvent: () => void) => {
     },
     {
       label: "Адаптационный период пройден",
-      type: "checkbox",
+      type: "switcher",
       fieldName: "adaptation_required",
     },
     {
       label: "Задать период сброса использований",
-      type: "checkbox",
+      type: "switcher",
       fieldName: "is_fixed_period",
     },
     {

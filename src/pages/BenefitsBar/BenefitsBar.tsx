@@ -326,10 +326,11 @@ export const BenefitFilter = ({
         </div>
 
         <Checkbox
-          className={styles.adaptation}
+            className={styles.adaptation}
           onChange={() => setAdaptation(prev => !prev)}
           label={"Адаптационный период"}
           value={adaptation !== null ? adaptation : false}
+          switcher={true}
         />
 
         <div className={styles.filter_block}>
@@ -337,17 +338,17 @@ export const BenefitFilter = ({
 
           <div className={styles.active_container}>
             <Checkbox
-              className={styles.radio}
               onChange={() => setActive(true)}
               label={"Активные"}
               value={active !== null ? active : false}
+              radio={true}
             />
 
             <Checkbox
-              className={styles.radio}
               onChange={() => setActive(false)}
               label={"Неактивные"}
               value={active !== null ? !active : false}
+              radio={true}
             />
           </div>
         </div>
@@ -359,11 +360,13 @@ export const BenefitFilter = ({
               setFilters({});
             }}
             buttonType={"secondary"}
+            className={styles.btnFilter}
           >
             Сбросить
           </Button>
 
           <Button
+              className={styles.btnFilter}
             onClick={() =>
               setFilters({
                 ...(getActiveCategory(categoriesCheckbox).length
