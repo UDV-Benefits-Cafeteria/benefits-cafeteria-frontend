@@ -86,7 +86,7 @@ export const BenefitPage: FC = () => {
                 className={styles.price}
                 boldness={"medium"}
               >
-                {benefit.coins_cost}
+                {benefit.coins_cost ? benefit.coins_cost > 0 : "Бесплатно"}
                 <div className={styles.coin} />
               </Title>
 
