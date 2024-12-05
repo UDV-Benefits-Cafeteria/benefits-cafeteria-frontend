@@ -94,7 +94,7 @@ export const PurchaseHistoryTable: FC = () => {
               >
                 <Tooltip
                   placement="bottom"
-                  title={`HR отклонил вашу заявку на покупку бенефита. Причина: "${el.status ? el.status && el.status !== "" && el.status !== " " : "Без причины"}"`}
+                  title={`HR отклонил вашу заявку на покупку бенефита. Причина: "${el.comment ? el.comment && el.comment !== "" && el.comment !== " " : "Без причины"}"`}
                 >
                   <span className={styles[el.status]}>{status[el.status]}</span>
                 </Tooltip>
