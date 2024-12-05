@@ -418,32 +418,34 @@ export const ViewEmployees: FC = () => {
               {userRole === "admin" ? (
                 <>
                   <div className={styles.filter_block}>
-                    <Title type={"element"}>Роль</Title>
+                    <Title boldness={'medium'} type={"element"}>Роль</Title>
 
-                    <Checkbox
-                      className={styles.radio}
-                      onChange={() => handelClickRoleCheckBox("employee")}
-                      label={"Сотрудник"}
-                      value={roles.includes("employee")}
-                    />
+                    <div className={styles.blockRoles}>
+                      <Checkbox
+                        className={styles.radio}
+                        onChange={() => handelClickRoleCheckBox("employee")}
+                        label={"Сотрудник"}
+                        value={roles.includes("employee")}
+                      />
 
-                    <Checkbox
-                      className={styles.radio}
-                      onChange={() => handelClickRoleCheckBox("hr")}
-                      label={"HR"}
-                      value={roles.includes("hr")}
-                    />
+                      <Checkbox
+                        className={styles.radio}
+                        onChange={() => handelClickRoleCheckBox("hr")}
+                        label={"HR"}
+                        value={roles.includes("hr")}
+                      />
 
-                    <Checkbox
-                      className={styles.radio}
-                      onChange={() => handelClickRoleCheckBox("admin")}
-                      label={"Админ"}
-                      value={roles.includes("admin")}
-                    />
+                      <Checkbox
+                        className={styles.radio}
+                        onChange={() => handelClickRoleCheckBox("admin")}
+                        label={"Админ"}
+                        value={roles.includes("admin")}
+                      />
+                    </div>
                   </div>
 
                   <div className={styles.filter_block}>
-                    <Title type={"element"}>Юридические лица</Title>
+                    <Title boldness={'medium'} type={"element"}>Юридические лица</Title>
 
                     {legalEntityCheckbox && (
                       <div className={styles.checkbox_container}>
@@ -468,27 +470,27 @@ export const ViewEmployees: FC = () => {
               ) : null}
 
               <div className={styles.filter_block}>
-                <Title type={"element"}>Статус пользователя</Title>
+                <Title boldness={'medium'} type={"element"}>Статус пользователя</Title>
 
                 <div className={styles.active_container}>
                   <Checkbox
-                    className={styles.radio}
                     onChange={() => setIsActive(true)}
                     label={"Активные"}
                     value={isActive !== null ? isActive : false}
+                    radio={true}
                   />
 
                   <Checkbox
-                    className={styles.radio}
                     onChange={() => setIsActive(false)}
                     label={"Неактивные"}
                     value={isActive !== null ? !isActive : false}
+                    radio={true}
                   />
                 </div>
               </div>
 
               <div className={styles.filter_block}>
-                <Title type={"element"}>Дата найма</Title>
+                <Title boldness={'medium'} type={"element"}>Дата найма</Title>
 
                 <div className={styles.numbers}>
                   <InputContainer>
@@ -524,47 +526,48 @@ export const ViewEmployees: FC = () => {
               </div>
 
               <div className={styles.filter_block}>
-                <Title type={"element"}>Адаптация</Title>
+                <Title boldness={'medium'} type={"element"}>Адаптация</Title>
 
                 <div className={styles.active_container}>
                   <Checkbox
-                    className={styles.radio}
                     onChange={() => setIsAdapted(true)}
                     label={"Пройдена"}
                     value={isAdapted !== null ? isAdapted : false}
+                    radio={true}
                   />
 
                   <Checkbox
-                    className={styles.radio}
                     onChange={() => setIsAdapted(false)}
-                    label={"не пройдена"}
+                    label={"Не пройдена"}
                     value={isAdapted !== null ? !isAdapted : false}
+                    radio={true}
                   />
                 </div>
               </div>
 
               <div className={styles.filter_block}>
-                <Title type={"element"}>Верификация</Title>
+                <Title boldness={'medium'} type={"element"}>Верификация</Title>
 
                 <div className={styles.active_container}>
                   <Checkbox
-                    className={styles.radio}
                     onChange={() => setIsVerified(true)}
                     label={"Пройдена"}
                     value={isVerified !== null ? isVerified : false}
+                    radio={true}
                   />
 
                   <Checkbox
-                    className={styles.radio}
                     onChange={() => setIsVerified(false)}
-                    label={"не пройдена"}
+                    label={"Не пройдена"}
                     value={isVerified !== null ? !isVerified : false}
+                    radio={true}
                   />
                 </div>
               </div>
 
               <div className={styles.buttons}>
                 <Button
+                    className={styles.buttonFilter}
                   onClick={() => {
                     toInitialState();
                     setFilters({});
@@ -575,6 +578,7 @@ export const ViewEmployees: FC = () => {
                 </Button>
 
                 <Button
+                    className={styles.buttonFilter}
                   onClick={() =>
                     setFilters({
                       ...(getActiveCategory(legalEntityCheckbox).length

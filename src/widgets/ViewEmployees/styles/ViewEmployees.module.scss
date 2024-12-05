@@ -164,6 +164,12 @@
   gap: 20px;
 }
 
+.blockRoles {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
 .numbers {
   display: grid;
   grid-template-columns: repeat(2, 160px);
@@ -180,7 +186,6 @@
   gap: 10px;
 
   .element {
-    flex-direction: row-reverse;
     width: fit-content;
     font-weight: 400;
   }
@@ -192,13 +197,9 @@
   gap: 10px;
 }
 
-.radio {
-  flex-direction: row-reverse;
-  width: fit-content !important;
-
-  input {
-    border-radius: 10px;
-  }
+.buttonFilter {
+  width: 160px;
+  height: 40px;
 }
 
 .adaptation {

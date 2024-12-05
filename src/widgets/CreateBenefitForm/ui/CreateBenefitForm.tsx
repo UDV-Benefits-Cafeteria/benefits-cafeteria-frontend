@@ -145,10 +145,17 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
     let imageRes;
 
     if (benefit) {
-      res = await editBenefit({ id: benefit?.id || 0, ...benefitForm });
+      let bn = {...benefitForm};
+      if (benefitForm.amount < 0 || benefitForm.amount === "" || benefitForm.amount === " ") {
+        bn.amount = null;
+      }
+      res = await editBenefit({ id: benefit?.id || 0, ...bn });
     } else {
-      benefitForm.is_active = true;
-      res = await createBenefit(benefitForm);
+      let bn = {...benefitForm, is_active: true };
+      if (benefitForm.amount < 0 || benefitForm.amount === "" || benefitForm.amount === " ") {
+        bn.amount = null;
+      }
+      res = await createBenefit(bn);
     }
 
     if (image) {
