@@ -36,7 +36,7 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
         />
 
         <div className={styles.price}>
-          <Text boldness={"medium"}>{benefit.coins_cost}</Text>
+          <Text boldness={"medium"}>{benefit.coins_cost > 0 ? benefit.coins_cost : "Бесплатно"}</Text>
 
           <div className={styles.coin} />
         </div>
