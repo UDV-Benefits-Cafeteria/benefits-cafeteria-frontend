@@ -15,6 +15,7 @@ import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
+import { ConfigProvider, Tooltip } from "antd";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
@@ -78,7 +79,27 @@ export const PurchaseHistoryTable: FC = () => {
                 {el.benefit.name}
               </span>
             ),
-            status: <span className={styles[el.status]}>{status[el.status]}</span>,
+            status: (
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Tooltip: {
+                      colorTextLightSolid: "#C5C6CC",
+                      borderRadius: 16,
+                      paddingSM: 20,
+                      paddingXS: 20,
+                    },
+                  },
+                }}
+              >
+                <Tooltip
+                  placement="bottom"
+                  title={`HR отклонил вашу заявку на покупку бенефита. Причина: "${el.status ? el.status && el.status !== "" && el.status !== " " : "Без причины"}"`}
+                >
+                  <span className={styles[el.status]}>{status[el.status]}</span>
+                </Tooltip>
+              </ConfigProvider>
+            ),
             cancel: (
               <>
                 {el.status === "pending" ? (
