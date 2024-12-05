@@ -63,6 +63,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
       className: styles.textArea,
       placeholder: "Введите описание",
       fieldName: "description",
+      type: "text",
     },
     {
       label: "Сколько раз можно использовать",

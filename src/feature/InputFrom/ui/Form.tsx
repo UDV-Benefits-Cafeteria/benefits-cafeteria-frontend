@@ -7,6 +7,7 @@ import { InputErrorText } from "@shared/ui/Input/InputErrorText";
 import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Selector, TSelectValue } from "@shared/ui/Selector";
+import {ConfigProvider, Input } from 'antd';
 
 import type { TBenefit } from "@entity/Benefit/model/types/Benefit.types";
 import type { TUserData } from "@entity/User/model/types/User.types";
@@ -24,7 +25,7 @@ export type TInputFromElement<T> = {
   isShow?: boolean;
   selectOptions?: TSelectValue[];
   addButton?: { text: string; event: () => void };
-  type?: "date" | "select" | "text" | "number" | "checkbox";
+  type?: "date" | "select" | "text" | "number" | "checkbox" | "input";
 };
 
 type TFormProps<T> = {
@@ -44,7 +45,8 @@ function Field<T extends TBenefit | TUserData>({
   action: (value: { field: keyof T; value: T[keyof T] }) => UnknownAction;
 }) {
   const dispatch = useAppDispatch();
-  const { type = "text", fieldName } = field;
+  const { type = "input", fieldName } = field;
+  const { TextArea } = Input;
 
   const handleChangeForm = (value: T[typeof fieldName]) => {
     dispatch(action({ field: fieldName, value }));
@@ -72,6 +74,34 @@ function Field<T extends TBenefit | TUserData>({
         label={field.label}
         className={field.className}
       />
+    );
+  }
+
+  if (type === "text") {
+    return (
+        <ConfigProvider
+            theme={{
+              components: {
+                Input: {
+                  borderRadius: 12,
+                  colorBorder: "#C5C6CC",
+                  hoverBorderColor: "#C5C6CC",
+                  controlOutline: "none",
+                  colorPrimary: "#C5C6CC",
+                  fontSize: 20,
+                },
+              },
+            }}
+        >
+          <TextArea
+              value={currentValue}
+              placeholder={field.placeholder}
+              className={field.className}
+              onChange={e => handleChangeForm(e.currentTarget.value as T[typeof fieldName])}
+              isError={!!field.errorText}
+              isForm={true}
+          />
+        </ConfigProvider>
     );
   }
 
