@@ -410,18 +410,26 @@ const ModalSuccessRequest: FC<{ isOpen: boolean; onClose: () => void; id: number
       <Title
         boldness={"medium"}
         type={"block"}
+        className={styles.text}
       >
         Вы уверены, что хотите одобрить
         <br />
         заявку на покупку бенефита?
       </Title>
-
+      <InputContainer className={styles.inputContainerModal}>
+        <InputField
+          className={styles.inputFieldModal}
+          onChange={e => setReason(e.currentTarget.value)}
+          placeholder={"Введите комментарий"}
+        />
+      </InputContainer>
       <div className={styles.buttons}>
         <Button onClick={handleUpdateRequest}>Одобрить</Button>
 
         <Button
           onClick={onClose}
           buttonType={"secondary"}
+          className={styles.btnCancel}
         >
           Назад
         </Button>
@@ -449,23 +457,31 @@ const ModalDeniedRequest: FC<{ isOpen: boolean; onClose: () => void; id: number 
       <Title
         boldness={"medium"}
         type={"block"}
+        className={styles.text}
       >
-        Вы уверены, что хотите отклонить заявку на покупку бенефита?
+        Вы уверены, что хотите отклонить <br /> заявку на покупку бенефита?
       </Title>
 
-      <InputContainer>
+      <InputContainer className={styles.inputContainerModal}>
         <InputField
+          className={styles.inputFieldModal}
           onChange={e => setReason(e.currentTarget.value)}
           placeholder={"Введите причину отказа"}
         />
       </InputContainer>
 
       <div className={styles.buttons}>
-        <Button onClick={handleUpdateRequest}>Отклонить</Button>
+        <Button
+          className={styles.btnDecline}
+          onClick={handleUpdateRequest}
+        >
+          Отклонить
+        </Button>
 
         <Button
           onClick={onClose}
           buttonType={"secondary"}
+          className={styles.btnCancel}
         >
           Назад
         </Button>

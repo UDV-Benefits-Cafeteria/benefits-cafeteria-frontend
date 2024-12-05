@@ -164,6 +164,7 @@ export const ViewBenefits: FC = () => {
               type={"avatar"}
               srs={el.primary_image_url || BENEFIT_PLACEHOLDER}
               onError={e => (e.target.src = BENEFIT_PLACEHOLDER)}
+              style={!el.is_active ? { filter: "grayscale(100%)" } : {}}
             />
             {el.name}
           </span>
