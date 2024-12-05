@@ -9,6 +9,7 @@ import { Link } from "@shared/ui/Link";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { BarHeader } from "@widgets/BarHeader/ui/BarHeader";
+import { Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import { BENEFITS_BAR, EMPLOYEES, LOGIN } from "@app/providers/AppRouter/AppRouter.config";
@@ -25,7 +26,12 @@ export const PersonalAccount: FC = () => {
       <BarHeader />
       <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
         <Title type={"page"}>
-          <Link className={styles.link} route={BENEFITS_BAR}>{"<-"} Вернуться в бар бенефитов</Link>
+          <Link
+            className={styles.link}
+            route={BENEFITS_BAR}
+          >
+            {"<-"} Вернуться в бар бенефитов
+          </Link>
         </Title>
 
         <Title
@@ -40,36 +46,45 @@ export const PersonalAccount: FC = () => {
             <Image
               className={styles.image}
               srs={user.image_url || USER_PLACEHOLDER}
-              onError={(e) => (e.target.src = USER_PLACEHOLDER)}
+              onError={e => (e.target.src = USER_PLACEHOLDER)}
             />
 
             <div className={styles.data_container}>
-            <div>
-              <Text className={styles.user_name}>
-                {user.lastname} {user.firstname} {user.middlename}
-              </Text>
+              <div>
+                <Text className={styles.user_name}>
+                  {user.lastname} {user.firstname} {user.middlename}
+                </Text>
 
-              <Text
-                type={"description"}
-                className={styles.user_entity}
+                <Text
+                  type={"description"}
+                  className={styles.user_entity}
+                >
+                  {user.position?.name}
+                  {user.legal_entity?.name ? ", юридическое лицо" : ""} {user.legal_entity?.name}
+                </Text>
+
+                <Text className={styles.user_other_info}>{user.email}</Text>
+              </div>
+              <Tooltip
+                className={styles.tooltip}
+                placement="bottom"
+                title={
+                  "Уровень - это универсальный индикатор вашего опыта работы в нашей компании. Каждые 30 дней он повышается, открывая доступ к более широкому спектру бенефитов. Продолжайте расти вместе с нами!"
+                }
               >
-                {user.position?.name}{user.legal_entity?.name ? ", юридическое лицо" : ""} {user.legal_entity?.name}
-              </Text>
+                <div>
+                  <div className={styles.progressContainer}>
+                    <div
+                      className={styles.progressBar}
+                      style={{
+                        width: `${((user.experience % 30) / 30) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
 
-              <Text className={styles.user_other_info}>{user.email}</Text>
-              </div>
-               <div>
-                 <div className={styles.progressContainer}>
-                   <div
-                       className={styles.progressBar}
-                       style={{
-                         width: `${(user.experience % 30) / 30 * 100}%`,
-                       }}
-                   ></div>
-                 </div>
-
-              <Text className={styles.user_other_info}>{user.level} уровень</Text>
-              </div>
+                  <Text className={styles.user_other_info}>{user.level} уровень</Text>
+                </div>
+              </Tooltip>
             </div>
           </div>
 
