@@ -18,7 +18,7 @@ import { Select } from "antd";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
-import { BENEFITS, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS, EMPLOYEES, PERSONAL_ACCOUNT } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "../styles/ApplicationsView.module.scss";
 
@@ -180,7 +180,7 @@ export const ApplicationsView: FC = () => {
             ),
             fullname: (
               <div
-                onClick={() => navigate(EMPLOYEES + "/" + el.user.id)}
+                onClick={() => navigate(PERSONAL_ACCOUNT + "/" + el.user.id)}
                 className={styles.el}
               >
                 {el.user.lastname} {el.user.firstname} {el.user.middlename}

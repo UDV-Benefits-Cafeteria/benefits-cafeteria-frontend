@@ -33,7 +33,7 @@ import { Popover } from "antd";
 import dayjs from "dayjs";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { CREATE_EMPLOYEES, EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
+import { CREATE_EMPLOYEES, EMPLOYEES, PERSONAL_ACCOUNT } from "@app/providers/AppRouter/AppRouter.config";
 
 import { TUserRole } from "@entity/User/model/types/User.types";
 
@@ -189,7 +189,7 @@ export const ViewEmployees: FC = () => {
                   <>
                     <Text
                       className={styles.element}
-                      onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
+                      onClick={() => navigate(PERSONAL_ACCOUNT + "/" + el.id)}
                     >
                       Посмотреть профиль
                     </Text>

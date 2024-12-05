@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-import { useLogoutMutation } from "@entity/User";
+import { useGetCurrentUserQuery, useLogoutMutation } from "@entity/User";
 import { USER_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
@@ -10,29 +10,38 @@ import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { BarHeader } from "@widgets/BarHeader/ui/BarHeader";
 import { ConfigProvider, Tooltip } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { BENEFITS_BAR, LOGIN, PERSONAL_ACCOUNT_EDIT } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS_BAR, EMPLOYEES, LOGIN, PERSONAL_ACCOUNT_EDIT } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./PersonalAccount.module.scss";
 
 export const PersonalAccount: FC = () => {
   const [logout] = useLogoutMutation();
-  const user = useAppSelector(state => state.user.data!);
+  const location = useLocation();
+  const id = location.pathname.split("/")[location.pathname.split("/").length - 1];
+  const visableUser = useGetCurrentUserQuery(id).data;
+  let user = useAppSelector(state => state.user.data!);
   const navigate = useNavigate();
+
+  if (id && visableUser) {
+    user = visableUser;
+  }
 
   return (
     <>
       <BarHeader />
       <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
-        <Title type={"page"}>
-          <Link
-            className={styles.link}
-            route={BENEFITS_BAR}
-          >
-            {"<-"} Вернуться в бар бенефитов
-          </Link>
-        </Title>
+        {id ? null : (
+          <Title type={"page"}>
+            <Link
+              className={styles.link}
+              route={BENEFITS_BAR}
+            >
+              {"<-"} Вернуться в бар бенефитов
+            </Link>
+          </Title>
+        )}
 
         <Title
           type={"page"}
@@ -101,7 +110,7 @@ export const PersonalAccount: FC = () => {
           </div>
 
           <div className={styles.coin_container}>
-            <Text className={styles.coin_title}>Ваш баланс</Text>
+            <Text className={styles.coin_title}>{id ? "Баланс" : "Ваш баланс"}</Text>
 
             <span className={styles.coin_info}>
               {user.coins}
@@ -113,21 +122,22 @@ export const PersonalAccount: FC = () => {
         <div className={styles.buttons}>
           <Button
             className={styles.btn}
-            onClick={() => navigate(PERSONAL_ACCOUNT_EDIT)}
+            onClick={() => navigate(!id ? PERSONAL_ACCOUNT_EDIT : EMPLOYEES + "/" + user.id + "/edit")}
           >
             Редактировать профиль
           </Button>
-
-          <Button
-            className={styles.btn}
-            buttonType={"secondary-red"}
-            onClick={async () => {
-              navigate(LOGIN);
-              await logout(null);
-            }}
-          >
-            Выйти из аккаунта
-          </Button>
+          {id ? null : (
+            <Button
+              className={styles.btn}
+              buttonType={"secondary-red"}
+              onClick={async () => {
+                navigate(LOGIN);
+                await logout(null);
+              }}
+            >
+              Выйти из аккаунта
+            </Button>
+          )}
         </div>
       </div>
     </>
