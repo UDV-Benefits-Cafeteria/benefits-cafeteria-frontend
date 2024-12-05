@@ -1,0 +1,121 @@
+@use "@shared/assets/IconsVars" as icons;
+
+@import "@shared/styles/mixins";
+
+.title {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.progressBar {
+  border-radius: 10px 0 0 10px;
+  height: 100%;
+  background-color: #00c08b;
+  transition: width 0.3s ease-in-out;
+}
+
+.progressContainer {
+  position: relative;
+  overflow: hidden; /* Убираем скругление у правой стороны */
+  margin-bottom: 10px;
+  border-radius: 10px;
+  width: 300px;
+  height: 30px;
+  background-color: #e8e9f1;
+}
+
+.link {
+  margin-bottom: 50px;
+  font-weight: 600;
+  font-size: 24px;
+  text-decoration: none;
+  color: #2b2a29;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+  width: 100%;
+  height: 50dvh;
+}
+
+.image {
+  border-radius: 16px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.info_container {
+  display: flex;
+  gap: 24px;
+}
+
+.data_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px;
+
+  .user_name {
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 24px;
+  }
+
+  .user_entity {
+    margin-bottom: 15px;
+    font-weight: 400;
+    font-size: 20px;
+    color: #8c8c8c;
+  }
+
+  .user_other_info {
+    font-weight: 500;
+    font-size: 20px;
+  }
+}
+
+.coin {
+  width: 64px;
+  height: 75px;
+  background-image: icons.$coin;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.coin_container {
+  display: flex;
+  flex-direction: column;
+  border: 3px dashed var(--main_text);
+  border-radius: 16px;
+  padding: 24px;
+  height: fit-content;
+
+  .coin_info {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 96px;
+    gap: 16px;
+  }
+
+  .coin_title {
+    font-weight: 500;
+    font-size: 24px;
+  }
+}
+
+.buttons {
+  display: flex;
+  margin-top: auto;
+  gap: 32px;
+
+  .btn {
+    width: 260px;
+    height: 50px;
+    font-size: 16px;
+  }
+}
