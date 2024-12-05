@@ -118,7 +118,7 @@ export const CreateRequestModal: FC<TCreateRequestModalProps> = props => {
           </Text>
           <div className={styles.buttons}>
             <Button
-              onClick={onClose}
+              onClick={() => onClose()}
               className={styles.btn}
             >
               ОК
