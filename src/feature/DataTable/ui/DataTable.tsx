@@ -10,6 +10,7 @@ export type DataTableProps = {
   redirectTo?: (id: number) => string;
   data: {
     id: number;
+    isDisabled: boolean;
     [key: string]: ReactNode;
   }[];
 };
@@ -31,7 +32,7 @@ export const DataTable: FC<DataTableProps> = props => {
         {data.map((row, index) => (
           <tr
             onClick={() => typeof redirectTo === "function" && navigate(redirectTo(row.id))}
-            className={styles.row}
+            className={classNames(styles.row, row.isDisabled ? styles.disabled : null)}
             key={++index}
           >
             {headers.map(header => (

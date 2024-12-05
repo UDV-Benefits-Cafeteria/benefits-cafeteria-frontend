@@ -108,7 +108,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
       label: "Адаптация пройдена",
       fieldName: "is_adapted",
       className: styles.checkbox,
-      type: "checkbox",
+      type: "switcher",
     },
   ];
 
@@ -253,7 +253,11 @@ const ModalCreatePosition: FC<{ isOpen: boolean; onClose: () => void }> = props 
       <InputContainer className={styles.inputContainerModal}>
         <InputLabel>Название*</InputLabel>
 
-        <InputField placeholder={"Введите название должности"} className={styles.inputFieldModal} onChange={e => setPositionName(e.currentTarget.value)} />
+        <InputField
+          placeholder={"Введите название должности"}
+          className={styles.inputFieldModal}
+          onChange={e => setPositionName(e.currentTarget.value)}
+        />
       </InputContainer>
 
       <div className={styles.buttons}>

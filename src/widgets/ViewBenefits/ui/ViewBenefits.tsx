@@ -9,6 +9,7 @@ import {
 } from "@entity/Benefit/api/Benefit.api";
 import { useGetCategoryQuery } from "@entity/Category/api/Category.api";
 import { useLazyExportDataQuery } from "@entity/Requests/api/Requests.api";
+import { useEditUserMutation } from "@entity/User";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { BenefitFilter, SORT_PARAMS, toQuery } from "@pages/BenefitsBar/BenefitsBar";
@@ -150,10 +151,12 @@ export const ViewBenefits: FC = () => {
   };
 
   const [page, setPage] = useState(0);
+  const [activeOpen, setActiveOpen] = useState(false);
 
   const data = benefits
     ? benefits.slice(page * 8, page * 8 + 8).map(el => ({
         id: el.id,
+        isDisabled: !el.is_active,
         name: (
           <span className={styles.fullname}>
             <Image
@@ -176,27 +179,41 @@ export const ViewBenefits: FC = () => {
             trigger={"click"}
             content={
               <div className={styles.actions}>
-                <Text
-                  className={styles.element}
-                  onClick={() => navigate(BENEFITS + "/" + el.id)}
-                >
-                  Посмотреть бенефит
-                </Text>
-                <Text
-                  className={styles.element}
-                  onClick={() => navigate(BENEFITS + "/" + el.id + "/edit")}
-                >
-                  Редактировать бенефит
-                </Text>
-                <Text
-                  className={classNames(styles.warning, styles.element)}
-                  onClick={() => {
-                    setId(el.id);
-                    setOpen(true);
-                  }}
-                >
-                  Отключить бенефит
-                </Text>
+                {el.is_active ? (
+                  <>
+                    <Text
+                      className={styles.element}
+                      onClick={() => navigate(BENEFITS + "/" + el.id)}
+                    >
+                      Посмотреть бенефит
+                    </Text>
+                    <Text
+                      className={styles.element}
+                      onClick={() => navigate(BENEFITS + "/" + el.id + "/edit")}
+                    >
+                      Редактировать бенефит
+                    </Text>
+                    <Text
+                      className={classNames(styles.warning, styles.element)}
+                      onClick={() => {
+                        setId(el.id);
+                        setOpen(true);
+                      }}
+                    >
+                      Отключить бенефит
+                    </Text>
+                  </>
+                ) : (
+                  <Text
+                    className={classNames(styles.apro, styles.element)}
+                    onClick={() => {
+                      setId(el.id);
+                      setActiveOpen(true);
+                    }}
+                  >
+                    Восстановить бенефит
+                  </Text>
+                )}
               </div>
             }
           >
@@ -365,6 +382,12 @@ export const ViewBenefits: FC = () => {
           onClose={() => setOpen(false)}
           id={id}
         />
+
+        <ActiveModal
+          open={activeOpen}
+          onClose={() => setActiveOpen(false)}
+          id={id}
+        />
       </ViewInfoContainer>
 
       <div className={styles.pag}>
@@ -456,6 +479,80 @@ const DisableModal = ({ open, onClose, id }) => {
             Включить бенефит снова можно
             <br />
             через меню таблицы.
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"primary"}
+              onClick={() => {
+                onClose();
+                setStep(0);
+              }}
+            >
+              ОК
+            </Button>
+          </div>
+        </>
+      ) : null}
+    </Modal>
+  );
+};
+
+const ActiveModal = ({ open, onClose, id }) => {
+  const [edit] = useEditBenefitMutation();
+  const [step, setStep] = useState(0);
+
+  return (
+    <Modal
+      isOpen={open}
+      onClose={() => {
+        onClose();
+        setStep(0);
+      }}
+    >
+      {step === 0 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+            boldness={"medium"}
+          >
+            Вы уверены, что хотите активировать бенефит?
+            <br />
+            Сотрудники смогут взаимодействовать с ним.
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"primary"}
+              onClick={async () => {
+                const res = await edit({ id: id, is_active: true });
+
+                setStep(1);
+              }}
+            >
+              Восстановить
+            </Button>
+            <Button
+              buttonType={"secondary-grey"}
+              onClick={() => {
+                onClose();
+              }}
+            >
+              Отменить
+            </Button>
+          </div>
+        </>
+      ) : null}
+      {step === 1 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+            boldness={"medium"}
+          >
+            Бенефит активирован. <br />
+            Отключить бенефит можно через меню таблицы.
           </Title>
 
           <div className={styles.buttons}>

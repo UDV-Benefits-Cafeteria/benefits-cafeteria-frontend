@@ -26,6 +26,10 @@
     &:last-child::after {
       content: none;
     }
+
+    &.disabled {
+      opacity: 0.6;
+    }
   }
 
   td {

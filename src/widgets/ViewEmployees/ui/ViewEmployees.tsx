@@ -157,9 +157,11 @@ export const ViewEmployees: FC = () => {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(0);
+  const [activeOpen, setActiveOpen] = useState(false);
 
   const data = users?.data
     ? users.data.slice(page * 8, page * 8 + 8).map(el => ({
+        isDisabled: !el.is_active,
         id: el.id,
         fullname: (
           <span className={styles.fullname}>
@@ -182,27 +184,42 @@ export const ViewEmployees: FC = () => {
             trigger={"click"}
             content={
               <div className={styles.actions}>
-                <Text
-                  className={styles.element}
-                  onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
-                >
-                  Посмотреть профиль
-                </Text>
-                <Text
-                  className={styles.element}
-                  onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
-                >
-                  Редактировать профиль
-                </Text>
-                <Text
-                  className={classNames(styles.warning, styles.element)}
-                  onClick={() => {
-                    setId(el.id);
-                    setOpen(true);
-                  }}
-                >
-                  Отключить профиль
-                </Text>
+                {el.is_active ? (
+                  <>
+                    <Text
+                      className={styles.element}
+                      onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
+                    >
+                      Посмотреть профиль
+                    </Text>
+                    <Text
+                      className={styles.element}
+                      onClick={() => navigate(EMPLOYEES + "/" + el.id + "/edit")}
+                    >
+                      Редактировать профиль
+                    </Text>
+
+                    <Text
+                      className={classNames(styles.warning, styles.element)}
+                      onClick={() => {
+                        setId(el.id);
+                        setOpen(true);
+                      }}
+                    >
+                      Отключить профиль
+                    </Text>
+                  </>
+                ) : (
+                  <Text
+                    className={classNames(styles.apro, styles.element)}
+                    onClick={() => {
+                      setId(el.id);
+                      setActiveOpen(true);
+                    }}
+                  >
+                    Включить профиль
+                  </Text>
+                )}
               </div>
             }
           >
@@ -418,7 +435,12 @@ export const ViewEmployees: FC = () => {
               {userRole === "admin" ? (
                 <>
                   <div className={styles.filter_block}>
-                    <Title boldness={'medium'} type={"element"}>Роль</Title>
+                    <Title
+                      boldness={"medium"}
+                      type={"element"}
+                    >
+                      Роль
+                    </Title>
 
                     <div className={styles.blockRoles}>
                       <Checkbox
@@ -445,7 +467,12 @@ export const ViewEmployees: FC = () => {
                   </div>
 
                   <div className={styles.filter_block}>
-                    <Title boldness={'medium'} type={"element"}>Юридические лица</Title>
+                    <Title
+                      boldness={"medium"}
+                      type={"element"}
+                    >
+                      Юридические лица
+                    </Title>
 
                     {legalEntityCheckbox && (
                       <div className={styles.checkbox_container}>
@@ -470,7 +497,12 @@ export const ViewEmployees: FC = () => {
               ) : null}
 
               <div className={styles.filter_block}>
-                <Title boldness={'medium'} type={"element"}>Статус пользователя</Title>
+                <Title
+                  boldness={"medium"}
+                  type={"element"}
+                >
+                  Статус пользователя
+                </Title>
 
                 <div className={styles.active_container}>
                   <Checkbox
@@ -490,7 +522,12 @@ export const ViewEmployees: FC = () => {
               </div>
 
               <div className={styles.filter_block}>
-                <Title boldness={'medium'} type={"element"}>Дата найма</Title>
+                <Title
+                  boldness={"medium"}
+                  type={"element"}
+                >
+                  Дата найма
+                </Title>
 
                 <div className={styles.numbers}>
                   <InputContainer>
@@ -526,7 +563,12 @@ export const ViewEmployees: FC = () => {
               </div>
 
               <div className={styles.filter_block}>
-                <Title boldness={'medium'} type={"element"}>Адаптация</Title>
+                <Title
+                  boldness={"medium"}
+                  type={"element"}
+                >
+                  Адаптация
+                </Title>
 
                 <div className={styles.active_container}>
                   <Checkbox
@@ -546,7 +588,12 @@ export const ViewEmployees: FC = () => {
               </div>
 
               <div className={styles.filter_block}>
-                <Title boldness={'medium'} type={"element"}>Верификация</Title>
+                <Title
+                  boldness={"medium"}
+                  type={"element"}
+                >
+                  Верификация
+                </Title>
 
                 <div className={styles.active_container}>
                   <Checkbox
@@ -567,7 +614,7 @@ export const ViewEmployees: FC = () => {
 
               <div className={styles.buttons}>
                 <Button
-                    className={styles.buttonFilter}
+                  className={styles.buttonFilter}
                   onClick={() => {
                     toInitialState();
                     setFilters({});
@@ -578,7 +625,7 @@ export const ViewEmployees: FC = () => {
                 </Button>
 
                 <Button
-                    className={styles.buttonFilter}
+                  className={styles.buttonFilter}
                   onClick={() =>
                     setFilters({
                       ...(getActiveCategory(legalEntityCheckbox).length
@@ -613,6 +660,12 @@ export const ViewEmployees: FC = () => {
         <DisableModal
           open={open}
           onClose={() => setOpen(false)}
+          id={id}
+        />
+
+        <ActiveModal
+          open={activeOpen}
+          onClose={() => setActiveOpen(false)}
           id={id}
         />
       </ViewInfoContainer>
@@ -711,6 +764,85 @@ const DisableModal = ({ open, onClose, id }) => {
             Включить профиль сотрудника снова можно
             <br />
             через меню таблицы.{" "}
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"primary"}
+              onClick={() => {
+                onClose();
+                setStep(0);
+              }}
+            >
+              ОК
+            </Button>
+          </div>
+        </>
+      ) : null}
+    </Modal>
+  );
+};
+
+const ActiveModal = ({ open, onClose, id }) => {
+  const [edit] = useEditUserMutation();
+  const [step, setStep] = useState(0);
+
+  return (
+    <Modal
+      isOpen={open}
+      onClose={() => {
+        onClose();
+        setStep(0);
+      }}
+    >
+      {step === 0 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+            boldness={"medium"}
+          >
+            Вы уверены, что хотите
+            <br />
+            восстановить профиль сотрудника?
+            <br />
+            Сотрудник сможет снова пользоваться
+            <br />
+            данным сервисом.
+          </Title>
+
+          <div className={styles.buttons}>
+            <Button
+              buttonType={"primary"}
+              onClick={async () => {
+                const res = await edit({ id: id, is_active: true });
+
+                setStep(1);
+              }}
+            >
+              Восстановить
+            </Button>
+            <Button
+              buttonType={"secondary-grey"}
+              onClick={() => {
+                onClose();
+              }}
+            >
+              Отменить
+            </Button>
+          </div>
+        </>
+      ) : null}
+      {step === 1 ? (
+        <>
+          <Title
+            type={"element"}
+            className={styles.text}
+            boldness={"medium"}
+          >
+            Профиль сотрудника восстановлен. <br />
+            Отключить профиль сотрудника снова можно <br />
+            через меню таблицы.
           </Title>
 
           <div className={styles.buttons}>
