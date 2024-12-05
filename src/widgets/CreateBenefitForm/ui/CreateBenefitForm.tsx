@@ -147,6 +147,7 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
     if (benefit) {
       res = await editBenefit({ id: benefit?.id || 0, ...benefitForm });
     } else {
+      benefitForm.is_active = true;
       res = await createBenefit(benefitForm);
     }
 

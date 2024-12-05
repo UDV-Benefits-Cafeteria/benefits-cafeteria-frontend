@@ -170,6 +170,7 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
     if (isEdit) {
       res = await editUser({ ...userForm, id: user?.id || 0 });
     } else {
+      userForm.is_active = true;
       res = await createUser(userForm);
     }
 
