@@ -17,12 +17,17 @@
     border: 1px solid var(--primary);
   }
 
+  &:disabled {
+    background-color: #d9d9d980 !important;
+    opacity: 0.7;
+  }
+
   &.form {
     border: 1px solid var(--grey_300);
     border-radius: 12px;
     padding: 14px 16px;
-    background-color: white;
     font-size: 20px;
+    background-color: white;
   }
 
   &.error {
@@ -79,9 +84,9 @@
 .container {
   position: relative;
   display: flex;
+  justify-content: center;
   margin-bottom: 12px;
   gap: 8px;
-  justify-content: center;
 
   &.column {
     flex-direction: column;

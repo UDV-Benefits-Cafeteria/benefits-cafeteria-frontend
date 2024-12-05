@@ -9,10 +9,10 @@ import { Link } from "@shared/ui/Link";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { BarHeader } from "@widgets/BarHeader/ui/BarHeader";
-import { Tooltip } from "antd";
+import { ConfigProvider, Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
 
-import { BENEFITS_BAR, EMPLOYEES, LOGIN } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS_BAR, LOGIN, PERSONAL_ACCOUNT_EDIT } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./PersonalAccount.module.scss";
 
@@ -65,26 +65,38 @@ export const PersonalAccount: FC = () => {
 
                 <Text className={styles.user_other_info}>{user.email}</Text>
               </div>
-              <Tooltip
-                className={styles.tooltip}
-                placement="bottom"
-                title={
-                  "Уровень - это универсальный индикатор вашего опыта работы в нашей компании. Каждые 30 дней он повышается, открывая доступ к более широкому спектру бенефитов. Продолжайте расти вместе с нами!"
-                }
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Tooltip: {
+                      colorTextLightSolid: "#C5C6CC",
+                      borderRadius: 16,
+                      paddingSM: 20,
+                      paddingXS: 20,
+                    },
+                  },
+                }}
               >
-                <div>
-                  <div className={styles.progressContainer}>
-                    <div
-                      className={styles.progressBar}
-                      style={{
-                        width: `${((user.experience % 30) / 30) * 100}%`,
-                      }}
-                    ></div>
-                  </div>
+                <Tooltip
+                  placement="bottom"
+                  title={
+                    "Уровень - это универсальный индикатор вашего опыта работы в нашей компании. Каждые 30 дней он повышается, открывая доступ к более широкому спектру бенефитов. Продолжайте расти вместе с нами!"
+                  }
+                >
+                  <div>
+                    <div className={styles.progressContainer}>
+                      <div
+                        className={styles.progressBar}
+                        style={{
+                          width: `${((user.experience % 30) / 30) * 100}%`,
+                        }}
+                      ></div>
+                    </div>
 
-                  <Text className={styles.user_other_info}>{user.level} уровень</Text>
-                </div>
-              </Tooltip>
+                    <Text className={styles.user_other_info}>{user.level} уровень</Text>
+                  </div>
+                </Tooltip>
+              </ConfigProvider>
             </div>
           </div>
 
@@ -101,9 +113,7 @@ export const PersonalAccount: FC = () => {
         <div className={styles.buttons}>
           <Button
             className={styles.btn}
-            onClick={async () => {
-              navigate(EMPLOYEES + "/" + user.id + "/edit");
-            }}
+            onClick={() => navigate(PERSONAL_ACCOUNT_EDIT)}
           >
             Редактировать профиль
           </Button>

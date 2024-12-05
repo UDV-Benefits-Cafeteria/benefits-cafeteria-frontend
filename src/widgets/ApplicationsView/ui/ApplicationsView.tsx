@@ -14,6 +14,7 @@ import { Selector, TSelectValue } from "@shared/ui/Selector";
 import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { ViewInfoContainer } from "@shared/ui/ViewInfoContainer/ViewInfoContainer";
+import { Select } from "antd";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
@@ -107,7 +108,7 @@ const StatusSelector: FC<TStatusSelectorProps> = props => {
 
   return (
     <Selector
-      currentValue={currentState}
+      currentValue={filter}
       setCurrentValue={setCurrentState}
       values={possibleStatus}
       className={className}
@@ -246,6 +247,7 @@ export const ApplicationsView: FC = () => {
                     <StatusSelector
                       setIsSuccessModalOpen={setIsSuccessModalOpen}
                       setIsDeniedModalOpen={setIsDeniedModalOpen}
+                      status={el.status}
                       setCurrentId={setCurrentId}
                       possibleStatus={possibleStatus}
                       filter={filter}

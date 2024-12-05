@@ -5,6 +5,7 @@ import { classNames } from "@shared/lib/classNames/classNames";
 import styles from "./Selector.module.scss";
 
 export type TSelectValue = {
+  isSelected?: boolean;
   data: string;
   text: string;
 };

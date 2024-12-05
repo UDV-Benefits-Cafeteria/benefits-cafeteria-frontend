@@ -88,7 +88,7 @@ export const BenefitsBar: FC = () => {
 
   const [sort, setSort] = useState<string>(toQuery(SORT_PARAMS[0].sortBy, SORT_PARAMS[0].sortOrder));
   const categories = useGetCategoryQuery(null);
-  const [active, setActive] = useState<boolean | null>(null);
+  const [active, setActive] = useState<boolean | null>(true);
   const [adaptation, setAdaptation] = useState<boolean | null>(null);
   const [categoriesCheckbox, setCategoriesCheckbox] = useState<Record<string, { active: boolean; id: number }>>({});
 
@@ -117,7 +117,7 @@ export const BenefitsBar: FC = () => {
     setMaxCost(null);
   };
 
-  const [filters, setFilters] = useState<Partial<TFilterParams>>({});
+  const [filters, setFilters] = useState<Partial<TFilterParams>>({ is_active: true });
 
   const { data: benefits } = useGetAllBenefitQuery({ filters: filters, sort: sort, search: search });
 
@@ -326,7 +326,7 @@ export const BenefitFilter = ({
         </div>
 
         <Checkbox
-            className={styles.adaptation}
+          className={styles.adaptation}
           onChange={() => setAdaptation(prev => !prev)}
           label={"Адаптационный период"}
           value={adaptation !== null ? adaptation : false}
@@ -366,7 +366,7 @@ export const BenefitFilter = ({
           </Button>
 
           <Button
-              className={styles.btnFilter}
+            className={styles.btnFilter}
             onClick={() =>
               setFilters({
                 ...(getActiveCategory(categoriesCheckbox).length

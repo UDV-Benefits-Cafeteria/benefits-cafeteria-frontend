@@ -10,7 +10,8 @@ import { EmployeeEdit } from "@pages/EmployeeEdit";
 import { Employees } from "@pages/Employees";
 import { LegalEntitiesAsync } from "@pages/LegalEntities/LegalEntities.async";
 import { NotFoundPage } from "@pages/NotFoundPage";
-import { PersonalAccount } from "@pages/PersonalAccount/PersonalAccount";
+import { PersonalAccount } from "@pages/PersonalAccount";
+import { PersonalAccountEdit } from "@pages/PersonalAccountEdit/PersonalAccountEdit";
 import { PreLanding } from "@pages/PreLanding";
 import { PurchaseHistory } from "@pages/PurchaseHistory/PurchaseHistory";
 import { RegisterPage } from "@pages/RegisterPage";
@@ -37,6 +38,7 @@ export const EMPLOYEES_EDIT = CURRENT_EMPLOYEE + "/edit";
 export const PURCHASE_HISTORY = MAIN + "/history";
 export const PERSONAL_ACCOUNT = MAIN + "/account";
 export const LEGAL_ENTITY = MAIN + "/legal_entity";
+export const PERSONAL_ACCOUNT_EDIT = PERSONAL_ACCOUNT + "/edit";
 
 const lastVisit = localStorage.getItem(PATH);
 
@@ -114,6 +116,12 @@ export const ROUTS: TRoute[] = [
   {
     path: PERSONAL_ACCOUNT,
     element: <PersonalAccount />,
+    role: ["employee", "admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: PERSONAL_ACCOUNT_EDIT,
+    element: <PersonalAccountEdit />,
     role: ["employee", "admin", "hr"],
     needAuth: true,
   },

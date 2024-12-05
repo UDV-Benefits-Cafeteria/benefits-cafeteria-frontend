@@ -5,6 +5,7 @@ import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector"
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
 import { Text } from "@shared/ui/Text";
+import { Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
@@ -12,7 +13,6 @@ import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 import { TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 
 import styles from "../../styles/BenefitCard.module.scss";
-import {Tooltip} from "antd";
 
 export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) => void }> = ({
   benefit,
@@ -20,8 +20,8 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
 }) => {
   const user = useAppSelector(state => state.user.data!);
   const navigate = useNavigate();
-    const isLongText = benefit.name.length > 40;
-    const displayedText = isLongText ? benefit.name.slice(0, 40) + "..." : benefit.name;
+  const isLongText = benefit.name.length > 40;
+  const displayedText = isLongText ? benefit.name.slice(0, 40) + "..." : benefit.name;
 
   return (
     <div className={styles.container}>
@@ -58,16 +58,21 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
           boldness={"medium"}
           className={styles.name}
         >
-            <Tooltip title={isLongText ? benefit.name : null}>
-                <span>{displayedText}</span>
-            </Tooltip>
+          <Tooltip title={isLongText ? benefit.name : null}>
+            <span>{displayedText}</span>
+          </Tooltip>
         </Text>
       </div>
 
       <Button
         onClick={() => addRequest(benefit.id)}
         className={styles.btn}
-        disabled={benefit.amount === 0 || benefit.min_level_cost > user.level || benefit.coins_cost > user.coins}
+        disabled={
+          !benefit.is_active ||
+          benefit.amount === 0 ||
+          benefit.min_level_cost > user.level ||
+          benefit.coins_cost > user.coins
+        }
       >
         Отправить запрос
       </Button>

@@ -7,7 +7,7 @@ import { InputErrorText } from "@shared/ui/Input/InputErrorText";
 import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Selector, TSelectValue } from "@shared/ui/Selector";
-import {ConfigProvider, Input } from 'antd';
+import { ConfigProvider, Input } from "antd";
 
 import type { TBenefit } from "@entity/Benefit/model/types/Benefit.types";
 import type { TUserData } from "@entity/User/model/types/User.types";
@@ -79,58 +79,59 @@ function Field<T extends TBenefit | TUserData>({
 
   if (type === "switcher") {
     return (
-        <Checkbox
-            value={!!currentValue}
-            onChange={handleChangeForm as unknown as (value: boolean) => void}
-            label={field.label}
-            className={field.className}
-            switcher={true}
-        />
+      <Checkbox
+        value={!!currentValue}
+        onChange={handleChangeForm as unknown as (value: boolean) => void}
+        label={field.label}
+        className={field.className}
+        switcher={true}
+      />
     );
   }
 
   if (type === "radio") {
     return (
-        <Checkbox
-            value={!!currentValue}
-            onChange={handleChangeForm as unknown as (value: boolean) => void}
-            label={field.label}
-            className={field.className}
-            radio={true}
-        />
+      <Checkbox
+        value={!!currentValue}
+        onChange={handleChangeForm as unknown as (value: boolean) => void}
+        label={field.label}
+        className={field.className}
+        radio={true}
+      />
     );
   }
 
   if (type === "text") {
     return (
-        <ConfigProvider
-            theme={{
-              components: {
-                Input: {
-                  borderRadius: 12,
-                  colorBorder: "#C5C6CC",
-                  hoverBorderColor: "#C5C6CC",
-                  controlOutline: "none",
-                  colorPrimary: "#C5C6CC",
-                  fontSize: 20,
-                },
-              },
-            }}
-        >
-          <TextArea
-              value={currentValue}
-              placeholder={field.placeholder}
-              className={field.className}
-              onChange={e => handleChangeForm(e.currentTarget.value as T[typeof fieldName])}
-              isError={!!field.errorText}
-              isForm={true}
-          />
-        </ConfigProvider>
+      <ConfigProvider
+        theme={{
+          components: {
+            Input: {
+              borderRadius: 12,
+              colorBorder: "#C5C6CC",
+              hoverBorderColor: "#C5C6CC",
+              controlOutline: "none",
+              colorPrimary: "#C5C6CC",
+              fontSize: 20,
+            },
+          },
+        }}
+      >
+        <TextArea
+          value={currentValue}
+          placeholder={field.placeholder}
+          className={field.className}
+          onChange={e => handleChangeForm(e.currentTarget.value as T[typeof fieldName])}
+          isError={!!field.errorText}
+          isForm={true}
+        />
+      </ConfigProvider>
     );
   }
 
   return (
     <InputField
+      disabled={field.disabled}
       type={type}
       isForm={true}
       value={currentValue}

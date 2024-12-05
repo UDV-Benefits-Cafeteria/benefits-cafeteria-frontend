@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 import { type FC, useEffect, useState } from "react";
 
-import { useCreateLegalEntitiesMutation, useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
+import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
 import { LegalEntitiesActions } from "@entity/LegalEntities/model/slice/LegalEntities.slice";
 import { useCreatePositionMutation, useGetPositionQuery } from "@entity/Position/api/Position.api";
 import { PositionSliceActions } from "@entity/Position/model/slice/User.slice";
-import { useAddImageMutation, useCreateUserMutation, useEditUserMutation, useGetCurrentUserQuery } from "@entity/User";
+import { useAddImageMutation, useCreateUserMutation, useEditUserMutation } from "@entity/User";
 import { AddImage } from "@feature/AddImage";
 import { Form } from "@feature/InputFrom";
 import { TInputFromElement } from "@feature/InputFrom/ui/Form";
@@ -17,7 +17,7 @@ import { InputField } from "@shared/ui/Input/InputField";
 import { InputLabel } from "@shared/ui/Input/InputLabel";
 import { Modal } from "@shared/ui/Modal";
 import { Title } from "@shared/ui/Title";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { EMPLOYEES } from "@app/providers/AppRouter/AppRouter.config";
 
@@ -27,7 +27,7 @@ import styles from "../styles/CreateEmployeeForm.module.scss";
 
 import { CreateEmployeeFormActions } from "../model/slice/CreateEmployeeForm.slice";
 
-const useGetInputs = (addButtonEvent: () => void) => {
+const useGetInputs = (addButtonEvent: () => void, isPA?: boolean) => {
   const positions = useAppSelector(state => state.positions.positions);
   const legalEntities = useAppSelector(state => state.legalEntities.legalEntities);
   const userRole = useAppSelector(state => state.user.data!.role);
@@ -51,12 +51,13 @@ const useGetInputs = (addButtonEvent: () => void) => {
         },
       ],
       fieldName: "role",
-      disabled: userRole !== "admin",
+      disabled: userRole !== "admin" || isPA,
     },
     {
       label: "Почта",
       fieldName: "email",
       isRequired: true,
+      disabled: isPA,
       placeholder: "Введите корпоративную почту",
     },
     {
@@ -70,6 +71,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
       fieldName: "hired_at",
       type: "date",
       isRequired: true,
+      disabled: isPA,
       placeholder: "Выберите дату",
     },
     {
@@ -81,6 +83,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
     {
       type: "select",
       label: "Должность",
+      disabled: isPA,
       selectOptions: positions.map(el => ({ data: el.id.toString(), text: el.name })),
       addButton: { text: "Добавить должность", event: addButtonEvent },
       fieldName: "position_id",
@@ -94,33 +97,35 @@ const useGetInputs = (addButtonEvent: () => void) => {
     {
       type: "select",
       label: "Юридическое лицо",
+      disabled: isPA,
       selectOptions: legalEntities.map(el => ({ data: el.id.toString(), text: el.name })),
       fieldName: "legal_entity_id",
       isRequired: true,
     },
     {
+      disabled: isPA,
       label: "Баланс, UDV-coins",
       fieldName: "coins",
       type: "number",
       placeholder: "Введите число",
     },
-    {
-      label: "Адаптация пройдена",
-      fieldName: "is_adapted",
-      className: styles.checkbox,
-      type: "switcher",
-    },
+    ...(!isPA
+      ? [
+          {
+            label: "Адаптация пройдена",
+            fieldName: "is_adapted",
+            className: styles.checkbox,
+            type: "switcher",
+          },
+        ]
+      : []),
   ];
 
   return INPUTS;
 };
 
-export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
-  const { isEdit } = props;
-
-  const pathname = useLocation().pathname;
-
-  const user = useGetCurrentUserQuery(Number(pathname.split("/")[3])).data;
+export const CreateEmployeeForm: FC<{ user?: any; isPA?: boolean; onCancel: any }> = props => {
+  const { user, isPA, onCancel } = props;
 
   const dispatch = useAppDispatch();
   const [isAddPositionOpen, setIsAddPositionOpen] = useState(false);
@@ -129,7 +134,7 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
   const navigate = useNavigate();
 
   const userForm = useAppSelector(state => state.createEmployeeForm);
-  const inputs = useGetInputs(() => setIsAddPositionOpen(true));
+  const inputs = useGetInputs(() => setIsAddPositionOpen(true), isPA);
   const { data: positionsData } = useGetPositionQuery(null);
   const { data: legalEntityData } = useGetLegalEntitiesQuery(null);
   const [addImage] = useAddImageMutation();
@@ -137,7 +142,7 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
   const [editUser] = useEditUserMutation();
 
   useEffect(() => {
-    if (user && isEdit)
+    if (user)
       dispatch(
         CreateEmployeeFormActions.setFormData({
           ...user,
@@ -145,7 +150,7 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
           legal_entity_id: user.legal_entity?.id,
         })
       );
-  }, [user, isEdit]);
+  }, [user]);
 
   useEffect(() => {
     if (positionsData) dispatch(PositionSliceActions.setPositions(positionsData));
@@ -167,31 +172,34 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
 
     if (image) imageRes = await addImage({ id: user?.id || 0, image: image });
 
-    if (isEdit) {
+    if (user) {
       res = await editUser({ ...userForm, id: user?.id || 0 });
     } else {
-      userForm.is_active = true;
       res = await createUser(userForm);
     }
 
     if (res.data && ((image && imageRes?.data) || (!image && !imageRes?.data))) {
-      navigate(EMPLOYEES);
+      if (onCancel) onCancel();
+      else navigate(EMPLOYEES);
       dispatch(CreateEmployeeFormActions.setInitialState());
     }
   };
 
   const handleCancel = async () => {
-    navigate(EMPLOYEES);
+    if (onCancel) onCancel();
+    else navigate(EMPLOYEES);
     dispatch(CreateEmployeeFormActions.setInitialState());
   };
 
   return (
     <>
-      <div className={styles.title}>
-        <Title type={"page"}>Сотрудники</Title>
+      {!isPA ? (
+        <div className={styles.title}>
+          <Title type={"page"}>Сотрудники</Title>
 
-        <Title type={"block"}>{isEdit ? "Редактирование" : "Добавление"} cотрудника</Title>
-      </div>
+          <Title type={"block"}>{user ? "Редактирование" : "Добавление"} cотрудника</Title>
+        </div>
+      ) : null}
 
       <div className={styles.form_container}>
         <Form<TUserData>
@@ -200,7 +208,7 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
           action={CreateEmployeeFormActions.setUserData}
         />
 
-        {isEdit && (
+        {user && (
           <AddImage
             imageUrl={user?.image_url}
             setImage={setImage}
@@ -209,7 +217,7 @@ export const CreateEmployeeForm: FC<{ isEdit?: boolean }> = props => {
       </div>
 
       <div className={styles.form_buttons}>
-        <Button onClick={handleAddUser}>{isEdit ? "Сохранить" : "Добавить"}</Button>
+        <Button onClick={handleAddUser}>{user ? "Сохранить" : "Добавить"}</Button>
 
         <Button
           onClick={handleCancel}
