@@ -39,6 +39,7 @@ export const PURCHASE_HISTORY = MAIN + "/history";
 export const PERSONAL_ACCOUNT = MAIN + "/account";
 export const LEGAL_ENTITY = MAIN + "/legal_entity";
 export const PERSONAL_ACCOUNT_EDIT = PERSONAL_ACCOUNT + "/edit";
+export const PERSONAL_ACCOUNT_BY_ID = PERSONAL_ACCOUNT + "/:id";
 
 const lastVisit = localStorage.getItem(PATH);
 
@@ -123,6 +124,12 @@ export const ROUTS: TRoute[] = [
     path: PERSONAL_ACCOUNT_EDIT,
     element: <PersonalAccountEdit />,
     role: ["employee", "admin", "hr"],
+    needAuth: true,
+  },
+  {
+    path: PERSONAL_ACCOUNT_BY_ID,
+    element: <PersonalAccount />,
+    role: ["admin", "hr"],
     needAuth: true,
   },
   {
