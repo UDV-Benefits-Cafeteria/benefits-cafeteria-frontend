@@ -1,9 +1,15 @@
 import { FC, useState } from "react";
 
-import { TRequestStatus, useGetUserRequestsQuery, useUpdateRequestsMutation } from "@entity/Requests/api/Requests.api";
+import {
+  TRequestStatus,
+  useGetAllRequestsQuery,
+  useGetUserRequestsQuery,
+  useUpdateRequestsMutation,
+} from "@entity/Requests/api/Requests.api";
 import { DataTable } from "@feature/DataTable";
 import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
 import { classNames } from "@shared/lib/classNames/classNames";
+import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Icon } from "@shared/ui/Icons/Icon";
 import { Image } from "@shared/ui/Image/Image";
@@ -44,7 +50,8 @@ const status = {
 
 export const PurchaseHistoryTable: FC = () => {
   const [activeFilter, setActiveFilter] = useState<"all" | TRequestStatus>("all");
-  const requests = useGetUserRequestsQuery(null);
+  const id = useAppSelector(state => state.user.data.id);
+  const requests = useGetAllRequestsQuery({ filter: activeFilter, id: id, isDa: true });
   const navigate = useNavigate();
   const [updateRequest] = useUpdateRequestsMutation();
   const [page, setPage] = useState(0);

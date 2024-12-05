@@ -4,6 +4,7 @@ import { TRequestStatus, useGetAllRequestsQuery, useUpdateRequestsMutation } fro
 import { DataTable } from "@feature/DataTable";
 import { toQuery } from "@pages/BenefitsBar/BenefitsBar";
 import { classNames } from "@shared/lib/classNames/classNames";
+import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Icon } from "@shared/ui/Icons/Icon";
 import { InputContainer } from "@shared/ui/Input/InputContainer";
@@ -150,7 +151,9 @@ export const ApplicationsView: FC = () => {
   }, [filter]);
   const [sort, setSort] = useState<string>(toQuery(SORT_PARAMS[0].sortBy, SORT_PARAMS[0].sortOrder));
 
-  const requests = useGetAllRequestsQuery({ filter: filter, sort: sort });
+  const user = useAppSelector(state => state.user.data.id);
+
+  const requests = useGetAllRequestsQuery({ filter: filter, sort: sort, id: user });
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [isDeniedModalOpen, setIsDeniedModalOpen] = useState<boolean>(false);
