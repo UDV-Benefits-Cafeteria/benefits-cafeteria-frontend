@@ -12,6 +12,7 @@ import { BENEFITS } from "@app/providers/AppRouter/AppRouter.config";
 import { TBenefitData } from "@entity/Benefit/model/types/Benefit.types";
 
 import styles from "../../styles/BenefitCard.module.scss";
+import {Tooltip} from "antd";
 
 export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) => void }> = ({
   benefit,
@@ -19,6 +20,8 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
 }) => {
   const user = useAppSelector(state => state.user.data!);
   const navigate = useNavigate();
+    const isLongText = benefit.name.length > 40;
+    const displayedText = isLongText ? benefit.name.slice(0, 40) + "..." : benefit.name;
 
   return (
     <div className={styles.container}>
@@ -55,7 +58,9 @@ export const BenefitCard: FC<{ benefit: TBenefitData; addRequest: (id: number) =
           boldness={"medium"}
           className={styles.name}
         >
-          {benefit.name}
+            <Tooltip title={isLongText ? benefit.name : null}>
+                <span>{displayedText}</span>
+            </Tooltip>
         </Text>
       </div>
 

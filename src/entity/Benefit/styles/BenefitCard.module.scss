@@ -7,6 +7,7 @@
   gap: 5px;
   cursor: pointer;
   margin-bottom: 10px;
+  min-height: 472px;
 
   .image {
     border-radius: 16px;
@@ -19,6 +20,7 @@
   .name {
     font-size: 20px;
     margin-top: 5px;
+    overflow-wrap: break-word;
   }
 
   .btn {
@@ -27,6 +29,7 @@
     border-radius: 15px;
     width: 100%;
     cursor: pointer;
+    margin-top: auto;
   }
   .btn:disabled {
     background-color: #8C8C8C;
@@ -34,7 +37,7 @@
         background-color: #8C8C8C;
         cursor: not-allowed;
     }
-}
+  }
 }
 
 .price {
