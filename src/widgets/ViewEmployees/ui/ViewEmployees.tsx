@@ -1,7 +1,7 @@
 import { ChangeEvent, type FC, useEffect, useState } from "react";
 
 import { useGetLegalEntitiesQuery } from "@entity/LegalEntities/api/LegalEntities.api";
-import { useLazyExportDataQuery } from "@entity/Requests/api/Requests.api";
+import { useLazyExportRequestsDataQuery } from "@entity/Requests/api/Requests.api";
 import {
   useBulkCreateMutation,
   useEditUserMutation,
@@ -237,7 +237,7 @@ export const ViewEmployees: FC = () => {
 
   const userRole = useAppSelector(state => state.user.data?.role);
 
-  const [trigger] = useLazyExportDataQuery();
+  const [trigger] = useLazyExportRequestsDataQuery();
 
   const [triggerUser] = useLazyExportUsersDataQuery();
 

@@ -6,10 +6,11 @@ import {
   useEditBenefitMutation,
   useGetAllBenefitQuery,
   useImportBenefitDataMutation,
+  useLazyExportDataQuery,
+  useLazyGetAllBenefitQuery,
 } from "@entity/Benefit/api/Benefit.api";
 import { useGetCategoryQuery } from "@entity/Category/api/Category.api";
-import { useLazyExportDataQuery } from "@entity/Requests/api/Requests.api";
-import { useEditUserMutation } from "@entity/User";
+import { useLazyExportRequestsDataQuery } from "@entity/Requests/api/Requests.api";
 import { DataTable } from "@feature/DataTable";
 import { SearchBar } from "@feature/SearchBar";
 import { BenefitFilter, SORT_PARAMS, toQuery } from "@pages/BenefitsBar/BenefitsBar";
@@ -117,7 +118,7 @@ export const ViewBenefits: FC = () => {
   const { data: benefits } = useGetAllBenefitQuery({ filters: filters, sort: sort, search: search });
   const [open, setOpen] = useState(false);
 
-  const [trigger] = useLazyExportDataQuery();
+  const [trigger] = useLazyExportDataQuery({});
 
   const getFile = async () => {
     const res = await trigger(null);

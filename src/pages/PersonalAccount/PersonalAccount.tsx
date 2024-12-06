@@ -32,7 +32,7 @@ export const PersonalAccount: FC = () => {
     <>
       <BarHeader />
       <div style={{ maxWidth: 1200, margin: "auto", marginTop: "190px", marginBottom: "100px" }}>
-        {id ? null : (
+        {visableUser ? null : (
           <Title type={"page"}>
             <Link
               className={styles.link}
@@ -122,11 +122,11 @@ export const PersonalAccount: FC = () => {
         <div className={styles.buttons}>
           <Button
             className={styles.btn}
-            onClick={() => navigate(!id ? PERSONAL_ACCOUNT_EDIT : EMPLOYEES + "/" + user.id + "/edit")}
+            onClick={() => navigate(!visableUser ? PERSONAL_ACCOUNT_EDIT : EMPLOYEES + "/" + user.id + "/edit")}
           >
             Редактировать профиль
           </Button>
-          {id ? null : (
+          {visableUser ? null : (
             <Button
               className={styles.btn}
               buttonType={"secondary-red"}

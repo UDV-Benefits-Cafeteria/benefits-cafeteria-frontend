@@ -33,11 +33,11 @@ export const BenefitApi = rtkApi.injectEndpoints({
       query: params => ({
         url:
           "/benefits/?" +
-          params.sort +
-          (params.filters?.categories ? "&" + params.filters?.categories : "") +
-          `${params.search ? "&query=" + params.search : ""}`,
+          (params?.sort ? params.sort : "") +
+          (params?.filters?.categories ? "&" + params.filters?.categories : "") +
+          `${params?.search ? "&query=" + params.search : ""}`,
         params: {
-          ...params.filters,
+          ...(params?.filters ? params.filters : {}),
           limit: 100,
           categories: undefined,
         },
