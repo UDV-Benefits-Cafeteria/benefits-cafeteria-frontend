@@ -44,9 +44,11 @@ interface ReviewProps {
   firstname: string;
   lastname: string;
   updatedAt: string;
+  reviewId: number;
+  canEdit: boolean;
 }
 
-const ReviewCard: React.FC<ReviewProps> = ({ text, avatarUrl, firstname, lastname, updatedAt, reviewId }) => {
+const ReviewCard: React.FC<ReviewProps> = ({ text, avatarUrl, firstname, lastname, updatedAt, reviewId, canEdit }) => {
   const [updateReview] = useUpdateReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
   const [editReview, setEditReview] = useState<{ id: number; text: string } | null>(null);
@@ -75,33 +77,37 @@ const ReviewCard: React.FC<ReviewProps> = ({ text, avatarUrl, firstname, lastnam
           </p>
           <p className={styles.reviewDate}>{formatDateTime(updatedAt)}</p>
         </div>
-        <Popover
-          className={styles.dots}
-          arrow={false}
-          trigger={"click"}
-          content={
-            <div className={styles.actions}>
-              <Text
-                className={styles.element}
-                onClick={() => {
-                  setEditReview({ id: reviewId, text: text });
-                }}
-              >
-                Редактировать отзыв
-              </Text>
-              <Text
-                className={classNames(styles.warning, styles.element)}
-                onClick={() => {
-                  handleDeleteReview(reviewId);
-                }}
-              >
-                Удалить свой отзыв
-              </Text>
-            </div>
-          }
-        >
-          ...
-        </Popover>
+        {canEdit ? (
+          <Popover
+            className={styles.dots}
+            arrow={false}
+            trigger={"click"}
+            content={
+              <div className={styles.actions}>
+                <Text
+                  className={styles.element}
+                  onClick={() => {
+                    setEditReview({ id: reviewId, text: text });
+                  }}
+                >
+                  Редактировать отзыв
+                </Text>
+                <Text
+                  className={classNames(styles.warning, styles.element)}
+                  onClick={() => {
+                    handleDeleteReview(reviewId);
+                  }}
+                >
+                  Удалить свой отзыв
+                </Text>
+              </div>
+            }
+          >
+            ...
+          </Popover>
+        ) : (
+          ""
+        )}
       </span>
       {editReview?.id === reviewId ? (
         <>
@@ -149,7 +155,7 @@ const ReviewCard: React.FC<ReviewProps> = ({ text, avatarUrl, firstname, lastnam
   );
 };
 
-const ReviewList = ({ reviews }: { reviews: any[] }) => {
+const ReviewList = ({ reviews, canEdit }: { reviews: any[] }) => {
   return (
     <div className={styles.reviewContainerList}>
       {reviews.map(review => (
@@ -161,6 +167,7 @@ const ReviewList = ({ reviews }: { reviews: any[] }) => {
           lastname={review.user.lastname}
           updatedAt={review.updated_at}
           reviewId={review.id}
+          canEdit={canEdit}
         />
       ))}
     </div>
@@ -186,7 +193,6 @@ export const BenefitPage: FC = () => {
   const handleCreateReview = async () => {
     await createReview({ benefitId, text: newReview });
     setNewReview("");
-    refetch();
   };
 
   const handleAddRequestResp = async () => {
@@ -376,6 +382,7 @@ export const BenefitPage: FC = () => {
               reviews={data}
               isLoading={isLoading}
               isError={error}
+              canEdit={user.id === data.user.id}
             />
           ) : (
             ""
