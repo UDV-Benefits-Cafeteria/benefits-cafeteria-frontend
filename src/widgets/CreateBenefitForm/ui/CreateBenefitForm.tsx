@@ -66,7 +66,7 @@ const useGetInputs = (addButtonEvent: () => void) => {
       type: "text",
     },
     {
-      label: "Сколько раз можно использовать",
+      label: "Сколько раз можно активировать бенефит",
       type: "number",
       placeholder: "Введите число",
       fieldName: "usage_limit",
@@ -145,13 +145,13 @@ export const CreateBenefitForm: FC<{ benefit?: TBenefitData }> = props => {
     let imageRes;
 
     if (benefit) {
-      let bn = {...benefitForm};
+      let bn = { ...benefitForm };
       if (benefitForm.amount < 0 || benefitForm.amount === "" || benefitForm.amount === " ") {
         bn.amount = null;
       }
       res = await editBenefit({ id: benefit?.id || 0, ...bn });
     } else {
-      let bn = {...benefitForm, is_active: true };
+      let bn = { ...benefitForm, is_active: true };
       if (benefitForm.amount < 0 || benefitForm.amount === "" || benefitForm.amount === " ") {
         bn.amount = null;
       }
@@ -241,7 +241,11 @@ const ModalCreateCategory: FC<{ isOpen: boolean; onClose: () => void }> = props 
       <InputContainer className={styles.inputContainerModal}>
         <InputLabel>Название*</InputLabel>
 
-        <InputField placeholder={"Введите название категории"} className={styles.inputFieldModal} onChange={e => setPositionName(e.currentTarget.value)} />
+        <InputField
+          placeholder={"Введите название категории"}
+          className={styles.inputFieldModal}
+          onChange={e => setPositionName(e.currentTarget.value)}
+        />
       </InputContainer>
 
       <div className={styles.buttons}>

@@ -331,7 +331,7 @@ export const BenefitPage: FC = () => {
             <Text className={styles.text}>
               Период обновления:{" "}
               <span className={styles.count}>
-                {benefit.is_fixed_period ? "отсутствует" : benefit.usage_period_days || "отсутствует"}
+                {!benefit.is_fixed_period ? "отсутствует" : benefit.usage_period_days || "отсутствует"}
               </span>
             </Text>
           </div>
