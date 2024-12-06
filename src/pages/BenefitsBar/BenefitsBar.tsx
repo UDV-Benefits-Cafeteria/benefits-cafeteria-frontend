@@ -84,8 +84,6 @@ export const BenefitsBar: FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const search = useLocation().search.split("?benefit=")?.[1];
 
-  console.log(search);
-
   const [sort, setSort] = useState<string>(toQuery(SORT_PARAMS[0].sortBy, SORT_PARAMS[0].sortOrder));
   const categories = useGetCategoryQuery(null);
   const [active, setActive] = useState<boolean | null>(true);
