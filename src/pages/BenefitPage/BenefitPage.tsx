@@ -155,21 +155,23 @@ const ReviewCard: React.FC<ReviewProps> = ({ text, avatarUrl, firstname, lastnam
   );
 };
 
-const ReviewList = ({ reviews, userId }: { reviews: any[] }) => {
+const ReviewList = ({ reviews, userId, benefitId }: { reviews: any[]; userId: number; benefitId: number }) => {
   return (
     <div className={styles.reviewContainerList}>
-      {reviews.map(review => (
-        <ReviewCard
-          key={review.id}
-          text={review.text}
-          avatarUrl={review.user.image_url}
-          firstname={review.user.firstname}
-          lastname={review.user.lastname}
-          updatedAt={review.updated_at}
-          reviewId={review.id}
-          canEdit={review.user.id === userId}
-        />
-      ))}
+      {reviews.map(review =>
+        review.benefit.id === benefitId ? (
+          <ReviewCard
+            key={review.id}
+            text={review.text}
+            avatarUrl={review.user.image_url}
+            firstname={review.user.firstname}
+            lastname={review.user.lastname}
+            updatedAt={review.updated_at}
+            reviewId={review.id}
+            canEdit={review.user.id === userId}
+          />
+        ) : null
+      )}
     </div>
   );
 };
@@ -383,6 +385,7 @@ export const BenefitPage: FC = () => {
               isLoading={isLoading}
               isError={error}
               userId={user!.id}
+              benefitId={benefitId}
             />
           ) : (
             ""
