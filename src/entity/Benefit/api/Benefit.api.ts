@@ -97,6 +97,42 @@ export const BenefitApi = rtkApi.injectEndpoints({
       }),
       invalidatesTags: ["Benefits"],
     }),
+    getReviews: build.query<{ data: any[] }, { page?: number; limit?: number }>({
+      query: ({ page = 1, limit = 10 }) => ({
+        url: `/reviews/`,
+        params: { page, limit },
+      }),
+      providesTags: ["Reviews"],
+    }),
+    getReview: build.query<any, { reviewId: number }>({
+      query: ({ reviewId }) => ({
+        url: `/reviews/${reviewId}`,
+      }),
+      providesTags: ["Reviews"],
+    }),
+    createReview: build.mutation<any, { benefitId: number; text: string }>({
+      query: ({ benefitId, text }) => ({
+        url: `/reviews/`,
+        method: "POST",
+        body: { benefit_id: benefitId, text },
+      }),
+      invalidatesTags: ["Reviews"],
+    }),
+    updateReview: build.mutation<any, { reviewId: number; text: string }>({
+      query: ({ reviewId, text }) => ({
+        url: `/reviews/${reviewId}`,
+        method: "PATCH",
+        body: { text },
+      }),
+      invalidatesTags: ["Reviews"],
+    }),
+    deleteReview: build.mutation<any, { reviewId: number }>({
+      query: ({ reviewId }) => ({
+        url: `/reviews/${reviewId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Reviews"],
+    }),
   }),
 });
 
@@ -111,4 +147,9 @@ export const {
   useDeleteBenefitImageMutation,
   useAddBenefitImageMutation,
   useEditBenefitMutation,
+  useGetReviewsQuery,
+  useGetReviewQuery,
+  useCreateReviewMutation,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
 } = BenefitApi;

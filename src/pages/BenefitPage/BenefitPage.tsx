@@ -1,8 +1,15 @@
 import { type FC, useState } from "react";
 
-import { useGetBenefitQuery } from "@entity/Benefit/api/Benefit.api";
+import {
+  useCreateReviewMutation,
+  useDeleteReviewMutation,
+  useGetBenefitQuery,
+  useGetReviewsQuery,
+  useUpdateReviewMutation,
+} from "@entity/Benefit/api/Benefit.api";
 import { useCreateRequestsMutation } from "@entity/Requests/api/Requests.api";
-import { BENEFIT_PLACEHOLDER } from "@shared/assets/imageConsts";
+import { BENEFIT_PLACEHOLDER, USER_PLACEHOLDER } from "@shared/assets/imageConsts";
+import { classNames } from "@shared/lib/classNames/classNames";
 import { useAppSelector } from "@shared/lib/hooks/useAppSelector/useAppSelector";
 import { Button } from "@shared/ui/Button";
 import { Image } from "@shared/ui/Image/Image";
@@ -11,11 +18,154 @@ import { Text } from "@shared/ui/Text";
 import { Title } from "@shared/ui/Title";
 import { BarHeader } from "@widgets/BarHeader/ui/BarHeader";
 import { CreateRequestModal } from "@widgets/BenefitBarView/ui/BenefitBarView";
+import { ConfigProvider, Popover } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { BENEFITS_BAR } from "@app/providers/AppRouter/AppRouter.config";
+import { BENEFITS_BAR, EMPLOYEES, PERSONAL_ACCOUNT } from "@app/providers/AppRouter/AppRouter.config";
 
 import styles from "./BenefitPage.module.scss";
+
+const formatDateTime = (dateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  };
+  return new Date(dateString).toLocaleString("ru-RU", options);
+};
+
+interface ReviewProps {
+  text: string;
+  avatarUrl: string | null;
+  firstname: string;
+  lastname: string;
+  updatedAt: string;
+}
+
+const ReviewCard: React.FC<ReviewProps> = ({ text, avatarUrl, firstname, lastname, updatedAt, reviewId }) => {
+  const [updateReview] = useUpdateReviewMutation();
+  const [deleteReview] = useDeleteReviewMutation();
+  const [editReview, setEditReview] = useState<{ id: number; text: string } | null>(null);
+
+  const handleUpdateReview = async (reviewId: number, text: string) => {
+    await updateReview({ reviewId, text });
+    setEditReview(null);
+  };
+
+  const handleDeleteReview = async (reviewId: number) => {
+    await deleteReview({ reviewId });
+  };
+
+  return (
+    <div className={styles.reviewContainer}>
+      <span className={styles.fullname}>
+        <Image
+          className={styles.avatarImage}
+          type={"avatar"}
+          srs={avatarUrl || USER_PLACEHOLDER}
+          onError={e => (e.target.src = USER_PLACEHOLDER)}
+        />
+        <div className={styles.reviewContainerData}>
+          <p className={styles.reviewNames}>
+            {firstname} {lastname}
+          </p>
+          <p className={styles.reviewDate}>{formatDateTime(updatedAt)}</p>
+        </div>
+        <Popover
+          className={styles.dots}
+          arrow={false}
+          trigger={"click"}
+          content={
+            <div className={styles.actions}>
+              <Text
+                className={styles.element}
+                onClick={() => {
+                  setEditReview({ id: reviewId, text: text });
+                }}
+              >
+                Редактировать отзыв
+              </Text>
+              <Text
+                className={classNames(styles.warning, styles.element)}
+                onClick={() => {
+                  handleDeleteReview(reviewId);
+                }}
+              >
+                Удалить свой отзыв
+              </Text>
+            </div>
+          }
+        >
+          ...
+        </Popover>
+      </span>
+      {editReview?.id === reviewId ? (
+        <>
+          <ConfigProvider
+            theme={{
+              components: {
+                Input: {
+                  borderRadius: 12,
+                  colorBorder: "#C5C6CC",
+                  hoverBorderColor: "#C5C6CC",
+                  controlOutline: "none",
+                  colorPrimary: "#C5C6CC",
+                  fontSize: 16,
+                },
+              },
+            }}
+          >
+            <TextArea
+              value={editReview.text}
+              onChange={e => setEditReview({ ...editReview, text: e.target.value })}
+            />
+          </ConfigProvider>
+          <div className={styles.btnEditReview}>
+            <Button
+              className={styles.btnEdit}
+              onClick={() => handleUpdateReview(reviewId, editReview.text)}
+            >
+              Сохранить
+            </Button>
+            <Button
+              className={styles.btnEdit}
+              buttonType={"secondary"}
+              onClick={() => setEditReview(null)}
+            >
+              Отмена
+            </Button>
+          </div>
+        </>
+      ) : (
+        <>
+          <Text className={styles.reviewText}>{text}</Text>
+        </>
+      )}
+    </div>
+  );
+};
+
+const ReviewList = ({ reviews }: { reviews: any[] }) => {
+  return (
+    <div className={styles.reviewContainerList}>
+      {reviews.map(review => (
+        <ReviewCard
+          key={review.id}
+          text={review.text}
+          avatarUrl={review.user.image_url}
+          firstname={review.user.firstname}
+          lastname={review.user.lastname}
+          updatedAt={review.updated_at}
+          reviewId={review.id}
+        />
+      ))}
+    </div>
+  );
+};
 
 export const BenefitPage: FC = () => {
   const pathname = useLocation().pathname;
@@ -27,6 +177,17 @@ export const BenefitPage: FC = () => {
   const navigate = useNavigate();
   const [isOpenCreateRequestModal, setIsOpenCreateRequestModal] = useState(false);
   const [createRequest] = useCreateRequestsMutation();
+
+  const [createReview] = useCreateReviewMutation();
+  const [newReview, setNewReview] = useState("");
+
+  const { data, isLoading, error } = useGetReviewsQuery({ limit: 1000 });
+
+  const handleCreateReview = async () => {
+    await createReview({ benefitId, text: newReview });
+    setNewReview("");
+    refetch();
+  };
 
   const handleAddRequestResp = async () => {
     const res = await createRequest({
@@ -86,7 +247,7 @@ export const BenefitPage: FC = () => {
                 className={styles.price}
                 boldness={"medium"}
               >
-                {benefit.coins_cost ? benefit.coins_cost > 0 : "Бесплатно"}
+                {benefit.coins_cost > 0 ? benefit.coins_cost : "Бесплатно"}
                 <div className={styles.coin} />
               </Title>
 
@@ -107,7 +268,7 @@ export const BenefitPage: FC = () => {
                   ? "Неограниченное количество"
                   : benefit.amount > 0
                     ? `Осталось ${benefit.amount} шт.`
-                    : "Бенефит закончился"}
+                    : "Бенефит закончился!"}
               </Text>
 
               <Button
@@ -176,6 +337,50 @@ export const BenefitPage: FC = () => {
             Редактировать
           </Button>
         ) : null}
+
+        <div className={styles.reviews_container}>
+          <Title type="element">Отзывы</Title>
+
+          <div className={styles.add_review}>
+            <ConfigProvider
+              theme={{
+                components: {
+                  Input: {
+                    borderRadius: 12,
+                    colorBorder: "#C5C6CC",
+                    hoverBorderColor: "#C5C6CC",
+                    controlOutline: "none",
+                    colorPrimary: "#C5C6CC",
+                    fontSize: 16,
+                  },
+                },
+              }}
+            >
+              <TextArea
+                value={newReview}
+                placeholder="Напишите отзыв о бенефите"
+                onChange={e => setNewReview(e.target.value)}
+              />
+            </ConfigProvider>
+            <Button
+              onClick={handleCreateReview}
+              disabled={!newReview.trim()}
+              className={styles.post_button}
+            >
+              Добавить
+            </Button>
+          </div>
+
+          {data ? (
+            <ReviewList
+              reviews={data}
+              isLoading={isLoading}
+              isError={error}
+            />
+          ) : (
+            ""
+          )}
+        </div>
       </div>
 
       <CreateRequestModal
