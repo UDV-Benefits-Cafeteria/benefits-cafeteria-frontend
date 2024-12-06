@@ -17,6 +17,7 @@ export const Image: FC<TImage> = props => {
     <img
       className={classNames(type ? styles.avatar : null)}
       loading={"lazy"}
+      style={{ objectFit: "cover" }}
       alt={alt}
       src={srs}
       {...props}
