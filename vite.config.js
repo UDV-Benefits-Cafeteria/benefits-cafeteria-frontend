@@ -13,7 +13,8 @@ export default ({ mode }) => {
       outDir: "dist",
     },
     define: {
-      __API__: JSON.stringify(env.VITE_API),
+      //__API__: JSON.stringify(env.VITE_API),
+      __API__: JSON.stringify("https://backend.dpo.vstrechya.space/api/v1"),
       __IS_DEV__: JSON.stringify(env.VITE_IS_DEV),
     },
     plugins: [
