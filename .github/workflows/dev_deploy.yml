@@ -12,11 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
       - uses: StalinidzeCorp/ycr-push@main
         env:
           KEY_JSON: ${{secrets.KEY_JSON}}
