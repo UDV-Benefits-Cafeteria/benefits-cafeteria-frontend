@@ -16,6 +16,6 @@ jobs:
         env:
           KEY_JSON: ${{secrets.KEY_JSON}}
           REGISTRY_ID: crpp7grglk5oa2671pne
-          DOCKERFILE_PATH: ./Dockerfile.dev
+          DOCKERFILE_PATH: ./Dockerfile.prod
           IMAGE_NAME: udb-front
           IMAGE_TAG: latest
